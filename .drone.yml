@@ -53,6 +53,8 @@ steps:
       - kubectl label ns opsdata-${DRONE_BUILD_NUMBER} ns-purge=true
       - kubectl label ns opsdata-${DRONE_BUILD_NUMBER} class=master
       - kubectl annotate ns opsdata-${DRONE_BUILD_NUMBER} field.cattle.io/projectId=c-jrfsw:p-w678r
+      - helm repo add bitnami https://charts.bitnami.com/bitnami
+      - helm install opsdata --namespace opsdata-${DRONE_BUILD_NUMBER} -f ./database/values.yaml bitnami/mariadb-galera
       - kubectl apply -n opsdata-${DRONE_BUILD_NUMBER} -f ./deployment-ready/
       - kubectl apply -n opsdata-${DRONE_BUILD_NUMBER} -f ./hpa/master.yaml
 
