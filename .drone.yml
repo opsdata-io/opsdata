@@ -39,7 +39,8 @@ steps:
         from_secret: registry-password
 
   - name: Deploy-to-Master
-    image: cube8021/drone-kubectl
+    image: supporttools/kube-builder
+    pull: true
     settings:
       custom_dns: [ 1.1.1.1, 8.8.8.8 ]
       kubernetes_server:
@@ -59,7 +60,8 @@ steps:
       - kubectl apply -n opsdata-${DRONE_BUILD_NUMBER} -f ./hpa/master.yaml
 
   - name: Deploy-to-Dev-b1-k3s-prd
-    image: cube8021/drone-kubectl
+    image: supporttools/kube-builder
+    pull: true
     settings:
       custom_dns: [ 1.1.1.1, 8.8.8.8 ]
       kubernetes_server:
@@ -84,7 +86,8 @@ steps:
       - kubectl wait -n opsdata-dev --for=condition=available --timeout=600s deployment/opsdata
 
   - name: Deploy-to-Dev-a1-k3s-prd
-    image: cube8021/drone-kubectl
+    image: supporttools/kube-builder
+    pull: true
     settings:
       custom_dns: [ 1.1.1.1, 8.8.8.8 ]
       kubernetes_server:
@@ -109,7 +112,8 @@ steps:
       - kubectl wait -n opsdata-dev --for=condition=available --timeout=600s deployment/opsdata
 
   - name: Deploy-to-Staging-b1-k3s-prd
-    image: cube8021/drone-kubectl
+    image: supporttools/kube-builder
+    pull: true
     settings:
       custom_dns: [ 1.1.1.1, 8.8.8.8 ]
       kubernetes_server:
@@ -140,7 +144,8 @@ steps:
      - staging
 
   - name: Deploy-to-Staging-a1-k3s-prd
-    image: cube8021/drone-kubectl
+    image: supporttools/kube-builder
+    pull: true
     settings:
       custom_dns: [ 1.1.1.1, 8.8.8.8 ]
       kubernetes_server:
@@ -171,7 +176,8 @@ steps:
      - staging
 
   - name: Deploy-to-Production-b1-k3s-prd
-    image: cube8021/drone-kubectl
+    image: supporttools/kube-builder
+    pull: true
     settings:
       custom_dns: [ 1.1.1.1, 8.8.8.8 ]
       kubernetes_server:
@@ -203,7 +209,8 @@ steps:
      - production
 
   - name: Deploy-to-Production-a1-k3s-prd
-    image: cube8021/drone-kubectl
+    image: supporttools/kube-builder
+    pull: true
     settings:
       custom_dns: [ 1.1.1.1, 8.8.8.8 ]
       kubernetes_server:
