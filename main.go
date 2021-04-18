@@ -6,13 +6,12 @@ import (
 )
 
 func home(w http.ResponseWriter, r *http.Request) {
-	http.Redirect(w, r, "https://opsdata.io, 301)
+	http.Redirect(w, r, "https://opsdata.io", 301)
 }
 
 func healthz(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Server", "OpsData.io")
 }
-
 
 func main() {
 	mux := http.NewServeMux()
