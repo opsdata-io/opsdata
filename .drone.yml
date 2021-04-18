@@ -70,7 +70,7 @@ steps:
       USERNAME:
         from_secret: registry-username
     commands:
-      - kubectl create namespace opsdata-dev --dry-run=true -o yaml | kubectl apply -f -
+      - kubectl apply -f ./namespace/dev.yaml
       - kubectl label --overwrite ns opsdata-dev team=opsdata
       - kubectl label --overwrite ns opsdata-dev app=opsdata
       - kubectl label --overwrite ns opsdata-dev ns-purge=false
@@ -95,7 +95,7 @@ steps:
       USERNAME:
         from_secret: registry-username
     commands:
-      - kubectl create namespace opsdata-dev --dry-run=true -o yaml | kubectl apply -f -
+      - kubectl apply -f ./namespace/dev.yaml
       - kubectl label --overwrite ns opsdata-dev team=opsdata
       - kubectl label --overwrite ns opsdata-dev app=opsdata
       - kubectl label --overwrite ns opsdata-dev ns-purge=false
@@ -120,7 +120,7 @@ steps:
       USERNAME:
         from_secret: registry-username
     commands:
-      - kubectl create namespace opsdata-stg --dry-run=true -o yaml | kubectl apply -f -
+      - kubectl apply -f ./namespace/staging.yaml
       - kubectl label --overwrite ns opsdata-stg team=opsdata
       - kubectl label --overwrite ns opsdata-stg app=opsdata
       - kubectl label --overwrite ns opsdata-stg ns-purge=false
@@ -151,7 +151,7 @@ steps:
       USERNAME:
         from_secret: registry-username
     commands:
-      - kubectl create namespace opsdata-stg --dry-run=true -o yaml | kubectl apply -f -
+      - kubectl apply -f ./namespace/staging.yaml
       - kubectl label --overwrite ns opsdata-stg team=opsdata
       - kubectl label --overwrite ns opsdata-stg app=opsdata
       - kubectl label --overwrite ns opsdata-stg ns-purge=false
@@ -182,7 +182,7 @@ steps:
       USERNAME:
         from_secret: registry-username
     commands:
-      - kubectl create namespace opsdata-prd --dry-run=true -o yaml | kubectl apply -f -
+      - kubectl apply -f ./namespace/production.yaml
       - kubectl label --overwrite ns opsdata-prd team=opsdata
       - kubectl label --overwrite ns opsdata-prd app=opsdata
       - kubectl label --overwrite ns opsdata-prd ns-purge=false
@@ -214,7 +214,7 @@ steps:
       USERNAME:
         from_secret: registry-username
     commands:
-      - kubectl create namespace opsdata-prd --dry-run=true -o yaml | kubectl apply -f -
+      - kubectl apply -f ./namespace/production.yaml
       - kubectl label --overwrite ns opsdata-prd team=opsdata
       - kubectl label --overwrite ns opsdata-prd app=opsdata
       - kubectl label --overwrite ns opsdata-prd ns-purge=false
