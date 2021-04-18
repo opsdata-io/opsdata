@@ -1,0 +1,18 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  labels:
+    app: opsdata
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: master-BUILD_NUMBER.opsdata.io
+    external-dns.alpha.kubernetes.io/ttl: "120"
+  name: build-lb
+spec:
+  rules:
+  - host: master-BUILD_NUMBER.opsdata.io
+    http:
+      paths:
+      - backend:
+          serviceName: opsdata
+          servicePort: 8080
+        pathType: ImplementationSpecific
