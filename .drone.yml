@@ -70,6 +70,7 @@ steps:
       USERNAME:
         from_secret: registry-username
     commands:
+      - kubectl create namespace opsdata-dev --dry-run=client -o yaml | kubectl apply -f -
       - kubectl label --overwrite ns opsdata-dev team=opsdata
       - kubectl label --overwrite ns opsdata-dev app=opsdata
       - kubectl label --overwrite ns opsdata-dev ns-purge=false
@@ -94,6 +95,7 @@ steps:
       USERNAME:
         from_secret: registry-username
     commands:
+      - kubectl create namespace opsdata-dev --dry-run=client -o yaml | kubectl apply -f -
       - kubectl label --overwrite ns opsdata-dev team=opsdata
       - kubectl label --overwrite ns opsdata-dev app=opsdata
       - kubectl label --overwrite ns opsdata-dev ns-purge=false
@@ -118,6 +120,7 @@ steps:
       USERNAME:
         from_secret: registry-username
     commands:
+      - kubectl create namespace opsdata-stg --dry-run=client -o yaml | kubectl apply -f -
       - kubectl label --overwrite ns opsdata-stg team=opsdata
       - kubectl label --overwrite ns opsdata-stg app=opsdata
       - kubectl label --overwrite ns opsdata-stg ns-purge=false
@@ -148,6 +151,7 @@ steps:
       USERNAME:
         from_secret: registry-username
     commands:
+      - kubectl create namespace opsdata-stg --dry-run=client -o yaml | kubectl apply -f -
       - kubectl label --overwrite ns opsdata-stg team=opsdata
       - kubectl label --overwrite ns opsdata-stg app=opsdata
       - kubectl label --overwrite ns opsdata-stg ns-purge=false
@@ -178,6 +182,7 @@ steps:
       USERNAME:
         from_secret: registry-username
     commands:
+      - kubectl create namespace opsdata-prd --dry-run=client -o yaml | kubectl apply -f -
       - kubectl label --overwrite ns opsdata-prd team=opsdata
       - kubectl label --overwrite ns opsdata-prd app=opsdata
       - kubectl label --overwrite ns opsdata-prd ns-purge=false
@@ -209,6 +214,7 @@ steps:
       USERNAME:
         from_secret: registry-username
     commands:
+      - kubectl create namespace opsdata-prd --dry-run=client -o yaml | kubectl apply -f -
       - kubectl label --overwrite ns opsdata-prd team=opsdata
       - kubectl label --overwrite ns opsdata-prd app=opsdata
       - kubectl label --overwrite ns opsdata-prd ns-purge=false
@@ -225,15 +231,6 @@ steps:
      - promote
      target:
      - production
-
-  - name: Purge-Cloudflare
-    image: jetrails/drone-cloudflare-caching
-    settings:
-      api_token:
-        from_secret: cloudflare_token
-      zone_identifier:
-        from_secret: cloudflare_zone_identifier
-      action: purge_everything
 
 image_pull_secrets:
 - regcreds
