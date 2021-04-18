@@ -13,6 +13,14 @@ steps:
     commands:
       - bash ./deploy.sh
 
+  - name: build-go
+    image: golang
+    environment:
+      CGO_ENABLED: 0
+    commands:
+      - go get
+      - go build -o main
+
   - name: Docker-Build
     image: plugins/docker
     settings:
