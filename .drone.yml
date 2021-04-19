@@ -6,7 +6,7 @@ name: OpsData
 steps:
 
   - name: Customize-kube-files
-    image: supporttools/kube-builder
+    image: supporttools/kube-builder:32
     pull: true
     environment:
       APPENV: ${DRONE_COMMIT_BRANCH}
@@ -39,7 +39,7 @@ steps:
         from_secret: registry-password
 
   - name: Deploy-to-Master
-    image: supporttools/kube-builder
+    image: supporttools/kube-builder:32
     pull: true
     settings:
       custom_dns: [ 1.1.1.1, 8.8.8.8 ]
@@ -60,7 +60,7 @@ steps:
       - kubectl apply -n opsdata-${DRONE_BUILD_NUMBER} -f ./hpa/master.yaml
 
   - name: Deploy-to-Dev-b1-k3s-prd
-    image: supporttools/kube-builder
+    image: supporttools/kube-builder:32
     pull: true
     settings:
       custom_dns: [ 1.1.1.1, 8.8.8.8 ]
@@ -86,7 +86,7 @@ steps:
       - kubectl wait -n opsdata-dev --for=condition=available --timeout=600s deployment/opsdata
 
   - name: Deploy-to-Dev-a1-k3s-prd
-    image: supporttools/kube-builder
+    image: supporttools/kube-builder:32
     pull: true
     settings:
       custom_dns: [ 1.1.1.1, 8.8.8.8 ]
@@ -112,7 +112,7 @@ steps:
       - kubectl wait -n opsdata-dev --for=condition=available --timeout=600s deployment/opsdata
 
   - name: Deploy-to-Staging-b1-k3s-prd
-    image: supporttools/kube-builder
+    image: supporttools/kube-builder:32
     pull: true
     settings:
       custom_dns: [ 1.1.1.1, 8.8.8.8 ]
@@ -144,7 +144,7 @@ steps:
      - staging
 
   - name: Deploy-to-Staging-a1-k3s-prd
-    image: supporttools/kube-builder
+    image: supporttools/kube-builder:32
     pull: true
     settings:
       custom_dns: [ 1.1.1.1, 8.8.8.8 ]
@@ -176,7 +176,7 @@ steps:
      - staging
 
   - name: Deploy-to-Production-b1-k3s-prd
-    image: supporttools/kube-builder
+    image: supporttools/kube-builder:32
     pull: true
     settings:
       custom_dns: [ 1.1.1.1, 8.8.8.8 ]
@@ -209,7 +209,7 @@ steps:
      - production
 
   - name: Deploy-to-Production-a1-k3s-prd
-    image: supporttools/kube-builder
+    image: supporttools/kube-builder:32
     pull: true
     settings:
       custom_dns: [ 1.1.1.1, 8.8.8.8 ]
