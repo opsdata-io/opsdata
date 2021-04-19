@@ -711,13 +711,13 @@ metrics:
 
     ## Rules as a map.
     ##
-    rules: {}
-    #  - alert: MariaDB-Down
-    #    annotations:
-    #      message: 'MariaDB instance {{ $labels.instance }} is down'
-    #      summary: MariaDB instance is down
-    #    expr: absent(up{job="mariadb-galera"} == 1)
-    #    labels:
-    #      severity: warning
-    #      service: mariadb-galera
-    #    for: 5m
+    rules:
+      - alert: MariaDB-Down
+        annotations:
+          message: 'MariaDB instance {{ $labels.instance }} is down'
+          summary: MariaDB instance is down
+        expr: absent(up{job="mariadb-galera"} == 1)
+        labels:
+          severity: warning
+          service: mariadb-galera
+        for: 5m
