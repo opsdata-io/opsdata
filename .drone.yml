@@ -38,7 +38,7 @@ steps:
       password:
         from_secret: registry-password
 
-  - name: Deploy-to-Master
+  - name: Deploy-to-Master-b1-k3s-prd
     image: supporttools/kube-builder:32
     pull: true
     settings:
@@ -54,6 +54,27 @@ steps:
       - kubectl label ns opsdata-${DRONE_BUILD_NUMBER} ns-purge=true
       - kubectl label ns opsdata-${DRONE_BUILD_NUMBER} class=master
       - kubectl annotate ns opsdata-${DRONE_BUILD_NUMBER} field.cattle.io/projectId=c-jrfsw:p-w678r
+      - helm repo add bitnami https://charts.bitnami.com/bitnami
+      - helm install opsdata --namespace opsdata-${DRONE_BUILD_NUMBER} -f ./database/values.yaml bitnami/mariadb-galera
+      - kubectl apply -n opsdata-${DRONE_BUILD_NUMBER} -f ./deployment-ready/
+      - kubectl apply -n opsdata-${DRONE_BUILD_NUMBER} -f ./hpa/master.yaml
+
+  - name: Deploy-to-Master-a1-k3s-prd
+    image: supporttools/kube-builder:32
+    pull: true
+    settings:
+      custom_dns: [ 1.1.1.1, 8.8.8.8 ]
+      kubernetes_server:
+        from_secret: a1-k3s-prd_server
+      kubernetes_token:
+        from_secret: a1-k3s-prd_token
+    commands:
+      - kubectl create ns opsdata-${DRONE_BUILD_NUMBER}
+      - kubectl label ns opsdata-${DRONE_BUILD_NUMBER} team=opsdata
+      - kubectl label ns opsdata-${DRONE_BUILD_NUMBER} app=opsdata
+      - kubectl label ns opsdata-${DRONE_BUILD_NUMBER} ns-purge=true
+      - kubectl label ns opsdata-${DRONE_BUILD_NUMBER} class=master
+      - kubectl annotate ns opsdata-${DRONE_BUILD_NUMBER} field.cattle.io/projectId=c-nshm8:p-xwrq7
       - helm repo add bitnami https://charts.bitnami.com/bitnami
       - helm install opsdata --namespace opsdata-${DRONE_BUILD_NUMBER} -f ./database/values.yaml bitnami/mariadb-galera
       - kubectl apply -n opsdata-${DRONE_BUILD_NUMBER} -f ./deployment-ready/
