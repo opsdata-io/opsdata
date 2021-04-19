@@ -100,6 +100,8 @@ steps:
       - kubectl label --overwrite ns opsdata-dev ns-purge=false
       - kubectl label --overwrite ns opsdata-dev class=dev
       - kubectl annotate --overwrite ns opsdata-dev field.cattle.io/projectId=c-jrfsw:p-w678r
+      - helm repo add bitnami https://charts.bitnami.com/bitnami
+      - helm upgrade --install opsdata --namespace opsdata-dev -f ./database/values.yaml bitnami/mariadb-galera
       - kubectl apply -n opsdata-dev -f ./deployment-ready/
       - kubectl apply -n opsdata-dev -f ./ingress/dev.yaml
       - kubectl apply -n opsdata-dev -f ./hpa/dev.yaml
@@ -125,6 +127,8 @@ steps:
       - kubectl label --overwrite ns opsdata-dev ns-purge=false
       - kubectl label --overwrite ns opsdata-dev class=dev
       - kubectl annotate --overwrite ns opsdata-dev field.cattle.io/projectId=c-nshm8:p-xwrq7
+      - helm repo add bitnami https://charts.bitnami.com/bitnami
+      - helm upgrade --install opsdata --namespace opsdata-dev -f ./database/values.yaml bitnami/mariadb-galera
       - kubectl apply -n opsdata-dev -f ./deployment-ready/
       - kubectl apply -n opsdata-dev -f ./ingress/dev.yaml
       - kubectl apply -n opsdata-dev -f ./hpa/dev.yaml
@@ -150,6 +154,8 @@ steps:
       - kubectl label --overwrite ns opsdata-staging ns-purge=false
       - kubectl label --overwrite ns opsdata-staging class=staging
       - kubectl annotate --overwrite ns opsdata-staging field.cattle.io/projectId=c-jrfsw:p-w678r
+      - helm repo add bitnami https://charts.bitnami.com/bitnami
+      - helm upgrade --install opsdata --namespace opsdata-staging -f ./database/values.yaml bitnami/mariadb-galera
       - kubectl apply -n opsdata-staging -f ./deployment-ready/
       - kubectl apply -n opsdata-staging -f ./ingress/staging.yaml
       - kubectl apply -n opsdata-staging -f ./hpa/staging.yaml
@@ -181,6 +187,8 @@ steps:
       - kubectl label --overwrite ns opsdata-staging ns-purge=false
       - kubectl label --overwrite ns opsdata-staging class=staging
       - kubectl annotate --overwrite ns opsdata-staging field.cattle.io/projectId=c-nshm8:p-xwrq7
+      - helm repo add bitnami https://charts.bitnami.com/bitnami
+      - helm upgrade --install opsdata --namespace opsdata-staging -f ./database/values.yaml bitnami/mariadb-galera
       - kubectl apply -n opsdata-staging -f ./deployment-ready/
       - kubectl apply -n opsdata-staging -f ./ingress/staging.yaml
       - kubectl apply -n opsdata-staging -f ./hpa/staging.yaml
@@ -212,6 +220,8 @@ steps:
       - kubectl label --overwrite ns opsdata-production ns-purge=false
       - kubectl label --overwrite ns opsdata-production class=production
       - kubectl annotate --overwrite  ns opsdata-production field.cattle.io/projectId=c-jrfsw:p-w678r
+      - helm repo add bitnami https://charts.bitnami.com/bitnami
+      - helm upgrade --install opsdata --namespace opsdata-production -f ./database/values.yaml bitnami/mariadb-galera
       - kubectl apply -n opsdata-production -f ./deployment-ready/
       - kubectl apply -n opsdata-production -f ./ingress/production-root.yaml
       - kubectl apply -n opsdata-production -f ./ingress/production-www.yaml
@@ -244,6 +254,8 @@ steps:
       - kubectl label --overwrite ns opsdata-production ns-purge=false
       - kubectl label --overwrite ns opsdata-production class=production
       - kubectl annotate --overwrite  ns opsdata-production field.cattle.io/projectId=c-nshm8:p-xwrq7
+      - helm repo add bitnami https://charts.bitnami.com/bitnami
+      - helm upgrade --install opsdata --namespace opsdata-production -f ./database/values.yaml bitnami/mariadb-galera
       - kubectl apply -n opsdata-production -f ./deployment-ready/
       - kubectl apply -n opsdata-production -f ./ingress/production-root.yaml
       - kubectl apply -n opsdata-production -f ./ingress/production-www.yaml
