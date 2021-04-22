@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -26,7 +25,7 @@ func Register(c *fiber.Ctx) error {
 	}
 
 	uuidWithHyphen := uuid.New()
-	uuid := strings.Replace(uuidWithHyphen.String(), "-", "", -1)
+	uuid := uuidWithHyphen.String()
 
 	user := models.User{
 		Name:     data["name"],
