@@ -36,6 +36,17 @@ func Register(c *fiber.Ctx) error {
 
 	database.DB.Create(&user)
 
+	var userCheck models.User
+
+	database.DB.Where("email = ?", data["email"]).First(&userCheck)
+
+	if user.Id == 0 {
+		c.Status(fiber.StatusNotFound)
+		return c.JSON(fiber.Map{
+			"message": "email already registered",
+		})
+	}
+
 	return c.JSON(user)
 }
 
