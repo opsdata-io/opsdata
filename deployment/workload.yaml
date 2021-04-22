@@ -22,8 +22,17 @@ spec:
       containers:
       containers:
       - env:
-        - name: site
+        - name: DB_HOST
+          value: opsdata-mariadb-galera
+        - name: DB_PORT
+          value: "3306"
+        - name: DB_USER
           value: opsdata
+        - name: DB_PASS
+          valueFrom:
+            secretKeyRef:
+              key: mariadb-password
+              name: opsdata-mariadb-galera
         image: registry.support.tools/opsdata/opsdata:BUILD_NUMBER
         imagePullPolicy: IfNotPresent
         name: opsdata
@@ -31,7 +40,7 @@ spec:
           failureThreshold: 3
           httpGet:
             path: /healthz
-            port: 8080
+            port: 8000
             scheme: HTTP
           periodSeconds: 2
           successThreshold: 1
@@ -40,7 +49,7 @@ spec:
           failureThreshold: 3
           httpGet:
             path: /healthz
-            port: 8080
+            port: 8000
             scheme: HTTP
           periodSeconds: 2
           successThreshold: 2

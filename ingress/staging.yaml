@@ -14,5 +14,5 @@ spec:
       paths:
       - backend:
           serviceName: opsdata
-          servicePort: 8080
+          servicePort: 8000
         pathType: ImplementationSpecific
