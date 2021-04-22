@@ -16,3 +16,7 @@ spec:
           serviceName: opsdata
           servicePort: 8000
         pathType: ImplementationSpecific
+  tls:
+  - hosts:
+    - staging.opsdata.io
+    secretName: staging-opsdata-io-tls

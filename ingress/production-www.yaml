@@ -16,3 +16,7 @@ spec:
           serviceName: opsdata
           servicePort: 8000
         pathType: ImplementationSpecific
+  tls:
+  - hosts:
+    - www.opsdata.io
+    secretName: prod-opsdata-io-tls
