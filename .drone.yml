@@ -112,6 +112,7 @@ steps:
       - kubectl apply -n opsdata-staging -f ./deployment-ready/
       - kubectl apply -n opsdata-staging -f ./ingress/staging.yaml
       - kubectl apply -n opsdata-staging -f ./hpa/staging.yaml
+      - kubectl apply -n monitoring -f ./monitoring/servicemonitor-staging.yaml
       - kubectl wait -n opsdata-staging --for=condition=available --timeout=600s deployment/opsdata
     when:
      event:
@@ -146,6 +147,7 @@ steps:
       - kubectl apply -n opsdata-production -f ./ingress/production-root.yaml
       - kubectl apply -n opsdata-production -f ./ingress/production-www.yaml
       - kubectl apply -n opsdata-production -f ./hpa/production.yaml
+      - kubectl apply -n monitoring -f ./monitoring/servicemonitor-production.yaml      
       - kubectl wait -n opsdata-production --for=condition=available --timeout=600s deployment/opsdata
     when:
      event:
