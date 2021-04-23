@@ -21,7 +21,7 @@ steps:
       - go get
       - go build -o main
 
-  - name: Docker-Build
+  - name: Docker-Build-API
     image: plugins/docker
     settings:
       custom_dns: [ 1.1.1.1, 8.8.8.8 ]
@@ -33,6 +33,25 @@ steps:
         - ${DRONE_COMMIT_BRANCH}
         - latest
       cache_from: "registry.support.tools/opsdata/opsdata:latest"
+      username:
+        from_secret: registry-username
+      password:
+        from_secret: registry-password
+
+  - name: Docker-Build-Tools-MySQL-Permissions
+    image: plugins/docker
+    settings:
+      custom_dns: [ 1.1.1.1, 8.8.8.8 ]
+      purge: false
+      registry: registry.support.tools
+      repo: registry.support.tools/opsdata/tools/mysql-permissions
+      dockerfile: ./tools/mysql-permissions/Dockerfile
+      context: ./tools/mysql-permissions/
+      tags:
+        - ${DRONE_BUILD_NUMBER}
+        - ${DRONE_COMMIT_BRANCH}
+        - latest
+      cache_from: "registry.support.tools/opsdata/tools/mysql-permissions:latest"
       username:
         from_secret: registry-username
       password:
@@ -80,7 +99,7 @@ steps:
       - kubectl label --overwrite ns opsdata-dev class=dev
       - kubectl annotate --overwrite ns opsdata-dev field.cattle.io/projectId=c-jrfsw:p-w678r
       - helm repo add bitnami https://charts.bitnami.com/bitnami
-      - helm upgrade --install opsdata --namespace opsdata-dev -f ./helm-config/mariadb-galera/values.yaml bitnami/mariadb-galera
+      - helm upgrade --install opsdata --namespace opsdata-dev -f ./helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
       - kubectl apply -n opsdata-dev -f ./deployment-ready/
       - kubectl apply -n opsdata-dev -f ./ingress/dev.yaml
       - kubectl apply -n opsdata-dev -f ./hpa/dev.yaml
@@ -108,7 +127,7 @@ steps:
       - kubectl label --overwrite ns opsdata-staging class=staging
       - kubectl annotate --overwrite ns opsdata-staging field.cattle.io/projectId=c-jrfsw:p-w678r
       - helm repo add bitnami https://charts.bitnami.com/bitnami
-      - helm upgrade --install opsdata --namespace opsdata-staging -f ./helm-config/mariadb-galera/values.yaml bitnami/mariadb-galera
+      - helm upgrade --install opsdata --namespace opsdata-staging -f ./helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
       - kubectl apply -n opsdata-staging -f ./deployment-ready/
       - kubectl apply -n opsdata-staging -f ./ingress/staging.yaml
       - kubectl apply -n opsdata-staging -f ./hpa/staging.yaml
@@ -142,12 +161,12 @@ steps:
       - kubectl label --overwrite ns opsdata-production class=production
       - kubectl annotate --overwrite  ns opsdata-production field.cattle.io/projectId=c-jrfsw:p-w678r
       - helm repo add bitnami https://charts.bitnami.com/bitnami
-      - helm upgrade --install opsdata --namespace opsdata-production -f ./helm-config/mariadb-galera/values.yaml bitnami/mariadb-galera
+      - helm upgrade --install opsdata --namespace opsdata-production -f ./helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
       - kubectl apply -n opsdata-production -f ./deployment-ready/
       - kubectl apply -n opsdata-production -f ./ingress/production-root.yaml
       - kubectl apply -n opsdata-production -f ./ingress/production-www.yaml
       - kubectl apply -n opsdata-production -f ./hpa/production.yaml
-      - kubectl apply -n monitoring -f ./monitoring/servicemonitor-production.yaml      
+      - kubectl apply -n monitoring -f ./monitoring/servicemonitor-production.yaml
       - kubectl wait -n opsdata-production --for=condition=available --timeout=600s deployment/opsdata
     when:
      event:
