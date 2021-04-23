@@ -3,7 +3,7 @@ kind: ServiceMonitor
 metadata:
   labels:
     app: opsdata
-  name: opsdata-mariadb-galera
+  name: opsdata-mariadb-galera-BUILD_NUMBER
   namespace: monitoring
 spec:
   endpoints:
