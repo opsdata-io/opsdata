@@ -59,7 +59,7 @@ steps:
 #      - kubectl apply -n opsdata-${DRONE_BUILD_NUMBER} -f ./deployment-ready/
 #      - kubectl apply -n opsdata-${DRONE_BUILD_NUMBER} -f ./hpa/master.yaml
 
-  - name: Deploy-to-Dev-b1-k3s-prd
+  - name: Deploy-to-Dev
     image: supporttools/kube-builder:32
     pull: true
     settings:
@@ -87,7 +87,7 @@ steps:
       - kubectl apply -n monitoring -f ./monitoring/servicemonitor-dev.yaml
       - kubectl wait -n opsdata-dev --for=condition=available --timeout=600s deployment/opsdata
 
-  - name: Deploy-to-Staging-b1-k3s-prd
+  - name: Deploy-to-Staging
     image: supporttools/kube-builder:32
     pull: true
     settings:
@@ -120,7 +120,7 @@ steps:
      target:
      - staging
 
-  - name: Deploy-to-Production-b1-k3s-prd
+  - name: Deploy-to-Production
     image: supporttools/kube-builder:32
     pull: true
     settings:
