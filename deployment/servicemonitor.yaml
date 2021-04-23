@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app: opsdata
+  name: opsdata-mariadb-galera
+  namespace: monitoring
+spec:
+  endpoints:
+  - port: metrics
+  namespaceSelector:
+    matchNames:
+    - opsdata-BUILD_NUMBER
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: opsdata
+      app.kubernetes.io/name: mariadb-galera

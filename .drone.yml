@@ -105,6 +105,7 @@ steps:
       - kubectl apply -n opsdata-dev -f ./deployment-ready/
       - kubectl apply -n opsdata-dev -f ./ingress/dev.yaml
       - kubectl apply -n opsdata-dev -f ./hpa/dev.yaml
+      - kubectl apply -n opsdata-dev -f ./monitoring/servicemonitor-dev.yaml
       - kubectl wait -n opsdata-dev --for=condition=available --timeout=600s deployment/opsdata
 
   - name: Deploy-to-Dev-a1-k3s-prd
@@ -132,6 +133,7 @@ steps:
       - kubectl apply -n opsdata-dev -f ./deployment-ready/
       - kubectl apply -n opsdata-dev -f ./ingress/dev.yaml
       - kubectl apply -n opsdata-dev -f ./hpa/dev.yaml
+      - kubectl apply -n opsdata-dev -f ./monitoring/servicemonitor-dev.yaml
       - kubectl wait -n opsdata-dev --for=condition=available --timeout=600s deployment/opsdata
 
   - name: Deploy-to-Staging-b1-k3s-prd

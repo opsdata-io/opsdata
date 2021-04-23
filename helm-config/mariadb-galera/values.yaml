@@ -658,7 +658,7 @@ metrics:
   ## Prometheus Operator ServiceMonitor configuration
   ##
   serviceMonitor:
-    enabled: true
+    enabled: false
     ## Namespace in which Prometheus is running
     ##
     namespace: monitoring
@@ -677,7 +677,7 @@ metrics:
     ## ref: https://github.com/bitnami/charts/tree/master/bitnami/prometheus-operator#prometheus-configuration
     ##
     selector:
-      prometheus: kube-prometheus
+      prometheus: prometheus
 
     ## RelabelConfigs to apply to samples before scraping
     ## ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#relabelconfig
