@@ -54,7 +54,7 @@ func Connect() {
 	}
 
 	//dsn := "opsdata:opsdata@tcp(localhost:3306)/opsdata"
-	dsn := fmt.Sprint(databaseUsername, ":", databasePassword, "@tcp(", databaseHostname, ":", databasePort, ")/", databaseName)
+	dsn := fmt.Sprint(databaseUsername, ":", databasePassword, "@tcp(", databaseHostname, ":", databasePort, ")/", databaseName, "?parseTime=true")
 
 	connection, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
