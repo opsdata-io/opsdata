@@ -522,22 +522,7 @@ persistence:
 
 ## Additional init containers
 ##
-extraInitContainers:
-  - name: mysql-permissions
-    image: registry.support.tools/opsdata/tools/mysql-permissions:BUILD_NUMBER
-    env:
-    - name: DB_HOST
-      value: opsdata-mariadb-galera
-    - name: DB_PORT
-      value: "3306"
-    - name: DB_USER
-      value: opsdata
-    - name: DB_PASS
-      valueFrom:
-        secretKeyRef:
-          key: mariadb-password
-          name: opsdata-mariadb-galera
-    #command: ['do', 'something']
+extraInitContainers: []
 
 ## Additional containers
 ##
