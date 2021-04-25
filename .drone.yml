@@ -51,14 +51,14 @@ steps:
       custom_dns: [ 1.1.1.1, 8.8.8.8 ]
       purge: false
       registry: registry.support.tools
-      repo: registry.support.tools/opsdata/opsdata
+      repo: registry.support.tools/opsdata/api
       dockerfile: ./api/Dockerfile
       context: ./api/
       tags:
         - ${DRONE_BUILD_NUMBER}
         - ${DRONE_COMMIT_BRANCH}
         - latest
-      cache_from: "registry.support.tools/opsdata/opsdata:latest"
+      cache_from: "registry.support.tools/opsdata/api:latest"
       username:
         from_secret: registry-username
       password:
