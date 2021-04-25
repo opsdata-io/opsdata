@@ -129,7 +129,8 @@ steps:
       - kubectl apply -n opsdata-dev -f ./k8s/ingress/dev.yaml
       - kubectl apply -n opsdata-dev -f ./k8s/hpa/dev.yaml
       - kubectl apply -n monitoring -f ./k8s/monitoring/servicemonitor-dev.yaml
-      - kubectl wait -n opsdata-dev --for=condition=available --timeout=600s deployment/opsdata
+      - kubectl wait -n opsdata-dev --for=condition=available --timeout=600s deployment/opsdata-api
+      - kubectl wait -n opsdata-dev --for=condition=available --timeout=600s deployment/opsdata-ui
 
   - name: Deploy-to-Staging
     image: supporttools/kube-builder:32
