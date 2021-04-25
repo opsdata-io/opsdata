@@ -5,3 +5,6 @@
 .vscode/launch.json
 .vscode/extensions.json
 *.code-workspace
+
+### Node ###
+./ui/node_modules/.cache/
