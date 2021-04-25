@@ -13,6 +13,47 @@ steps:
     commands:
       - bash ./k8s/deploy.sh
 
+  - name: Setup-k8s-for-Dev
+    image: supporttools/kube-builder:32
+    pull: true
+    settings:
+      custom_dns: [ 1.1.1.1, 8.8.8.8 ]
+      kubernetes_server:
+        from_secret: b1-k3s-prd_server
+      kubernetes_token:
+        from_secret: b1-k3s-prd_token
+    environment:
+      PASSWORD:
+        from_secret: registry-password
+      USERNAME:
+        from_secret: registry-username
+    commands:
+      - kubectl label --overwrite ns opsdata-dev team=opsdata
+      - kubectl label --overwrite ns opsdata-dev app=opsdata
+      - kubectl label --overwrite ns opsdata-dev ns-purge=false
+      - kubectl label --overwrite ns opsdata-dev class=dev
+      - kubectl annotate --overwrite ns opsdata-dev field.cattle.io/projectId=c-jrfsw:p-w678r
+      - helm repo add bitnami https://charts.bitnami.com/bitnami
+      - helm upgrade --install opsdata --namespace opsdata-dev -f ./helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
+
+  - name: Deploy-DB-for-Dev
+    image: supporttools/kube-builder:32
+    pull: true
+    settings:
+      custom_dns: [ 1.1.1.1, 8.8.8.8 ]
+      kubernetes_server:
+        from_secret: b1-k3s-prd_server
+      kubernetes_token:
+        from_secret: b1-k3s-prd_token
+    environment:
+      PASSWORD:
+        from_secret: registry-password
+      USERNAME:
+        from_secret: registry-username
+    commands:
+      - helm repo add bitnami https://charts.bitnami.com/bitnami
+      - helm upgrade --install opsdata --namespace opsdata-dev -f ./helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
+
   - name: Go-Build-API
     image: golang
     environment:
