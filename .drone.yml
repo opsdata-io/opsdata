@@ -27,12 +27,33 @@ steps:
       custom_dns: [ 1.1.1.1, 8.8.8.8 ]
       purge: false
       registry: registry.support.tools
-      repo: registry.support.tools/opsdata/opsdata
+      repo: registry.support.tools/opsdata/api
+      dockerfile: ./api/Dockerfile
+      context: ./api/
       tags:
         - ${DRONE_BUILD_NUMBER}
         - ${DRONE_COMMIT_BRANCH}
         - latest
-      cache_from: "registry.support.tools/opsdata/opsdata:latest"
+      cache_from: "registry.support.tools/opsdata/api:latest"
+      username:
+        from_secret: registry-username
+      password:
+        from_secret: registry-password
+
+  - name: Docker-Build-UI
+    image: plugins/docker
+    settings:
+      custom_dns: [ 1.1.1.1, 8.8.8.8 ]
+      purge: false
+      registry: registry.support.tools
+      repo: registry.support.tools/opsdata/ui
+      dockerfile: ./ui/Dockerfile
+      context: ./ui/
+      tags:
+        - ${DRONE_BUILD_NUMBER}
+        - ${DRONE_COMMIT_BRANCH}
+        - latest
+      cache_from: "registry.support.tools/opsdata/ui:latest"
       username:
         from_secret: registry-username
       password:
@@ -57,27 +78,6 @@ steps:
       password:
         from_secret: registry-password
 
-#  - name: Deploy-to-Master-b1-k3s-prd
-#    image: supporttools/kube-builder:32
-#    pull: true
-#    settings:
-#      custom_dns: [ 1.1.1.1, 8.8.8.8 ]
-#      kubernetes_server:
-#        from_secret: b1-k3s-prd_server
-#      kubernetes_token:
-#        from_secret: b1-k3s-prd_token
-#    commands:
-#      - kubectl create ns opsdata-${DRONE_BUILD_NUMBER}
-#      - kubectl label ns opsdata-${DRONE_BUILD_NUMBER} team=opsdata
-#      - kubectl label ns opsdata-${DRONE_BUILD_NUMBER} app=opsdata
-#      - kubectl label ns opsdata-${DRONE_BUILD_NUMBER} ns-purge=true
-#      - kubectl label ns opsdata-${DRONE_BUILD_NUMBER} class=master
-#      - kubectl annotate ns opsdata-${DRONE_BUILD_NUMBER} field.cattle.io/projectId=c-jrfsw:p-w678r
-#      - helm repo add bitnami https://charts.bitnami.com/bitnami
-#      - helm upgrade --install opsdata --namespace opsdata-${DRONE_BUILD_NUMBER} -f ./helm-config/mariadb-galera/values.yaml bitnami/mariadb-galera
-#      - kubectl apply -n opsdata-${DRONE_BUILD_NUMBER} -f ./deployment-ready/
-#      - kubectl apply -n opsdata-${DRONE_BUILD_NUMBER} -f ./hpa/master.yaml
-
   - name: Deploy-to-Dev
     image: supporttools/kube-builder:32
     pull: true
@@ -100,10 +100,10 @@ steps:
       - kubectl annotate --overwrite ns opsdata-dev field.cattle.io/projectId=c-jrfsw:p-w678r
       - helm repo add bitnami https://charts.bitnami.com/bitnami
       - helm upgrade --install opsdata --namespace opsdata-dev -f ./helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
-      - kubectl apply -n opsdata-dev -f ./deployment-ready/
-      - kubectl apply -n opsdata-dev -f ./ingress/dev.yaml
-      - kubectl apply -n opsdata-dev -f ./hpa/dev.yaml
-      - kubectl apply -n monitoring -f ./monitoring/servicemonitor-dev.yaml
+      - kubectl apply -n opsdata-dev -f ./k8s/deployment-ready/
+      - kubectl apply -n opsdata-dev -f ./k8s/ingress/dev.yaml
+      - kubectl apply -n opsdata-dev -f ./k8s/hpa/dev.yaml
+      - kubectl apply -n monitoring -f ./k8s/monitoring/servicemonitor-dev.yaml
       - kubectl wait -n opsdata-dev --for=condition=available --timeout=600s deployment/opsdata
 
   - name: Deploy-to-Staging
@@ -128,10 +128,10 @@ steps:
       - kubectl annotate --overwrite ns opsdata-staging field.cattle.io/projectId=c-jrfsw:p-w678r
       - helm repo add bitnami https://charts.bitnami.com/bitnami
       - helm upgrade --install opsdata --namespace opsdata-staging -f ./helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
-      - kubectl apply -n opsdata-staging -f ./deployment-ready/
-      - kubectl apply -n opsdata-staging -f ./ingress/staging.yaml
-      - kubectl apply -n opsdata-staging -f ./hpa/staging.yaml
-      - kubectl apply -n monitoring -f ./monitoring/servicemonitor-staging.yaml
+      - kubectl apply -n opsdata-staging -f ./k8s/deployment-ready/
+      - kubectl apply -n opsdata-staging -f ./k8s/ingress/staging.yaml
+      - kubectl apply -n opsdata-staging -f ./k8s/hpa/staging.yaml
+      - kubectl apply -n monitoring -f ./k8s/monitoring/servicemonitor-staging.yaml
       - kubectl wait -n opsdata-staging --for=condition=available --timeout=600s deployment/opsdata
     when:
      event:
@@ -162,11 +162,11 @@ steps:
       - kubectl annotate --overwrite  ns opsdata-production field.cattle.io/projectId=c-jrfsw:p-w678r
       - helm repo add bitnami https://charts.bitnami.com/bitnami
       - helm upgrade --install opsdata --namespace opsdata-production -f ./helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
-      - kubectl apply -n opsdata-production -f ./deployment-ready/
-      - kubectl apply -n opsdata-production -f ./ingress/production-root.yaml
-      - kubectl apply -n opsdata-production -f ./ingress/production-www.yaml
-      - kubectl apply -n opsdata-production -f ./hpa/production.yaml
-      - kubectl apply -n monitoring -f ./monitoring/servicemonitor-production.yaml
+      - kubectl apply -n opsdata-production -f ./k8s/deployment-ready/
+      - kubectl apply -n opsdata-production -f ./k8s/ingress/production-root.yaml
+      - kubectl apply -n opsdata-production -f ./k8s/ingress/production-www.yaml
+      - kubectl apply -n opsdata-production -f ./k8s/hpa/production.yaml
+      - kubectl apply -n monitoring -f ./k8s/monitoring/servicemonitor-production.yaml
       - kubectl wait -n opsdata-production --for=condition=available --timeout=600s deployment/opsdata
     when:
      event:
