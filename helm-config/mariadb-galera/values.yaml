@@ -12,7 +12,7 @@
 ## ref: https://hub.docker.com/r/bitnami/mariadb-galera/tags/
 ##
 image:
-  registry: registry.support.tools
+  registry: docker.io
   repository: bitnami/mariadb-galera
   tag: 10.5.9-debian-10-r27
   ## Specify a imagePullPolicy
@@ -24,7 +24,7 @@ image:
   ## Secrets must be manually created in the namespace.
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
   ##
-  pullSecrets: regcred
+  #pullSecrets: regcred
 
   ## Set to true if you would like to see extra information on logs
   ##
@@ -611,7 +611,7 @@ metrics:
   ## ref: https://hub.docker.com/r/bitnami/mysqld-exporter/tags/
   ##
   image:
-    registry: registry.support.tools
+    registry: docker.io
     repository: bitnami/mysqld-exporter
     tag: 0.12.1-debian-10-r389
     pullPolicy: IfNotPresent
@@ -619,7 +619,7 @@ metrics:
     ## Secrets must be manually created in the namespace.
     ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
     ##
-    pullSecrets: regcred
+    #pullSecrets: regcred
   ## MySQL exporter additional command line flags
   ## Can be used to specify command line flags
   ## E.g.:
