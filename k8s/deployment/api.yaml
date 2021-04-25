@@ -32,7 +32,7 @@ spec:
             secretKeyRef:
               key: mariadb-password
               name: opsdata-mariadb-galera
-        image: registry.support.tools/opsdata/api:BUILD_NUMBER
+        image: registry.support.tools/opsdata/opsdata:BUILD_NUMBER
         imagePullPolicy: IfNotPresent
         name: opsdata-api
         livenessProbe:
