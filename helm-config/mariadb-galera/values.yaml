@@ -4,8 +4,7 @@
 ##
 global:
   imageRegistry: registry.support.tools
-  imagePullSecrets:
-  - regcred
+  imagePullSecrets: regcred
  storageClass: longhorn
 
 ## Bitnami MariaDB Galera image
@@ -24,8 +23,7 @@ image:
   ## Secrets must be manually created in the namespace.
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
   ##
-  pullSecrets:
-   - regcred
+  pullSecrets: regcred
 
   ## Set to true if you would like to see extra information on logs
   ##
@@ -620,8 +618,7 @@ metrics:
     ## Secrets must be manually created in the namespace.
     ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
     ##
-    pullSecrets:
-     - regcred
+    pullSecrets: regcred
   ## MySQL exporter additional command line flags
   ## Can be used to specify command line flags
   ## E.g.:
