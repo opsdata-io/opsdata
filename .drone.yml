@@ -33,8 +33,6 @@ steps:
       - kubectl label --overwrite ns opsdata-dev ns-purge=false
       - kubectl label --overwrite ns opsdata-dev class=dev
       - kubectl annotate --overwrite ns opsdata-dev field.cattle.io/projectId=c-jrfsw:p-w678r
-      - helm repo add bitnami https://charts.bitnami.com/bitnami
-      - helm upgrade --install opsdata --namespace opsdata-dev -f ./helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
 
   - name: Deploy-DB-for-Dev
     image: supporttools/kube-builder:32
