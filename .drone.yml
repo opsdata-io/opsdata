@@ -11,7 +11,7 @@ steps:
     environment:
       APPENV: ${DRONE_COMMIT_BRANCH}
     commands:
-      - bash ./deploy.sh
+      - bash ./k8s/deploy.sh
 
   - name: Go-Build-API
     image: golang
