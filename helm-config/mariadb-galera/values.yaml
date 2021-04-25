@@ -4,7 +4,8 @@
 ##
 global:
   imageRegistry: registry.support.tools
-  imagePullSecrets: regcred
+  imagePullSecrets:
+    - name: regcred
  storageClass: longhorn
 
 ## Bitnami MariaDB Galera image
