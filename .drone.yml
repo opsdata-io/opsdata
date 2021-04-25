@@ -13,11 +13,12 @@ steps:
     commands:
       - bash ./deploy.sh
 
-  - name: build-go
+  - name: Go-Build-API
     image: golang
     environment:
       CGO_ENABLED: 0
     commands:
+      - cd ./api/
       - go get
       - go build -o main
 
