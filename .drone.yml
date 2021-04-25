@@ -102,6 +102,7 @@ steps:
       - helm repo add bitnami https://charts.bitnami.com/bitnami
       - helm upgrade --install opsdata --namespace opsdata-dev -f ./helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
       - kubectl apply -n opsdata-dev -f ./k8s/deployment-ready/
+      - kubectl apply -n opsdata-dev -f ./k8s/services/service.yaml
       - kubectl apply -n opsdata-dev -f ./k8s/ingress/dev.yaml
       - kubectl apply -n opsdata-dev -f ./k8s/hpa/dev.yaml
       - kubectl apply -n monitoring -f ./k8s/monitoring/servicemonitor-dev.yaml
@@ -130,6 +131,7 @@ steps:
       - helm repo add bitnami https://charts.bitnami.com/bitnami
       - helm upgrade --install opsdata --namespace opsdata-staging -f ./helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
       - kubectl apply -n opsdata-staging -f ./k8s/deployment-ready/
+      - kubectl apply -n opsdata-staging -f ./k8s/services/service.yaml
       - kubectl apply -n opsdata-staging -f ./k8s/ingress/staging.yaml
       - kubectl apply -n opsdata-staging -f ./k8s/hpa/staging.yaml
       - kubectl apply -n monitoring -f ./k8s/monitoring/servicemonitor-staging.yaml
@@ -164,6 +166,7 @@ steps:
       - helm repo add bitnami https://charts.bitnami.com/bitnami
       - helm upgrade --install opsdata --namespace opsdata-production -f ./helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
       - kubectl apply -n opsdata-production -f ./k8s/deployment-ready/
+      - kubectl apply -n opsdata-production -f ./k8s/services/service.yaml
       - kubectl apply -n opsdata-production -f ./k8s/ingress/production-root.yaml
       - kubectl apply -n opsdata-production -f ./k8s/ingress/production-www.yaml
       - kubectl apply -n opsdata-production -f ./k8s/hpa/production.yaml
