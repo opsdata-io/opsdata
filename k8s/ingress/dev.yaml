@@ -13,8 +13,13 @@ spec:
     http:
       paths:
       - backend:
-          serviceName: opsdata
+          serviceName: opsdata-ui
+          servicePort: 5000
+        pathType: ImplementationSpecific
+      - backend:
+          serviceName: opsdata-api
           servicePort: 8000
+        path: /api
         pathType: ImplementationSpecific
   tls:
   - hosts:
