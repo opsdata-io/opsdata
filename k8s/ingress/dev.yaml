@@ -14,7 +14,7 @@ spec:
       paths:
       - backend:
           serviceName: opsdata-ui
-          servicePort: 5000
+          servicePort: 80
         pathType: ImplementationSpecific
       - backend:
           serviceName: opsdata-api

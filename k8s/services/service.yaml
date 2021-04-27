@@ -22,7 +22,7 @@ metadata:
 spec:
   ports:
   - name: "http"
-    port: 5000
-    targetPort: 5000
+    port: 80
+    targetPort: 80
   selector:
     app: opsdata-ui
