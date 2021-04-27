@@ -21,6 +21,8 @@ spec:
       - name: regcred
       containers:
       - env:
+        - name: API_URL
+          value: "https://dev.opsdata.io"
         - name: DB_HOST
           value: opsdata-mariadb-galera
         - name: DB_PORT
