@@ -1,6 +1,13 @@
 import React, {SyntheticEvent, useState} from 'react';
 import {Redirect} from 'react-router-dom';
 
+var apiUrl = process.env.API_URL;
+
+if(!apiUrl)
+{
+    apiUrl = 'http://localhost:8000';
+}
+
 const Register = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -10,7 +17,8 @@ const Register = () => {
     const submit = async (e: SyntheticEvent) => {
         e.preventDefault();
 
-        await fetch('http://localhost:8000/api/register', {
+        var url = `${apiUrl}/api/register`;
+        await fetch(url, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({

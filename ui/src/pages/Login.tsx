@@ -1,6 +1,13 @@
 import React, {SyntheticEvent, useState} from 'react';
 import {Redirect} from "react-router-dom";
 
+var apiUrl = process.env.API_URL;
+
+if(!apiUrl)
+{
+    apiUrl = 'http://localhost:8000';
+}
+
 const Login = (props: { setName: (name: string) => void}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -9,8 +16,8 @@ const Login = (props: { setName: (name: string) => void}) => {
 
     const submit = async (e: SyntheticEvent) => {
         e.preventDefault();
-
-        const response = await fetch('http://localhost:8000/api/login', {
+        var url = `${apiUrl}/api/login`;
+        const response = await fetch(url, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             credentials: 'include',

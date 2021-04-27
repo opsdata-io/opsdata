@@ -1,8 +1,15 @@
 FROM node:15.14.0-alpine3.13
-RUN mkdir -p /opt/app
-WORKDIR /opt/app
+
+RUN apk add --update bash && rm -rf /var/cache/apk/*
+
+# Create app directory
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+RUN npm ci --only=production
+
 COPY . .
-RUN npm run build
-RUN npm install -g serve
-EXPOSE 5000
-CMD [ "serve", "-s", "build" ]
+
+EXPOSE 3000
+CMD [ "npm", "start" ]

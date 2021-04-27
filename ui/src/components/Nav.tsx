@@ -1,9 +1,17 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 
+var apiUrl = process.env.API_URL;
+
+if(!apiUrl)
+{
+    apiUrl = 'http://localhost:8000';
+}
+
 const Nav = (props: { name: string, setName: (name: string) => void }) => {
     const logout = async () => {
-        await fetch('http://localhost:8000/api/logout', {
+        var url = `${apiUrl}/api/logout`;
+        await fetch(url, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             credentials: 'include',

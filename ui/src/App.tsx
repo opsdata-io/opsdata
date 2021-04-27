@@ -6,13 +6,21 @@ import {BrowserRouter, Route} from "react-router-dom";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 
+var apiUrl = process.env.API_URL;
+
+if(!apiUrl)
+{
+    apiUrl = 'http://localhost:8000';
+}
+
 function App() {
     const [name, setName] = useState('');
 
     useEffect(() => {
         (
             async () => {
-                const response = await fetch('http://localhost:8000/api/user', {
+                var url = `${apiUrl}/api/user`;
+                const response = await fetch(url, {
                     headers: {'Content-Type': 'application/json'},
                     credentials: 'include',
                 });
