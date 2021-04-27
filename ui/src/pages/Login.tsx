@@ -9,8 +9,8 @@ const Login = (props: { setName: (name: string) => void}) => {
 
     const submit = async (e: SyntheticEvent) => {
         e.preventDefault();
-        var url = `http://opsdata-api:8000/api/login`;
-        const response = await fetch(url, {
+        //var url = `http://opsdata-api:8000/api/login`;
+        const response = await fetch('/api/login', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             credentials: 'include',

@@ -3,8 +3,8 @@ import {Link} from "react-router-dom";
 
 const Nav = (props: { name: string, setName: (name: string) => void }) => {
     const logout = async () => {
-        var url = `http://opsdata-api:8000/api/logout`;
-        await fetch(url, {
+        //var url = `http://opsdata-api:8000/api/logout`;
+        await fetch('/api/logout', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             credentials: 'include',
