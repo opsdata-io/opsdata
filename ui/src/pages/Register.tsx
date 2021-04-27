@@ -1,13 +1,6 @@
 import React, {SyntheticEvent, useState} from 'react';
 import {Redirect} from 'react-router-dom';
 
-var apiUrl = process.env.API_URL;
-
-if(!apiUrl)
-{
-    apiUrl = 'http://localhost:8000';
-}
-
 const Register = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -17,7 +10,7 @@ const Register = () => {
     const submit = async (e: SyntheticEvent) => {
         e.preventDefault();
 
-        var url = `${apiUrl}/api/register`;
+        var url = `http://opsdata-api:8000/api/login`;
         await fetch(url, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},

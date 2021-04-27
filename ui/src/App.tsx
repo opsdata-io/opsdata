@@ -6,25 +6,13 @@ import {BrowserRouter, Route} from "react-router-dom";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 
-var apiUrl = process.env.API_URL;
-var currentDomain = window.location.hostname;
-
-if(!apiUrl)
-{
-    apiUrl = 'http://localhost:8000';
-}
-else
-{
-    apiUrl = `https://${currentDomain}`;
-}
-
 function App() {
     const [name, setName] = useState('');
 
     useEffect(() => {
         (
             async () => {
-                var url = `${apiUrl}/api/user`;
+                var url = `http://opsdata-api:8000/api/user`;
                 const response = await fetch(url, {
                     headers: {'Content-Type': 'application/json'},
                     credentials: 'include',
