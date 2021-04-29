@@ -3,7 +3,6 @@ import {Link} from "react-router-dom";
 
 const Nav = (props: { name: string, setName: (name: string) => void }) => {
     const logout = async () => {
-        //var url = `http://opsdata-api:8000/api/logout`;
         await fetch('/api/logout', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -15,7 +14,7 @@ const Nav = (props: { name: string, setName: (name: string) => void }) => {
 
     let menu;
 
-    if (props.name === '') {
+    if (!props.name) {
         menu = (
             <ul className="navbar-nav me-auto mb-2 mb-md-0">
                 <li className="nav-item active">
@@ -39,7 +38,7 @@ const Nav = (props: { name: string, setName: (name: string) => void }) => {
     return (
         <nav className="navbar navbar-expand-md navbar-dark bg-dark mb-4">
             <div className="container-fluid">
-                <Link to="/" className="navbar-brand">Home</Link>
+                <Link to="/" className="navbar-brand">OpsData</Link>
 
                 <div>
                     {menu}
