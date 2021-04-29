@@ -10,8 +10,7 @@ const Register = () => {
     const submit = async (e: SyntheticEvent) => {
         e.preventDefault();
 
-        //var url = `http://opsdata-api:8000/api/login`;
-        await fetch('/api/login', {
+        await fetch('/api/register', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
