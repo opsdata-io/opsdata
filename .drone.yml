@@ -79,7 +79,7 @@ steps:
         from_secret: registry-password
       USERNAME:
         from_secret: registry-username
-      jwt-secret-key:
+      JWT:
         from_secret: jwt-secret-key
     commands:
       - kubectl label --overwrite ns opsdata-dev team=opsdata
@@ -89,7 +89,7 @@ steps:
       - kubectl annotate --overwrite ns opsdata-dev field.cattle.io/projectId=c-jrfsw:p-w678r
       - helm repo add bitnami https://charts.bitnami.com/bitnami
       - helm upgrade --install opsdata --namespace opsdata-dev --history-max 3 -f ./helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
-      - kubectl -n opsdata-dev create secret generic jwt-secret-key --from-literal=jwt-secret-key=${jwt-secret-key}
+      - kubectl -n opsdata-dev create secret generic jwt-secret-key --from-literal=jwt-secret-key=${JWT}
       - kubectl apply -n opsdata-dev -f ./k8s/deployment-ready/
       - kubectl apply -n opsdata-dev -f ./k8s/services/service.yaml
       - kubectl apply -n opsdata-dev -f ./k8s/ingress/dev.yaml
@@ -114,7 +114,7 @@ steps:
         from_secret: registry-password
       USERNAME:
         from_secret: registry-username
-      jwt-secret-key:
+      JWT:
         from_secret: jwt-secret-key
     commands:
       - kubectl label --overwrite ns opsdata-staging team=opsdata
@@ -124,7 +124,7 @@ steps:
       - kubectl annotate --overwrite ns opsdata-staging field.cattle.io/projectId=c-jrfsw:p-w678r
       - helm repo add bitnami https://charts.bitnami.com/bitnami
       - helm upgrade --install opsdata --namespace opsdata-staging --history-max 3 -f ./helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
-      - kubectl -n opsdata-staging create secret generic jwt-secret-key --from-literal=jwt-secret-key=${jwt-secret-key}
+      - kubectl -n opsdata-staging create secret generic jwt-secret-key --from-literal=jwt-secret-key=${JWT}
       - kubectl apply -n opsdata-staging -f ./k8s/deployment-ready/
       - kubectl apply -n opsdata-staging -f ./k8s/services/service.yaml
       - kubectl apply -n opsdata-staging -f ./k8s/ingress/staging.yaml
@@ -154,7 +154,7 @@ steps:
         from_secret: registry-password
       USERNAME:
         from_secret: registry-username
-      jwt-secret-key:
+      JWT:
         from_secret: jwt-secret-key
     commands:
       - kubectl label --overwrite ns opsdata-production team=opsdata
@@ -164,7 +164,7 @@ steps:
       - kubectl annotate --overwrite  ns opsdata-production field.cattle.io/projectId=c-jrfsw:p-w678r
       - helm repo add bitnami https://charts.bitnami.com/bitnami
       - helm upgrade --install opsdata --namespace opsdata-production --history-max 3 -f ./helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
-      - kubectl -n opsdata-production create secret generic jwt-secret-key --from-literal=jwt-secret-key=${jwt-secret-key}
+      - kubectl -n opsdata-production create secret generic jwt-secret-key --from-literal=jwt-secret-key=${JWT}
       - kubectl apply -n opsdata-production -f ./k8s/deployment-ready/
       - kubectl apply -n opsdata-production -f ./k8s/services/service.yaml
       - kubectl apply -n opsdata-production -f ./k8s/ingress/production-root.yaml
