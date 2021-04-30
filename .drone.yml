@@ -89,7 +89,7 @@ steps:
       - kubectl annotate --overwrite ns opsdata-dev field.cattle.io/projectId=c-jrfsw:p-w678r
       - helm repo add bitnami https://charts.bitnami.com/bitnami
       - helm upgrade --install opsdata --namespace opsdata-dev --history-max 3 -f ./helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
-      - kubectl -n opsdata-dev create secret generic jwt-secret-key --from-literal=jwt-secret-key=${JWT}
+      - kubectl -n opsdata-dev create secret generic jwt-secret-key --from-literal=jwt-secret-key=${JWT} -o yaml --dry-run | kubectl apply -f -
       - kubectl apply -n opsdata-dev -f ./k8s/deployment-ready/
       - kubectl apply -n opsdata-dev -f ./k8s/services/service.yaml
       - kubectl apply -n opsdata-dev -f ./k8s/ingress/dev.yaml
@@ -124,7 +124,7 @@ steps:
       - kubectl annotate --overwrite ns opsdata-staging field.cattle.io/projectId=c-jrfsw:p-w678r
       - helm repo add bitnami https://charts.bitnami.com/bitnami
       - helm upgrade --install opsdata --namespace opsdata-staging --history-max 3 -f ./helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
-      - kubectl -n opsdata-staging create secret generic jwt-secret-key --from-literal=jwt-secret-key=${JWT}
+      - kubectl -n opsdata-staging create secret generic jwt-secret-key --from-literal=jwt-secret-key=${JWT} -o yaml --dry-run | kubectl apply -f -
       - kubectl apply -n opsdata-staging -f ./k8s/deployment-ready/
       - kubectl apply -n opsdata-staging -f ./k8s/services/service.yaml
       - kubectl apply -n opsdata-staging -f ./k8s/ingress/staging.yaml
