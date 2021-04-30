@@ -79,6 +79,8 @@ steps:
         from_secret: registry-password
       USERNAME:
         from_secret: registry-username
+      JWT_SECRET_KEY:
+        from_secret: JWT_SECRET_KEY
     commands:
       - kubectl label --overwrite ns opsdata-dev team=opsdata
       - kubectl label --overwrite ns opsdata-dev app=opsdata
@@ -112,6 +114,8 @@ steps:
         from_secret: registry-password
       USERNAME:
         from_secret: registry-username
+      JWT_SECRET_KEY:
+        from_secret: JWT_SECRET_KEY
     commands:
       - kubectl label --overwrite ns opsdata-staging team=opsdata
       - kubectl label --overwrite ns opsdata-staging app=opsdata
@@ -150,6 +154,8 @@ steps:
         from_secret: registry-password
       USERNAME:
         from_secret: registry-username
+      JWT_SECRET_KEY:
+        from_secret: JWT_SECRET_KEY
     commands:
       - kubectl label --overwrite ns opsdata-production team=opsdata
       - kubectl label --overwrite ns opsdata-production app=opsdata
