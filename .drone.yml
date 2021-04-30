@@ -13,29 +13,6 @@ steps:
     commands:
       - bash ./k8s/deploy.sh
 
-  - name: Setup-k8s-for-Dev
-    image: supporttools/kube-builder:32
-    pull: true
-    settings:
-      custom_dns: [ 1.1.1.1, 8.8.8.8 ]
-      kubernetes_server:
-        from_secret: b1-k3s-prd_server
-      kubernetes_token:
-        from_secret: b1-k3s-prd_token
-    environment:
-      PASSWORD:
-        from_secret: registry-password
-      USERNAME:
-        from_secret: registry-username
-    commands:
-      - kubectl label --overwrite ns opsdata-dev team=opsdata
-      - kubectl label --overwrite ns opsdata-dev app=opsdata
-      - kubectl label --overwrite ns opsdata-dev ns-purge=false
-      - kubectl label --overwrite ns opsdata-dev class=dev
-      - kubectl annotate --overwrite ns opsdata-dev field.cattle.io/projectId=c-jrfsw:p-w678r
-      - helm repo add bitnami https://charts.bitnami.com/bitnami
-      - helm upgrade --install opsdata --namespace opsdata-dev -f ./helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
-
   - name: Go-Build-API
     image: golang
     environment:
@@ -83,24 +60,24 @@ steps:
       password:
         from_secret: registry-password
 
-  - name: Docker-Build-Tools-MySQL-Permissions
-    image: plugins/docker
-    settings:
-      custom_dns: [ 1.1.1.1, 8.8.8.8 ]
-      purge: false
-      registry: registry.support.tools
-      repo: registry.support.tools/opsdata/tools/mysql-permissions
-      dockerfile: ./tools/mysql-permissions/Dockerfile
-      context: ./tools/mysql-permissions/
-      tags:
-        - ${DRONE_BUILD_NUMBER}
-        - ${DRONE_COMMIT_BRANCH}
-        - latest
-      cache_from: "registry.support.tools/opsdata/tools/mysql-permissions:latest"
-      username:
-        from_secret: registry-username
-      password:
-        from_secret: registry-password
+  # - name: Docker-Build-Tools-MySQL-Permissions
+  #   image: plugins/docker
+  #   settings:
+  #     custom_dns: [ 1.1.1.1, 8.8.8.8 ]
+  #     purge: false
+  #     registry: registry.support.tools
+  #     repo: registry.support.tools/opsdata/tools/mysql-permissions
+  #     dockerfile: ./tools/mysql-permissions/Dockerfile
+  #     context: ./tools/mysql-permissions/
+  #     tags:
+  #       - ${DRONE_BUILD_NUMBER}
+  #       - ${DRONE_COMMIT_BRANCH}
+  #       - latest
+  #     cache_from: "registry.support.tools/opsdata/tools/mysql-permissions:latest"
+  #     username:
+  #       from_secret: registry-username
+  #     password:
+  #       from_secret: registry-password
 
   - name: Deploy-to-Dev
     image: supporttools/kube-builder:32
@@ -123,7 +100,7 @@ steps:
       - kubectl label --overwrite ns opsdata-dev class=dev
       - kubectl annotate --overwrite ns opsdata-dev field.cattle.io/projectId=c-jrfsw:p-w678r
       - helm repo add bitnami https://charts.bitnami.com/bitnami
-      - helm upgrade --install opsdata --namespace opsdata-dev -f ./helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
+      - helm upgrade --install opsdata --namespace opsdata-dev --history-max 3 -f ./helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
       - kubectl -n opsdata-dev create secret generic JWT_SECRET_KEY --from-literal=JWT_SECRET_KEY=${JWT_SECRET_KEY}
       - kubectl apply -n opsdata-dev -f ./k8s/deployment-ready/
       - kubectl apply -n opsdata-dev -f ./k8s/services/service.yaml
@@ -154,7 +131,7 @@ steps:
       - kubectl label --overwrite ns opsdata-staging class=staging
       - kubectl annotate --overwrite ns opsdata-staging field.cattle.io/projectId=c-jrfsw:p-w678r
       - helm repo add bitnami https://charts.bitnami.com/bitnami
-      - helm upgrade --install opsdata --namespace opsdata-staging -f ./helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
+      - helm upgrade --install opsdata --namespace opsdata-staging --history-max 3 -f ./helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
       - kubectl -n opsdata-staging create secret generic JWT_SECRET_KEY --from-literal=JWT_SECRET_KEY=${JWT_SECRET_KEY}
       - kubectl apply -n opsdata-staging -f ./k8s/deployment-ready/
       - kubectl apply -n opsdata-staging -f ./k8s/services/service.yaml
@@ -190,7 +167,7 @@ steps:
       - kubectl label --overwrite ns opsdata-production class=production
       - kubectl annotate --overwrite  ns opsdata-production field.cattle.io/projectId=c-jrfsw:p-w678r
       - helm repo add bitnami https://charts.bitnami.com/bitnami
-      - helm upgrade --install opsdata --namespace opsdata-production -f ./helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
+      - helm upgrade --install opsdata --namespace opsdata-production --history-max 3 -f ./helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
       - kubectl -n opsdata-production create secret generic JWT_SECRET_KEY --from-literal=JWT_SECRET_KEY=${JWT_SECRET_KEY}
       - kubectl apply -n opsdata-production -f ./k8s/deployment-ready/
       - kubectl apply -n opsdata-production -f ./k8s/services/service.yaml
