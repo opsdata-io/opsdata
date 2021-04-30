@@ -5,14 +5,6 @@ name: OpsData
 
 steps:
 
-  - name: Customize-kube-files
-    image: supporttools/kube-builder:32
-    pull: true
-    environment:
-      APPENV: ${DRONE_COMMIT_BRANCH}
-    commands:
-      - bash ./k8s/deploy.sh
-
   - name: Go-Build-API
     image: golang
     environment:
@@ -40,6 +32,8 @@ steps:
         from_secret: registry-username
       password:
         from_secret: registry-password
+      depends_on:
+        - Go-Build-API
 
   - name: Docker-Build-UI
     image: plugins/docker
@@ -60,24 +54,16 @@ steps:
       password:
         from_secret: registry-password
 
-  # - name: Docker-Build-Tools-MySQL-Permissions
-  #   image: plugins/docker
-  #   settings:
-  #     custom_dns: [ 1.1.1.1, 8.8.8.8 ]
-  #     purge: false
-  #     registry: registry.support.tools
-  #     repo: registry.support.tools/opsdata/tools/mysql-permissions
-  #     dockerfile: ./tools/mysql-permissions/Dockerfile
-  #     context: ./tools/mysql-permissions/
-  #     tags:
-  #       - ${DRONE_BUILD_NUMBER}
-  #       - ${DRONE_COMMIT_BRANCH}
-  #       - latest
-  #     cache_from: "registry.support.tools/opsdata/tools/mysql-permissions:latest"
-  #     username:
-  #       from_secret: registry-username
-  #     password:
-  #       from_secret: registry-password
+  - name: Customize-kube-files
+    image: supporttools/kube-builder:32
+    pull: true
+    environment:
+      APPENV: ${DRONE_COMMIT_BRANCH}
+    commands:
+      - bash ./k8s/deploy.sh
+    depends_on:
+      - Docker-Build-API
+      - Docker-Build-UI
 
   - name: Deploy-to-Dev
     image: supporttools/kube-builder:32
@@ -109,6 +95,8 @@ steps:
       - kubectl apply -n monitoring -f ./k8s/monitoring/servicemonitor-dev.yaml
       - kubectl wait -n opsdata-dev --for=condition=available --timeout=600s deployment/opsdata-api
       - kubectl wait -n opsdata-dev --for=condition=available --timeout=600s deployment/opsdata-ui
+    depends_on:
+      - Customize-kube-files
 
   - name: Deploy-to-Staging
     image: supporttools/kube-builder:32
@@ -145,6 +133,8 @@ steps:
      - promote
      target:
      - staging
+    depends_on:
+      - Customize-kube-files
 
   - name: Deploy-to-Production
     image: supporttools/kube-builder:32
@@ -182,6 +172,8 @@ steps:
      - promote
      target:
      - production
+    depends_on:
+      - Customize-kube-files
 
 image_pull_secrets:
 - regcreds
