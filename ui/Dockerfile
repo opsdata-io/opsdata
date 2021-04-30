@@ -3,7 +3,7 @@ RUN npm install -g yarn
 WORKDIR /app
 COPY package*.json /app/
 #RUN npm install
-yarn
+RUN yarn
 COPY ./ /app/
 RUN npm run build
 
