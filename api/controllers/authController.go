@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"log"
 	"math/rand"
 	"os"
 	"strconv"
@@ -42,6 +43,7 @@ func CreateApiKey(c *fiber.Ctx) error {
 	secretKey := RandomKey(32)
 
 	UserUuid := data["uuid"]
+	log.Print(UserUuid)
 
 	var userCheck models.User
 	database.DB.Where("uuid = ?", data["uuid"]).First(&userCheck)
