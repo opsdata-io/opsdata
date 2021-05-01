@@ -61,7 +61,7 @@ func Connect() {
 		logger.Config{
 			SlowThreshold:             time.Second, // Slow SQL threshold
 			LogLevel:                  logger.Info, // Log level
-			IgnoreRecordNotFoundError: true,        // Ignore ErrRecordNotFound error for logger
+			IgnoreRecordNotFoundError: false,       // Ignore ErrRecordNotFound error for logger
 			Colorful:                  true,        // Disable color
 		},
 	)
