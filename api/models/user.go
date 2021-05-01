@@ -18,6 +18,7 @@ type User struct {
 type Access struct {
 	Id        uint      `json:"-"`
 	Uuid      string    `json:"uuid"`
+	UserUuid  string    `json:"UserUuid"`
 	Accesskey string    `json:"accesskey" gorm:"unique"`
 	Secretkey []byte    `json:"secretkey"`
 	Status    string    `gorm:"default:pending" json:"-"`

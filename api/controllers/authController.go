@@ -35,9 +35,21 @@ func RandomKey(length int) string {
 func CreateApiKey(c *fiber.Ctx) error {
 	var data map[string]string
 
+	//Need to add section to verify user is logged into and get their Uuid
+
 	//Creating the access and secret key pair from Random
 	accessKey := RandomKey(8)
 	secretKey := RandomKey(32)
+
+	UserUuid := data["UserUuid"]
+	var userCheck models.User
+	database.DB.Where("uuid = ?", data["UserUuid"]).First(&userCheck)
+	if userCheck.Id == 0 {
+		c.Status(fiber.StatusNotFound)
+		return c.JSON(fiber.Map{
+			"message": "User UUID was not found",
+		})
+	}
 
 	if err := c.BodyParser(&data); err != nil {
 		return err
@@ -53,6 +65,7 @@ func CreateApiKey(c *fiber.Ctx) error {
 
 	access := models.Access{
 		Uuid:      uuid,
+		UserUuid:  UserUuid,
 		Accesskey: accessKey,
 		Secretkey: secretHash,
 	}
@@ -66,7 +79,7 @@ func CreateApiKey(c *fiber.Ctx) error {
 	if access.Id == 0 {
 		c.Status(fiber.StatusNotFound)
 		return c.JSON(fiber.Map{
-			"message": "accesskey already registered",
+			"message": "accesskey failed to be created",
 		})
 	}
 
