@@ -35,8 +35,8 @@ spec:
         - name: JWT_SECRET_KEY
           valueFrom:
             secretKeyRef:
-              key: jwt_secret_key
-              name: opsdata
+              key: jwt-secret
+              name: opsdata-secret
         image: registry.support.tools/opsdata/api:BUILD_NUMBER
         imagePullPolicy: IfNotPresent
         name: opsdata-api

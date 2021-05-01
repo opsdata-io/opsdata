@@ -15,8 +15,3 @@ cd 	/drone/src/
 echo "customizing helm values..."
 mkdir -p ./helm-config-ready/mariadb-galera/
 cat ./helm-config/mariadb-galera/values.yaml | sed "s/BUILD_NUMBER/${CI_BUILD_NUMBER}/g" > ./helm-config-ready/mariadb-galera/values.yaml
-
-cd /drone/src/k8s/deployment-ready/
-echo "Creating secret..."
-echo "JWT: $JWT"
-kubectl create secret generic jwt-secret-key --from-literal=jwt-secret-key="${JWT}" -o yaml --dry-run > ./secret.yaml
