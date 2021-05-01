@@ -18,4 +18,5 @@ cat ./helm-config/mariadb-galera/values.yaml | sed "s/BUILD_NUMBER/${CI_BUILD_NU
 
 cd /drone/src/k8s/deployment-ready/
 echo "Creating secret..."
-kubectl create secret generic jwt-secret-key --from-literal=jwt-secret-key=${jwt-secret-key} -o yaml --dry-run > ./secret.yaml
+echo "JWT: $JWT"
+kubectl create secret generic jwt-secret-key --from-literal=jwt-secret-key="${JWT}" -o yaml --dry-run > ./secret.yaml

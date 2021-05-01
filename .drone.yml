@@ -59,6 +59,8 @@ steps:
     pull: true
     environment:
       APPENV: ${DRONE_COMMIT_BRANCH}
+      JWT:
+        from_secret: jwt-secret-key
     commands:
       - bash ./k8s/deploy.sh
     depends_on:
