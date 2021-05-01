@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"math/rand"
 	"os"
 	"strconv"
 	"time"
@@ -12,6 +13,65 @@ import (
 	"github.com/mattmattox/opsdata/models"
 	"golang.org/x/crypto/bcrypt"
 )
+
+const charset = "abcdefghijklmnopqrstuvwxyz" +
+	"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
+var seededRand *rand.Rand = rand.New(
+	rand.NewSource(time.Now().UnixNano()))
+
+func StringWithCharset(length int, charset string) string {
+	b := make([]byte, length)
+	for i := range b {
+		b[i] = charset[seededRand.Intn(len(charset))]
+	}
+	return string(b)
+}
+
+func RandomKey(length int) string {
+	return StringWithCharset(length, charset)
+}
+
+func CreateApiKey(c *fiber.Ctx) error {
+	var data map[string]string
+
+	//Creating the access and secret key pair from Random
+	accessKey := RandomKey(8)
+	secretKey := RandomKey(32)
+
+	if err := c.BodyParser(&data); err != nil {
+		return err
+	}
+
+	secretHash, err := bcrypt.GenerateFromPassword([]byte(secretKey), 14)
+	if err != nil {
+		return err
+	}
+
+	uuidWithHyphen := uuid.New()
+	uuid := uuidWithHyphen.String()
+
+	access := models.Access{
+		Uuid:      uuid,
+		Accesskey: accessKey,
+		Secretkey: secretHash,
+	}
+
+	database.DB.Create(&access)
+
+	var accessCheck models.Access
+
+	database.DB.Where("accesskey = ?", data["accesskey"]).First(&accessCheck)
+
+	if access.Id == 0 {
+		c.Status(fiber.StatusNotFound)
+		return c.JSON(fiber.Map{
+			"message": "accesskey already registered",
+		})
+	}
+
+	return c.JSON(access)
+}
 
 func Register(c *fiber.Ctx) error {
 	var data map[string]string
