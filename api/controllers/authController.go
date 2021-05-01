@@ -41,9 +41,9 @@ func CreateApiKey(c *fiber.Ctx) error {
 	accessKey := RandomKey(8)
 	secretKey := RandomKey(32)
 
-	UserUuid := data["UserUuid"]
+	UserUuid := data["uuid"]
 	var userCheck models.User
-	database.DB.Where("uuid = ?", data["UserUuid"]).First(&userCheck)
+	database.DB.Where("uuid = ?", data["uuid"]).First(&userCheck)
 	if userCheck.Id == 0 {
 		c.Status(fiber.StatusNotFound)
 		return c.JSON(fiber.Map{
