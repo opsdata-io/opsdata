@@ -3,6 +3,10 @@ kind: pipeline
 type: kubernetes
 name: OpsData
 
+platform:
+  os: linux
+  arch: amd64
+  
 steps:
 
   - name: Go-Build-API
