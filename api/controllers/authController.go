@@ -1,8 +1,6 @@
 package controllers
 
 import (
-	"log"
-	"math/rand"
 	"os"
 	"strconv"
 	"time"
@@ -14,80 +12,6 @@ import (
 	"github.com/mattmattox/opsdata/models"
 	"golang.org/x/crypto/bcrypt"
 )
-
-const charset = "abcdefghijklmnopqrstuvwxyz" +
-	"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-
-var seededRand *rand.Rand = rand.New(
-	rand.NewSource(time.Now().UnixNano()))
-
-func StringWithCharset(length int, charset string) string {
-	b := make([]byte, length)
-	for i := range b {
-		b[i] = charset[seededRand.Intn(len(charset))]
-	}
-	return string(b)
-}
-
-func RandomKey(length int) string {
-	return StringWithCharset(length, charset)
-}
-
-func CreateApiKey(c *fiber.Ctx) error {
-	var data map[string]string
-
-	//Need to add section to verify user is logged into and get their Uuid
-
-	//Creating the access and secret key pair from Random
-	accessKey := RandomKey(8)
-	secretKey := RandomKey(32)
-
-	UserUuid := data["uuid"]
-	log.Print(UserUuid)
-
-	var userCheck models.User
-	database.DB.Where("uuid = ?", data["uuid"]).First(&userCheck)
-	if userCheck.Id == 0 {
-		c.Status(fiber.StatusNotFound)
-		return c.JSON(fiber.Map{
-			"message": "User UUID was not found",
-		})
-	}
-
-	if err := c.BodyParser(&data); err != nil {
-		return err
-	}
-
-	secretHash, err := bcrypt.GenerateFromPassword([]byte(secretKey), 14)
-	if err != nil {
-		return err
-	}
-
-	uuidWithHyphen := uuid.New()
-	uuid := uuidWithHyphen.String()
-
-	access := models.Access{
-		Uuid:      uuid,
-		UserUuid:  UserUuid,
-		Accesskey: accessKey,
-		Secretkey: secretHash,
-	}
-
-	database.DB.Create(&access)
-
-	var accessCheck models.Access
-
-	database.DB.Where("accesskey = ?", data["accesskey"]).First(&accessCheck)
-
-	if access.Id == 0 {
-		c.Status(fiber.StatusNotFound)
-		return c.JSON(fiber.Map{
-			"message": "accesskey failed to be created",
-		})
-	}
-
-	return c.JSON(access)
-}
 
 func Register(c *fiber.Ctx) error {
 	var data map[string]string

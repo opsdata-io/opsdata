@@ -79,5 +79,5 @@ func Connect() {
 	DB = connection
 
 	connection.AutoMigrate(&models.User{})
-	connection.AutoMigrate(&models.Access{})
+	connection.AutoMigrate(&models.Key{})
 }

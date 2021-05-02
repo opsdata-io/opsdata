@@ -13,5 +13,6 @@ func Setup(app *fiber.App) {
 	app.Post("/api/login", controllers.Login)
 	app.Post("/api/logout", controllers.Logout)
 	app.Get("/api/user", controllers.User)
-	app.Post("/api/createapikey", controllers.CreateApiKey)
+	app.Post("/api/key/create", controllers.CreateApiKey)
+	app.Get("/api/key/verify", controllers.VerifyApiKey)
 }
