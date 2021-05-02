@@ -20,10 +20,10 @@ steps:
     resources:
       limits:
         cpu: 2000
-        memory: 100MiB
+        memory: 4000MiB
       requests:
-        cpu: 100
-        memory: 50MiB
+        cpu: 1000
+        memory: 2000MiB
 
   - name: Docker-Build-API
     image: plugins/docker
