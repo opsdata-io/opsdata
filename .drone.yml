@@ -73,20 +73,15 @@ steps:
     settings:
       custom_dns: [ 1.1.1.1, 8.8.8.8 ]
       kubernetes_server:
-        from_secret: b1-k3s-prd_server
+        from_secret: a1-k3s-prd_server
       kubernetes_token:
-        from_secret: b1-k3s-prd_token
+        from_secret: a1-k3s-prd_token
     environment:
       PASSWORD:
         from_secret: registry-password
       USERNAME:
         from_secret: registry-username
     commands:
-      - kubectl label --overwrite ns opsdata-dev team=opsdata
-      - kubectl label --overwrite ns opsdata-dev app=opsdata
-      - kubectl label --overwrite ns opsdata-dev ns-purge=false
-      - kubectl label --overwrite ns opsdata-dev class=dev
-      - kubectl annotate --overwrite ns opsdata-dev field.cattle.io/projectId=c-jrfsw:p-w678r
       - helm repo add bitnami https://charts.bitnami.com/bitnami
       - helm upgrade --install opsdata --namespace opsdata-dev --history-max 3 -f ./helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
       - kubectl apply -n opsdata-dev -f ./k8s/deployment-ready/
@@ -105,9 +100,9 @@ steps:
     settings:
       custom_dns: [ 1.1.1.1, 8.8.8.8 ]
       kubernetes_server:
-        from_secret: b1-k3s-prd_server
+        from_secret: a1-k3s-prd_server
       kubernetes_token:
-        from_secret: b1-k3s-prd_token
+        from_secret: a1-k3s-prd_token
     environment:
       PASSWORD:
         from_secret: registry-password
@@ -116,11 +111,6 @@ steps:
       JWT:
         from_secret: jwt-secret-key
     commands:
-      - kubectl label --overwrite ns opsdata-staging team=opsdata
-      - kubectl label --overwrite ns opsdata-staging app=opsdata
-      - kubectl label --overwrite ns opsdata-staging ns-purge=false
-      - kubectl label --overwrite ns opsdata-staging class=staging
-      - kubectl annotate --overwrite ns opsdata-staging field.cattle.io/projectId=c-jrfsw:p-w678r
       - helm repo add bitnami https://charts.bitnami.com/bitnami
       - helm upgrade --install opsdata --namespace opsdata-staging --history-max 3 -f ./helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
       - kubectl -n opsdata-staging create secret generic jwt-secret-key --from-literal=jwt-secret-key=${JWT} -o yaml --dry-run | kubectl apply -f -
@@ -156,11 +146,6 @@ steps:
       JWT:
         from_secret: jwt-secret-key
     commands:
-      - kubectl label --overwrite ns opsdata-production team=opsdata
-      - kubectl label --overwrite ns opsdata-production app=opsdata
-      - kubectl label --overwrite ns opsdata-production ns-purge=false
-      - kubectl label --overwrite ns opsdata-production class=production
-      - kubectl annotate --overwrite  ns opsdata-production field.cattle.io/projectId=c-jrfsw:p-w678r
       - helm repo add bitnami https://charts.bitnami.com/bitnami
       - helm upgrade --install opsdata --namespace opsdata-production --history-max 3 -f ./helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
       - kubectl -n opsdata-production create secret generic jwt-secret-key --from-literal=jwt-secret-key=${JWT}
@@ -179,6 +164,42 @@ steps:
      - production
     depends_on:
       - Customize-kube-files
+
+  - name: Deploy-to-Disaster
+    image: supporttools/kube-builder:32
+    pull: true
+    settings:
+      custom_dns: [ 1.1.1.1, 8.8.8.8 ]
+      kubernetes_server:
+        from_secret: a1-k3s-prd_server
+      kubernetes_token:
+        from_secret: a1-k3s-prd_token
+    environment:
+      PASSWORD:
+        from_secret: registry-password
+      USERNAME:
+        from_secret: registry-username
+      JWT:
+        from_secret: jwt-secret-key
+    commands:
+      - helm repo add bitnami https://charts.bitnami.com/bitnami
+      - helm upgrade --install opsdata --namespace opsdata-disaster --history-max 3 -f ./helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
+      - kubectl -n opsdata-disaster create secret generic jwt-secret-key --from-literal=jwt-secret-key=${JWT}
+      - kubectl apply -n opsdata-disaster -f ./k8s/deployment-ready/
+      - kubectl apply -n opsdata-disaster -f ./k8s/services/service.yaml
+      - kubectl apply -n opsdata-disaster -f ./k8s/ingress/disaster-root.yaml
+      - kubectl apply -n opsdata-disaster -f ./k8s/ingress/disaster-www.yaml
+      - kubectl apply -n opsdata-disaster -f ./k8s/hpa/disaster.yaml
+      - kubectl apply -n monitoring -f ./k8s/monitoring/servicemonitor-disaster.yaml
+      - kubectl wait -n opsdata-disaster --for=condition=available --timeout=600s deployment/opsdata
+    when:
+     event:
+     - deployment
+     - promote
+     target:
+     - production
+    depends_on:
+      - Deploy-to-Production
 
 image_pull_secrets:
 - regcreds
