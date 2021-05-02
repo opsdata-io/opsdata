@@ -1,12 +1,12 @@
 ---
 kind: pipeline
 type: kubernetes
-name: OpsData
+name: OpsData-amd64
 
 platform:
   os: linux
   arch: amd64
-  
+
 steps:
 
   - name: Go-Build-API
@@ -17,6 +17,13 @@ steps:
       - cd ./api/
       - go get
       - go build -o main
+    resources:
+      limits:
+        cpu: 2000
+        memory: 100MiB
+      requests:
+        cpu: 100
+        memory: 50MiB
 
   - name: Docker-Build-API
     image: plugins/docker
@@ -204,6 +211,10 @@ steps:
      - production
     depends_on:
       - Deploy-to-Production
+
+node_selector:
+  beta.kubernetes.io/arch: amd64
+  drone-runner: true
 
 image_pull_secrets:
 - regcreds
