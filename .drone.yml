@@ -112,6 +112,7 @@ steps:
       USERNAME:
         from_secret: registry-username
     commands:
+      - kubectl cluster-info
       - helm repo add bitnami https://charts.bitnami.com/bitnami
       - helm upgrade --install opsdata --namespace opsdata-dev --history-max 3 -f /drone/src/helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
       - kubectl apply -n opsdata-dev -f ./k8s/deployment-ready/
