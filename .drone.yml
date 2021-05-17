@@ -74,16 +74,16 @@ steps:
     image: supporttools/kube-builder:32
     settings:
       kubernetes_server:
-        from_secret: a1-k3s-prd_server
+        from_secret: b1-k3s-prd_server
       kubernetes_token:
-        from_secret: a1-k3s-prd_token
+        from_secret: b1-k3s-prd_token
     environment:
       PASSWORD:
         from_secret: registry-password
       USERNAME:
         from_secret: registry-username
     commands:
-      - kubectl get nodes -o wide --v=5
+      - kubectl cluster-info
       - helm repo add bitnami https://charts.bitnami.com/bitnami
       - helm upgrade --install opsdata --namespace opsdata-dev --history-max 3 -f ./helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
       - kubectl apply -n opsdata-dev -f ./k8s/deployment-ready/
