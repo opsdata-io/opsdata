@@ -99,7 +99,7 @@ steps:
       - kubectl label ns opsdata-${REPO_USER} class=master
       - kubectl annotate ns opsdata-${REPO_USER} field.cattle.io/projectId=c-hq794:p-m4pgb  
       - helm repo add bitnami https://charts.bitnami.com/bitnami
-      - helm upgrade --install opsdata --namespace opsdata-${REPO_USER} --history-max 3 -f ./helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
+      - helm upgrade --install opsdata --namespace opsdata-${REPO_USER} --history-max 2 -f ./helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
       - kubectl apply -n opsdata-${REPO_USER}  -f ./k8s/deployment-ready/
       - kubectl apply -n opsdata-${REPO_USER}  -f ./k8s/services/service.yaml
       - kubectl apply -n opsdata-${REPO_USER}  -f ./k8s/ingress/dev.yaml
