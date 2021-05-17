@@ -182,7 +182,7 @@ steps:
     commands:
       - kubectl cluster-info
       - REPO_USER=`echo ${DRONE_REPO} | awk -F'/' '{print $1}'`
-      - kubectl create ns opsdata-$REPO_USER
+      - kubectl create ns opsdata-$REPO_USER --dry-run=client -o yaml | kubectl apply -f -
       - kubectl label ns opsdata-$REPO_USER team=opsdata
       - kubectl label ns opsdata-$REPO_USER app=opsdata
       - kubectl label ns opsdata-$REPO_USER ns-purge=true
