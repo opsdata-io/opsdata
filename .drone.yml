@@ -277,7 +277,7 @@ steps:
   - name: Docker-Build-API
     image: plugins/docker
     settings:
-      custom_dns: [ 1.1.1.1, 8.8.8.8 ]
+      custom_dns: [ 172.27.2.24, 172.27.2.23 ]
       purge: false
       registry: registry.support.tools
       repo: registry.support.tools/opsdata/api
@@ -298,7 +298,7 @@ steps:
   - name: Docker-Build-UI
     image: plugins/docker
     settings:
-      custom_dns: [ 1.1.1.1, 8.8.8.8 ]
+      custom_dns: [ 172.27.2.24, 172.27.2.23 ]
       purge: false
       registry: registry.support.tools
       repo: registry.support.tools/opsdata/ui
@@ -329,7 +329,7 @@ steps:
   - name: Deploy-to-User
     image: supporttools/kube-builder:32
     settings:
-      custom_dns: [ 1.1.1.1, 8.8.8.8 ]
+      custom_dns: [ 172.27.2.24, 172.27.2.23 ]
       kubernetes_server:
         from_secret: a1-k3s-prd_server
       kubernetes_token:
@@ -362,7 +362,7 @@ steps:
   - name: Deploy-to-Dev
     image: supporttools/kube-builder:32
     settings:
-      custom_dns: [ 1.1.1.1, 8.8.8.8 ]
+      custom_dns: [ 172.27.2.24, 172.27.2.23 ]
       kubernetes_server:
         from_secret: a1-k3s-prd_server
       kubernetes_token:
@@ -388,7 +388,7 @@ steps:
   - name: Deploy-to-Staging
     image: supporttools/kube-builder:32
     settings:
-      custom_dns: [ 1.1.1.1, 8.8.8.8 ]
+      custom_dns: [ 172.27.2.24, 172.27.2.23 ]
       kubernetes_server:
         from_secret: a1-k3s-prd_server
       kubernetes_token:
@@ -422,7 +422,7 @@ steps:
   - name: Deploy-to-Production
     image: supporttools/kube-builder:32
     settings:
-      custom_dns: [ 1.1.1.1, 8.8.8.8 ]
+      custom_dns: [ 172.27.2.24, 172.27.2.23 ]
       kubernetes_server:
         from_secret: b1-k3s-prd_server
       kubernetes_token:
@@ -457,7 +457,7 @@ steps:
   - name: Deploy-to-Disaster
     image: supporttools/kube-builder:32
     settings:
-      custom_dns: [ 1.1.1.1, 8.8.8.8 ]
+      custom_dns: [ 172.27.2.24, 172.27.2.23 ]
       kubernetes_server:
         from_secret: a1-k3s-prd_server
       kubernetes_token:
