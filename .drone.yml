@@ -62,6 +62,8 @@ steps:
         from_secret: registry-username
       password:
         from_secret: registry-password
+    depends_on:
+      - Go-Build-API
 
   - name: Customize-kube-files
     image: supporttools/kube-builder:32
