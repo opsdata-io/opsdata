@@ -19,10 +19,17 @@ spec:
     spec:
       imagePullSecrets:
       - name: regcred
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: beta.kubernetes.io/arch
+                operator: In
+                values:
+                - amd64
       containers:
       - env:
-        - name: API_URL
-          value: "https://dev.opsdata.io"
         - name: DB_HOST
           value: opsdata-mariadb-galera
         - name: DB_PORT
