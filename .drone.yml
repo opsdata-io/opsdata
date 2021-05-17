@@ -70,103 +70,6 @@ steps:
     commands:
       - bash ./k8s/deploy.sh
 
-node_selector:
-  beta.kubernetes.io/arch: amd64
-  drone-runner: true
-
-image_pull_secrets:
-- regcreds      
-
-# ---
-# kind: pipeline
-# type: kubernetes
-# name: OpsData-Build-arm64
-
-# platform:
-#   os: linux
-#   arch: arm64
-
-# steps:
-
-#   - name: Go-Build-API
-#     image: golang
-#     environment:
-#       CGO_ENABLED: 0
-#     commands:
-#       - cd ./api/
-#       - go get
-#       - go build -o main
-#     resources:
-#       limits:
-#         cpu: 2000
-#         memory: 4000MiB
-#       requests:
-#         cpu: 1000
-#         memory: 2000MiB
-
-#   - name: Docker-Build-API
-#     image: plugins/docker
-#     settings:
-#       purge: false
-#       registry: registry.support.tools
-#       repo: registry.support.tools/opsdata/api
-#       dockerfile: ./api/Dockerfile
-#       context: ./api/
-#       tags:
-#         - ${DRONE_BUILD_NUMBER}
-#         - ${DRONE_COMMIT_BRANCH}
-#         - latest
-#       cache_from: "registry.support.tools/opsdata/api:latest"
-#       username:
-#         from_secret: registry-username
-#       password:
-#         from_secret: registry-password
-
-#   - name: Docker-Build-UI
-#     image: plugins/docker
-#     settings:
-#       purge: false
-#       registry: registry.support.tools
-#       repo: registry.support.tools/opsdata/ui
-#       dockerfile: ./ui/Dockerfile
-#       context: ./ui/
-#       tags:
-#         - ${DRONE_BUILD_NUMBER}
-#         - ${DRONE_COMMIT_BRANCH}
-#         - latest
-#       cache_from: "registry.support.tools/opsdata/ui:latest"
-#       username:
-#         from_secret: registry-username
-#       password:
-#         from_secret: registry-password
-
-#   - name: Customize-kube-files
-#     image: supporttools/kube-builder:32
-#     environment:
-#       APPENV: ${DRONE_COMMIT_BRANCH}
-#       JWT:
-#         from_secret: jwt-secret-key
-#     commands:
-#       - bash ./k8s/deploy.sh
-
-# node_selector:
-#   beta.kubernetes.io/arch: arm64
-#   drone-runner: true
-
-# image_pull_secrets:
-# - regcreds      
-
----
-kind: pipeline
-type: kubernetes
-name: OpsData-Deploy
-
-platform:
-  os: linux
-  arch: amd64
-
-steps:
-
   - name: Deploy-to-User
     image: supporttools/kube-builder:32
     settings:
@@ -181,11 +84,11 @@ steps:
         from_secret: registry-username
     commands:
       - REPO_USER=`echo ${DRONE_REPO} | awk -F'/' '{print $1}'`
-      - kubectl label ns opsdata-$REPO_USER team=opsdata
-      - kubectl label ns opsdata-$REPO_USER app=opsdata
-      - kubectl label ns opsdata-$REPO_USER ns-purge=true
-      - kubectl label ns opsdata-$REPO_USER class=master
-      - kubectl annotate ns opsdata-$REPO_USER field.cattle.io/projectId=c-hq794:p-m4pgb  
+      - kubectl label ns opsdata-$REPO_USER team=opsdata --overwrite
+      - kubectl label ns opsdata-$REPO_USER app=opsdata --overwrite
+      - kubectl label ns opsdata-$REPO_USER ns-purge=false --overwrite
+      - kubectl label ns opsdata-$REPO_USER class=master --overwrite
+      - kubectl annotate ns opsdata-$REPO_USER field.cattle.io/projectId=c-hq794:p-m4pgb --overwrite
       - helm repo add bitnami https://charts.bitnami.com/bitnami
       - helm upgrade --install opsdata --namespace opsdata-$REPO_USER --history-max 2 -f /drone/src/helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
       - kubectl apply -n opsdata-$REPO_USER  -f ./k8s/deployment-ready/
