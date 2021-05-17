@@ -74,9 +74,9 @@ steps:
     image: supporttools/kube-builder:32
     settings:
       kubernetes_server:
-        from_secret: b1-k3s-prd_server
+        from_secret: a1-k3s-prd_server
       kubernetes_token:
-        from_secret: b1-k3s-prd_token
+        from_secret: a1-k3s-prd_token
     environment:
       PASSWORD:
         from_secret: registry-password
