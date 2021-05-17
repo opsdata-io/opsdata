@@ -42,8 +42,6 @@ steps:
         from_secret: registry-username
       password:
         from_secret: registry-password
-      depends_on:
-        - Go-Build-API
 
   - name: Docker-Build-UI
     image: plugins/docker
@@ -62,8 +60,6 @@ steps:
         from_secret: registry-username
       password:
         from_secret: registry-password
-    depends_on:
-      - Go-Build-API
 
   - name: Customize-kube-files
     image: supporttools/kube-builder:32
@@ -73,9 +69,6 @@ steps:
         from_secret: jwt-secret-key
     commands:
       - bash ./k8s/deploy.sh
-    depends_on:
-      - Docker-Build-API
-      - Docker-Build-UI
 
   - name: Deploy-to-User
     image: supporttools/kube-builder:32
@@ -106,8 +99,6 @@ steps:
       - kubectl apply -n monitoring -f ./k8s/monitoring/servicemonitor-dev.yaml
       - kubectl wait -n opsdata-${REPO_USER}  --for=condition=available --timeout=600s deployment/opsdata-api
       - kubectl wait -n opsdata-${REPO_USER}  --for=condition=available --timeout=600s deployment/opsdata-ui
-    depends_on:
-      - Customize-kube-files
 
   - name: Deploy-to-Dev
     image: supporttools/kube-builder:32
@@ -131,8 +122,6 @@ steps:
       - kubectl apply -n monitoring -f ./k8s/monitoring/servicemonitor-dev.yaml
       - kubectl wait -n opsdata-dev --for=condition=available --timeout=600s deployment/opsdata-api
       - kubectl wait -n opsdata-dev --for=condition=available --timeout=600s deployment/opsdata-ui
-    depends_on:
-      - Customize-kube-files
 
   - name: Deploy-to-Staging
     image: supporttools/kube-builder:32
@@ -164,8 +153,6 @@ steps:
      - promote
      target:
      - staging
-    depends_on:
-      - Customize-kube-files
 
   - name: Deploy-to-Production
     image: supporttools/kube-builder:32
@@ -198,8 +185,6 @@ steps:
      - promote
      target:
      - production
-    depends_on:
-      - Customize-kube-files
 
   - name: Deploy-to-Disaster
     image: supporttools/kube-builder:32
@@ -232,8 +217,6 @@ steps:
      - promote
      target:
      - production
-    depends_on:
-      - Deploy-to-Production
 
 node_selector:
   beta.kubernetes.io/arch: amd64
@@ -286,8 +269,6 @@ steps:
         from_secret: registry-username
       password:
         from_secret: registry-password
-      depends_on:
-        - Go-Build-API
 
   - name: Docker-Build-UI
     image: plugins/docker
@@ -315,9 +296,6 @@ steps:
         from_secret: jwt-secret-key
     commands:
       - bash ./k8s/deploy.sh
-    depends_on:
-      - Docker-Build-API
-      - Docker-Build-UI
 
   - name: Deploy-to-User
     image: supporttools/kube-builder:32
@@ -348,8 +326,6 @@ steps:
       - kubectl apply -n monitoring -f ./k8s/monitoring/servicemonitor-dev.yaml
       - kubectl wait -n opsdata-${REPO_USER}  --for=condition=available --timeout=600s deployment/opsdata-api
       - kubectl wait -n opsdata-${REPO_USER}  --for=condition=available --timeout=600s deployment/opsdata-ui
-    depends_on:
-      - Customize-kube-files
 
   - name: Deploy-to-Dev
     image: supporttools/kube-builder:32
@@ -373,8 +349,6 @@ steps:
       - kubectl apply -n monitoring -f ./k8s/monitoring/servicemonitor-dev.yaml
       - kubectl wait -n opsdata-dev --for=condition=available --timeout=600s deployment/opsdata-api
       - kubectl wait -n opsdata-dev --for=condition=available --timeout=600s deployment/opsdata-ui
-    depends_on:
-      - Customize-kube-files
 
   - name: Deploy-to-Staging
     image: supporttools/kube-builder:32
@@ -406,8 +380,6 @@ steps:
      - promote
      target:
      - staging
-    depends_on:
-      - Customize-kube-files
 
   - name: Deploy-to-Production
     image: supporttools/kube-builder:32
@@ -440,8 +412,6 @@ steps:
      - promote
      target:
      - production
-    depends_on:
-      - Customize-kube-files
 
   - name: Deploy-to-Disaster
     image: supporttools/kube-builder:32
@@ -474,8 +444,6 @@ steps:
      - promote
      target:
      - production
-    depends_on:
-      - Deploy-to-Production
 
 node_selector:
   beta.kubernetes.io/arch: arm64
