@@ -70,6 +70,37 @@ steps:
     commands:
       - bash ./k8s/deploy.sh
 
+  - name: Deploy-to-User
+    image: supporttools/kube-builder:32
+    settings:
+      kubernetes_server:
+        from_secret: a1-k3s-prd_server
+      kubernetes_token:
+        from_secret: a1-k3s-prd_token
+    environment:
+      PASSWORD:
+        from_secret: registry-password
+      USERNAME:
+        from_secret: registry-username
+    commands:
+      - kubectl cluster-info
+      - REPO_USER=`echo ${DRONE_REPO} | awk -F'/' '{print $1}'`
+      - kubectl create ns opsdata-${REPO_USER}
+      - kubectl label ns opsdata-${REPO_USER} team=opsdata
+      - kubectl label ns opsdata-${REPO_USER} app=opsdata
+      - kubectl label ns opsdata-${REPO_USER} ns-purge=true
+      - kubectl label ns opsdata-${REPO_USER} class=master
+      - kubectl annotate ns opsdata-${REPO_USER} field.cattle.io/projectId=c-hq794:p-m4pgb  
+      - helm repo add bitnami https://charts.bitnami.com/bitnami
+      - helm upgrade --install opsdata --namespace opsdata-${REPO_USER} --history-max 2 -f ./helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
+      - kubectl apply -n opsdata-${REPO_USER}  -f ./k8s/deployment-ready/
+      - kubectl apply -n opsdata-${REPO_USER}  -f ./k8s/services/service.yaml
+      - kubectl apply -n opsdata-${REPO_USER}  -f ./k8s/ingress/dev.yaml
+      - kubectl apply -n opsdata-${REPO_USER}  -f ./k8s/hpa/dev.yaml
+      - kubectl apply -n monitoring -f ./k8s/monitoring/servicemonitor-dev.yaml
+      - kubectl wait -n opsdata-${REPO_USER}  --for=condition=available --timeout=600s deployment/opsdata-api
+      - kubectl wait -n opsdata-${REPO_USER}  --for=condition=available --timeout=600s deployment/opsdata-ui
+
   - name: Deploy-to-Dev
     image: supporttools/kube-builder:32
     settings:
