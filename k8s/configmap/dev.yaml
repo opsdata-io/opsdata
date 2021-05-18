@@ -3,7 +3,7 @@ data:
   db-host: mysql-dev.support.tools
   db-name: opsdata_dev
   db-port: "3306"
-  db-user: opsdata
+  db-user: opsdata_dev
 kind: ConfigMap
 metadata:
   labels:
