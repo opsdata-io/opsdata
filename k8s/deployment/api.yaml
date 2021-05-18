@@ -30,22 +30,42 @@ spec:
                 - amd64      
       containers:
       - env:
-        - name: DB_HOST
-          value: opsdata-mariadb-galera
-        - name: DB_PORT
-          value: "3306"
-        - name: DB_USER
-          value: opsdata
         - name: DB_PASS
           valueFrom:
             secretKeyRef:
               key: db-pass
               name: opsdata
+              optional: false
         - name: JWT_SECRET_KEY
           valueFrom:
             secretKeyRef:
               key: jwt-secret
               name: opsdata
+              optional: false
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              key: db-host
+              name: opsdata
+              optional: false
+        - name: DB_PORT
+          valueFrom:
+            configMapKeyRef:
+              key: db-port
+              name: opsdata
+              optional: false
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              key: db-name
+              name: opsdata
+              optional: false
+        - name: DB_USER
+          valueFrom:
+            configMapKeyRef:
+              key: db-user
+              name: opsdata
+              optional: false
         image: registry.support.tools/opsdata/api:BUILD_NUMBER
         imagePullPolicy: IfNotPresent
         name: opsdata-api
