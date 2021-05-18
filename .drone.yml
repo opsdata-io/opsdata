@@ -70,34 +70,34 @@ steps:
     commands:
       - bash ./k8s/deploy.sh
 
-  - name: Deploy-to-User
-    image: supporttools/kube-builder:32
-    settings:
-      kubernetes_server:
-        from_secret: a1-k3s-prd_server
-      kubernetes_token:
-        from_secret: a1-k3s-prd_token
-    environment:
-      PASSWORD:
-        from_secret: registry-password
-      USERNAME:
-        from_secret: registry-username
-    commands:
-      - REPO_USER=`echo ${DRONE_REPO} | awk -F'/' '{print $1}'`
-      - kubectl label ns opsdata-$REPO_USER team=opsdata --overwrite
-      - kubectl label ns opsdata-$REPO_USER app=opsdata --overwrite
-      - kubectl label ns opsdata-$REPO_USER ns-purge=false --overwrite
-      - kubectl label ns opsdata-$REPO_USER class=master --overwrite
-      - kubectl annotate ns opsdata-$REPO_USER field.cattle.io/projectId=c-hq794:p-m4pgb --overwrite
-      - helm repo add bitnami https://charts.bitnami.com/bitnami
-      - helm upgrade --install opsdata --namespace opsdata-$REPO_USER --history-max 2 -f /drone/src/helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
-      - kubectl apply -n opsdata-$REPO_USER  -f ./k8s/deployment-ready/
-      - kubectl apply -n opsdata-$REPO_USER  -f ./k8s/services/service.yaml
-      - kubectl apply -n opsdata-$REPO_USER  -f ./k8s/ingress/dev.yaml
-      - kubectl apply -n opsdata-$REPO_USER  -f ./k8s/hpa/dev.yaml
-      - kubectl apply -n monitoring -f ./k8s/monitoring/servicemonitor-dev.yaml
-      - kubectl wait -n opsdata-$REPO_USER  --for=condition=available --timeout=600s deployment/opsdata-api
-      - kubectl wait -n opsdata-$REPO_USER  --for=condition=available --timeout=600s deployment/opsdata-ui
+  # - name: Deploy-to-User
+  #   image: supporttools/kube-builder:32
+  #   settings:
+  #     kubernetes_server:
+  #       from_secret: a1-k3s-prd_server
+  #     kubernetes_token:
+  #       from_secret: a1-k3s-prd_token
+  #   environment:
+  #     PASSWORD:
+  #       from_secret: registry-password
+  #     USERNAME:
+  #       from_secret: registry-username
+  #   commands:
+  #     - REPO_USER=`echo ${DRONE_REPO} | awk -F'/' '{print $1}'`
+  #     - kubectl label ns opsdata-$REPO_USER team=opsdata --overwrite
+  #     - kubectl label ns opsdata-$REPO_USER app=opsdata --overwrite
+  #     - kubectl label ns opsdata-$REPO_USER ns-purge=false --overwrite
+  #     - kubectl label ns opsdata-$REPO_USER class=master --overwrite
+  #     - kubectl annotate ns opsdata-$REPO_USER field.cattle.io/projectId=c-hq794:p-m4pgb --overwrite
+  #     - helm repo add bitnami https://charts.bitnami.com/bitnami
+  #     - helm upgrade --install opsdata --namespace opsdata-$REPO_USER --history-max 2 -f /drone/src/helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
+  #     - kubectl apply -n opsdata-$REPO_USER  -f ./k8s/deployment-ready/
+  #     - kubectl apply -n opsdata-$REPO_USER  -f ./k8s/services/service.yaml
+  #     - kubectl apply -n opsdata-$REPO_USER  -f ./k8s/ingress/dev.yaml
+  #     - kubectl apply -n opsdata-$REPO_USER  -f ./k8s/hpa/dev.yaml
+  #     - kubectl apply -n monitoring -f ./k8s/monitoring/servicemonitor-dev.yaml
+  #     - kubectl wait -n opsdata-$REPO_USER  --for=condition=available --timeout=600s deployment/opsdata-api
+  #     - kubectl wait -n opsdata-$REPO_USER  --for=condition=available --timeout=600s deployment/opsdata-ui
 
   - name: Deploy-to-Dev
     image: supporttools/kube-builder:32
@@ -113,8 +113,9 @@ steps:
         from_secret: registry-username
     commands:
       - kubectl cluster-info
-      - helm repo add bitnami https://charts.bitnami.com/bitnami
-      - helm upgrade --install opsdata --namespace opsdata-dev --history-max 3 -f /drone/src/helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
+      #- helm repo add bitnami https://charts.bitnami.com/bitnami
+      #- helm upgrade --install opsdata --namespace opsdata-dev --history-max 3 -f /drone/src/helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
+      - kubectl apply -n opsdata-dev -f ./k8s/configmap/dev.yaml
       - kubectl apply -n opsdata-dev -f ./k8s/deployment-ready/
       - kubectl apply -n opsdata-dev -f ./k8s/services/service.yaml
       - kubectl apply -n opsdata-dev -f ./k8s/ingress/dev.yaml
@@ -138,8 +139,9 @@ steps:
       JWT:
         from_secret: jwt-secret-key
     commands:
-      - helm repo add bitnami https://charts.bitnami.com/bitnami
-      - helm upgrade --install opsdata --namespace opsdata-staging --history-max 3 -f /drone/src/helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
+      #- helm repo add bitnami https://charts.bitnami.com/bitnami
+      #- helm upgrade --install opsdata --namespace opsdata-staging --history-max 3 -f /drone/src/helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
+      - kubectl apply -n opsdata-staging -f ./k8s/configmap/staging.yaml
       - kubectl -n opsdata-staging create secret generic jwt-secret-key --from-literal=jwt-secret-key=${JWT} -o yaml --dry-run | kubectl apply -f -
       - kubectl apply -n opsdata-staging -f ./k8s/deployment-ready/
       - kubectl apply -n opsdata-staging -f ./k8s/services/service.yaml
@@ -169,8 +171,9 @@ steps:
       JWT:
         from_secret: jwt-secret-key
     commands:
-      - helm repo add bitnami https://charts.bitnami.com/bitnami
-      - helm upgrade --install opsdata --namespace opsdata-production --history-max 3 -f /drone/src/helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
+      #- helm repo add bitnami https://charts.bitnami.com/bitnami
+      #- helm upgrade --install opsdata --namespace opsdata-production --history-max 3 -f /drone/src/helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
+      - kubectl apply -n opsdata-production -f ./k8s/configmap/staging.yaml
       - kubectl -n opsdata-production create secret generic jwt-secret-key --from-literal=jwt-secret-key=${JWT}
       - kubectl apply -n opsdata-production -f ./k8s/deployment-ready/
       - kubectl apply -n opsdata-production -f ./k8s/services/service.yaml
@@ -179,38 +182,6 @@ steps:
       - kubectl apply -n opsdata-production -f ./k8s/hpa/production.yaml
       - kubectl apply -n monitoring -f ./k8s/monitoring/servicemonitor-production.yaml
       - kubectl wait -n opsdata-production --for=condition=available --timeout=600s deployment/opsdata
-    when:
-     event:
-     - deployment
-     - promote
-     target:
-     - production
-
-  - name: Deploy-to-Disaster
-    image: supporttools/kube-builder:32
-    settings:
-      kubernetes_server:
-        from_secret: a1-k3s-prd_server
-      kubernetes_token:
-        from_secret: a1-k3s-prd_token
-    environment:
-      PASSWORD:
-        from_secret: registry-password
-      USERNAME:
-        from_secret: registry-username
-      JWT:
-        from_secret: jwt-secret-key
-    commands:
-      - helm repo add bitnami https://charts.bitnami.com/bitnami
-      - helm upgrade --install opsdata --namespace opsdata-disaster --history-max 3 -f /drone/src/helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
-      - kubectl -n opsdata-disaster create secret generic jwt-secret-key --from-literal=jwt-secret-key=${JWT}
-      - kubectl apply -n opsdata-disaster -f ./k8s/deployment-ready/
-      - kubectl apply -n opsdata-disaster -f ./k8s/services/service.yaml
-      - kubectl apply -n opsdata-disaster -f ./k8s/ingress/disaster-root.yaml
-      - kubectl apply -n opsdata-disaster -f ./k8s/ingress/disaster-www.yaml
-      - kubectl apply -n opsdata-disaster -f ./k8s/hpa/disaster.yaml
-      - kubectl apply -n monitoring -f ./k8s/monitoring/servicemonitor-disaster.yaml
-      - kubectl wait -n opsdata-disaster --for=condition=available --timeout=600s deployment/opsdata
     when:
      event:
      - deployment

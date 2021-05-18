@@ -12,7 +12,6 @@ function App() {
     useEffect(() => {
         (
             async () => {
-                //var url = `http://opsdata-api:8000/api/user`;
                 const response = await fetch('/api/user', {
                     headers: {'Content-Type': 'application/json'},
                     credentials: 'include',

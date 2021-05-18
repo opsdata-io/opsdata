@@ -29,19 +29,7 @@ spec:
                 values:
                 - amd64
       containers:
-      - env:
-        - name: DB_HOST
-          value: opsdata-mariadb-galera
-        - name: DB_PORT
-          value: "3306"
-        - name: DB_USER
-          value: opsdata
-        - name: DB_PASS
-          valueFrom:
-            secretKeyRef:
-              key: mariadb-password
-              name: opsdata-mariadb-galera
-        image: registry.support.tools/opsdata/ui:BUILD_NUMBER
+      - image: registry.support.tools/opsdata/ui:BUILD_NUMBER
         imagePullPolicy: IfNotPresent
         name: opsdata-ui
         livenessProbe:

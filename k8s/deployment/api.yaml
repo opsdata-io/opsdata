@@ -39,13 +39,13 @@ spec:
         - name: DB_PASS
           valueFrom:
             secretKeyRef:
-              key: mariadb-password
-              name: opsdata-mariadb-galera
+              key: db-pass
+              name: opsdata
         - name: JWT_SECRET_KEY
           valueFrom:
             secretKeyRef:
               key: jwt-secret
-              name: opsdata-secret
+              name: opsdata
         image: registry.support.tools/opsdata/api:BUILD_NUMBER
         imagePullPolicy: IfNotPresent
         name: opsdata-api
