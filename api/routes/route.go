@@ -6,7 +6,7 @@ import (
 )
 
 func Setup(app *fiber.App) {
-	app.Get("/", controllers.Healthz)
+	app.Get("/api", controllers.Homepage)
 	app.Get("/healthz", controllers.Healthz)
 	app.Get("/api/healthz", controllers.Healthz)
 	app.Post("/api/register", controllers.Register)
