@@ -29,37 +29,37 @@ steps:
     image: plugins/docker
     settings:
       purge: false
-      registry: registry.support.tools
-      repo: registry.support.tools/opsdata/api
+      registry: a1-harbor.support.tools
+      repo: a1-harbor.support.tools/opsdata/api
       dockerfile: ./api/Dockerfile
       context: ./api/
       tags:
         - ${DRONE_BUILD_NUMBER}
         - ${DRONE_COMMIT_BRANCH}
         - latest
-      cache_from: "registry.support.tools/opsdata/api:latest"
+      cache_from: "a1-harbor.support.tools/opsdata/api:latest"
       username:
-        from_secret: registry-username
+        from_secret: harbor-username
       password:
-        from_secret: registry-password
+        from_secret: harbor-password
 
   - name: Docker-Build-UI
     image: plugins/docker
     settings:
       purge: false
-      registry: registry.support.tools
-      repo: registry.support.tools/opsdata/ui
+      registry: a1-harbor.support.tools
+      repo: a1-harbor.support.tools/opsdata/ui
       dockerfile: ./ui/Dockerfile
       context: ./ui/
       tags:
         - ${DRONE_BUILD_NUMBER}
         - ${DRONE_COMMIT_BRANCH}
         - latest
-      cache_from: "registry.support.tools/opsdata/ui:latest"
+      cache_from: "a1-harbor.support.tools/opsdata/ui:latest"
       username:
-        from_secret: registry-username
+        from_secret: harbor-username
       password:
-        from_secret: registry-password
+        from_secret: harbor-password
 
   - name: Customize-kube-files
     image: supporttools/kube-builder:32
@@ -79,9 +79,9 @@ steps:
   #       from_secret: a1-k3s-prd_token
   #   environment:
   #     PASSWORD:
-  #       from_secret: registry-password
+  #       from_secret: harbor-password
   #     USERNAME:
-  #       from_secret: registry-username
+  #       from_secret: harbor-username
   #   commands:
   #     - REPO_USER=`echo ${DRONE_REPO} | awk -F'/' '{print $1}'`
   #     - kubectl label ns opsdata-$REPO_USER team=opsdata --overwrite
@@ -108,9 +108,9 @@ steps:
         from_secret: a1-k3s-prd_token
     environment:
       PASSWORD:
-        from_secret: registry-password
+        from_secret: harbor-password
       USERNAME:
-        from_secret: registry-username
+        from_secret: harbor-username
     commands:
       - kubectl cluster-info
       #- helm repo add bitnami https://charts.bitnami.com/bitnami
@@ -133,9 +133,9 @@ steps:
         from_secret: a1-k3s-prd_token
     environment:
       PASSWORD:
-        from_secret: registry-password
+        from_secret: harbor-password
       USERNAME:
-        from_secret: registry-username
+        from_secret: harbor-username
       JWT:
         from_secret: jwt-secret-key
     commands:
@@ -165,9 +165,9 @@ steps:
         from_secret: a1-k3s-prd_token
     environment:
       PASSWORD:
-        from_secret: registry-password
+        from_secret: harbor-password
       USERNAME:
-        from_secret: registry-username
+        from_secret: harbor-username
       JWT:
         from_secret: jwt-secret-key
     commands:

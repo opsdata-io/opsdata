@@ -29,7 +29,7 @@ spec:
                 values:
                 - amd64
       containers:
-      - image: registry.support.tools/opsdata/ui:BUILD_NUMBER
+      - image: a1-harbor.support.tools/opsdata/ui:BUILD_NUMBER
         imagePullPolicy: IfNotPresent
         name: opsdata-ui
         livenessProbe:
