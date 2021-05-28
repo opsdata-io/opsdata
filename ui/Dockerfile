@@ -1,4 +1,10 @@
 FROM node:current-alpine as build-stage
+RUN sed -i 's/http\:\/\/dl-cdn.alpinelinux.org/https\:\/\/alpine.global.ssl.fastly.net/g' /etc/apk/repositories
+RUN sed -i 's/https\:\/\/dl-cdn.alpinelinux.org/https\:\/\/alpine.global.ssl.fastly.net/g' /etc/apk/repositories
+RUN apk add --no-cache --update \
+  curl \
+  libjpeg-turbo \
+  && rm -rf /var/cache/apk/*
 WORKDIR /app
 COPY package*.json /app/
 #RUN npm install
