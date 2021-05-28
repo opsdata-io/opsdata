@@ -7,7 +7,7 @@ import (
 )
 
 func Setup(app *fiber.App) {
-	prometheus := fiberprometheus.New("my-service-name")
+	prometheus := fiberprometheus.New("opsdata-api")
 	prometheus.RegisterAt(app, "/metrics")
 	app.Use(prometheus.Middleware)
 	app.Get("/api", controllers.Homepage)

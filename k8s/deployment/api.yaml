@@ -16,7 +16,7 @@ spec:
     metadata:
       annotations:
         prometheus.io/path: /metrics
-        prometheus.io/port: "3000"
+        prometheus.io/port: "8000"
         prometheus.io/scrape: "true"
       labels:
         app: opsdata-api
