@@ -2,10 +2,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    prometheus.io/scrape: true
-    prometheus.io/path: "/metrics"
-    prometheus.io/port: 3000
   name: opsdata-api
 spec:
   selector:
@@ -18,6 +14,10 @@ spec:
     type: RollingUpdate
   template:
     metadata:
+      annotations:
+        prometheus.io/path: /metrics
+        prometheus.io/port: "3000"
+        prometheus.io/scrape: "true"
       labels:
         app: opsdata-api
     spec:
