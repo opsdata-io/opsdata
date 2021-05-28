@@ -4,7 +4,6 @@ metadata:
   labels:
     app: opsdata
   name: opsdata-mariadb-galera-production
-  namespace: monitoring
 spec:
   endpoints:
   - port: metrics
