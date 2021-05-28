@@ -9,6 +9,7 @@ import (
 func Setup(app *fiber.App) {
 	prometheus := fiberprometheus.New("opsdata-api")
 	prometheus.RegisterAt(app, "/metrics")
+	prometheus.RegisterAt(app, "/api/metrics")
 	app.Use(prometheus.Middleware)
 	app.Get("/api", controllers.Homepage)
 	app.Get("/healthz", controllers.Healthz)
