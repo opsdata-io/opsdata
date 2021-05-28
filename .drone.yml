@@ -84,6 +84,7 @@ steps:
         from_secret: harbor-username
     commands:
       - REPO_USER=`echo ${DRONE_REPO} | awk -F'/' '{print $1}'`
+      - kubectl create ns opsdata-$REPO_USER
       - kubectl label ns opsdata-$REPO_USER team=opsdata --overwrite
       - kubectl label ns opsdata-$REPO_USER app=opsdata --overwrite
       - kubectl label ns opsdata-$REPO_USER ns-purge=false --overwrite
