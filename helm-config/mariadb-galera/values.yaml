@@ -429,7 +429,7 @@ podLabels: {}
 podAnnotations:
   prometheus.io/scrape: true
   prometheus.io/path: "/metrics"
-  prometheus.io/port: 9104
+  prometheus.io/port: "9104"
 
 ## Pod affinity preset
 ## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#inter-pod-affinity-and-anti-affinity

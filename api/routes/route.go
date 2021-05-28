@@ -1,11 +1,15 @@
 package routes
 
 import (
+	"github.com/ansrivas/fiberprometheus/v2"
 	"github.com/gofiber/fiber/v2"
 	"github.com/mattmattox/opsdata/controllers"
 )
 
 func Setup(app *fiber.App) {
+	prometheus := fiberprometheus.New("my-service-name")
+	prometheus.RegisterAt(app, "/metrics")
+	app.Use(prometheus.Middleware)
 	app.Get("/api", controllers.Homepage)
 	app.Get("/healthz", controllers.Healthz)
 	app.Get("/api/healthz", controllers.Healthz)
