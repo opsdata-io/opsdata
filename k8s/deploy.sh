@@ -14,7 +14,7 @@ done
 cd 	/drone/src/
 echo "customizing helm values..."
 mkdir -p ./helm-config-ready/mariadb-galera/
-cat ./helm-config/mariadb-galera/master.yaml | sed "s/BUILD_NUMBER/${CI_BUILD_NUMBER}/g" > ./helm-config-ready/mariadb-galera/master.yaml
+cat ./helm-config/mariadb-galera/master.yaml | sed "s/BUILD_NUMBER/${CI_BUILD_NUMBER}/g" | sed "s/REPO_USER/${REPO_USER}/g" > ./helm-config-ready/mariadb-galera/master.yaml
 cat ./helm-config/mariadb-galera/dev.yaml | sed "s/BUILD_NUMBER/${CI_BUILD_NUMBER}/g" > ./helm-config-ready/mariadb-galera/dev.yaml
 cat ./helm-config/mariadb-galera/staging.yaml | sed "s/BUILD_NUMBER/${CI_BUILD_NUMBER}/g" > ./helm-config-ready/mariadb-galera/staging.yaml
 cat ./helm-config/mariadb-galera/prod.yaml | sed "s/BUILD_NUMBER/${CI_BUILD_NUMBER}/g" > ./helm-config-ready/mariadb-galera/prod.yaml

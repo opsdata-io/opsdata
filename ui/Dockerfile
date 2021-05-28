@@ -1,8 +1,9 @@
 FROM node:current-alpine as build-stage
 RUN sed -i 's/http\:\/\/dl-cdn.alpinelinux.org/https\:\/\/alpine.global.ssl.fastly.net/g' /etc/apk/repositories
 RUN sed -i 's/https\:\/\/dl-cdn.alpinelinux.org/https\:\/\/alpine.global.ssl.fastly.net/g' /etc/apk/repositories
+RUN apk update && apk upgrade
 RUN apk add --no-cache --update \
-  curl \
+  curl=7.77.0-r0 \
   libjpeg-turbo \
   && rm -rf /var/cache/apk/*
 WORKDIR /app
@@ -15,8 +16,9 @@ RUN npm run build
 FROM nginx:alpine
 RUN sed -i 's/http\:\/\/dl-cdn.alpinelinux.org/https\:\/\/alpine.global.ssl.fastly.net/g' /etc/apk/repositories
 RUN sed -i 's/https\:\/\/dl-cdn.alpinelinux.org/https\:\/\/alpine.global.ssl.fastly.net/g' /etc/apk/repositories
+RUN apk update && apk upgrade
 RUN apk add --no-cache --update \
-  curl \
+  curl=7.77.0-r0 \
   libjpeg-turbo \
   && rm -rf /var/cache/apk/*
 COPY --from=build-stage /app/build/ /usr/share/nginx/html
