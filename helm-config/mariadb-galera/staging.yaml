@@ -416,12 +416,15 @@ replicaCount: 3
 ## ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies
 ##
 updateStrategy:
-  type: RollingUpdate
+  type: OnDelete
 
 ## Additional labels for MariaDB Galera pods
 ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 ##
-podLabels: {}
+podLabels:
+  app: "opsdata"
+  team: "opsdata"
+  class: "staging"
 
 ## Additional annotations for MariaDB Galera pods
 ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
@@ -561,12 +564,12 @@ resources:
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  limits: {}
-  #   cpu: 0.5
-  #   memory: 256Mi
-  requests: {}
-  #   cpu: 0.5
-  #   memory: 256Mi
+  limits:
+    cpu: 4.0
+    memory: 4096Mi
+  requests:
+    cpu: 0.5
+    memory: 1024Mi
 
 ## MariaDB Galera containers' liveness and readiness probes
 ## ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
@@ -604,7 +607,7 @@ startupProbe:
 podDisruptionBudget:
   ## Specifies whether a Pod disruption budget should be created
   ##
-  create: false
+  create: true
   minAvailable: 1
   maxUnavailable: 1
 
@@ -640,12 +643,12 @@ metrics:
     # choice for the user. This also increases chances charts run on environments with little
     # resources, such as Minikube. If you do want to specify resources, uncomment the following
     # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-    limits: {}
-    #   cpu: 0.5
-    #   memory: 256Mi
-    requests: {}
-    #   cpu: 0.5
-    #   memory: 256Mi
+    limits:
+      cpu: 0.50
+      memory: 512Mi
+    requests:
+      cpu: 0.10
+      memory: 64Mi
   ## MySQL Prometheus exporter service parameters
   ##
   service:
