@@ -113,8 +113,8 @@ steps:
         from_secret: harbor-username
     commands:
       - kubectl cluster-info
-      #- helm repo add bitnami https://charts.bitnami.com/bitnami
-      #- helm upgrade --install opsdata --namespace opsdata-dev --history-max 3 -f /drone/src/helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
+      - helm repo add bitnami https://charts.bitnami.com/bitnami
+      - helm upgrade --install opsdata --namespace opsdata-dev --history-max 3 -f /drone/src/helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
       - kubectl apply -n opsdata-dev -f ./k8s/configmap/dev.yaml
       - kubectl apply -n opsdata-dev -f ./k8s/deployment-ready/
       - kubectl apply -n opsdata-dev -f ./k8s/services/service.yaml
@@ -139,8 +139,8 @@ steps:
       JWT:
         from_secret: jwt-secret-key
     commands:
-      #- helm repo add bitnami https://charts.bitnami.com/bitnami
-      #- helm upgrade --install opsdata --namespace opsdata-staging --history-max 3 -f /drone/src/helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
+      - helm repo add bitnami https://charts.bitnami.com/bitnami
+      - helm upgrade --install opsdata --namespace opsdata-staging --history-max 3 -f /drone/src/helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
       - kubectl apply -n opsdata-staging -f ./k8s/configmap/staging.yaml
       - kubectl -n opsdata-staging create secret generic jwt-secret-key --from-literal=jwt-secret-key=${JWT} -o yaml --dry-run | kubectl apply -f -
       - kubectl apply -n opsdata-staging -f ./k8s/deployment-ready/
@@ -171,8 +171,8 @@ steps:
       JWT:
         from_secret: jwt-secret-key
     commands:
-      #- helm repo add bitnami https://charts.bitnami.com/bitnami
-      #- helm upgrade --install opsdata --namespace opsdata-production --history-max 3 -f /drone/src/helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
+      - helm repo add bitnami https://charts.bitnami.com/bitnami
+      - helm upgrade --install opsdata --namespace opsdata-production --history-max 3 -f /drone/src/helm-config-ready/mariadb-galera/values.yaml bitnami/mariadb-galera
       - kubectl apply -n opsdata-production -f ./k8s/configmap/staging.yaml
       - kubectl -n opsdata-production create secret generic jwt-secret-key --from-literal=jwt-secret-key=${JWT}
       - kubectl apply -n opsdata-production -f ./k8s/deployment-ready/
