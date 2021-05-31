@@ -94,7 +94,7 @@ steps:
       - helm upgrade --install opsdata --namespace opsdata-$REPO_USER --history-max 3 -f /drone/src/helm-config-ready/mariadb-galera/master.yaml bitnami/mariadb-galera
       - kubectl apply -n opsdata-$REPO_USER  -f ./k8s/deployment-ready/
       - kubectl apply -n opsdata-$REPO_USER  -f ./k8s/services/service.yaml
-      - kubectl apply -n opsdata-$REPO_USER  -f ./k8s/ingress/master.yaml
+      - kubectl apply -n opsdata-$REPO_USER  -f ./ingress-ready/master.yaml
       - kubectl apply -n opsdata-$REPO_USER  -f ./k8s/hpa/master.yaml
 
   - name: Deploy-to-Dev
