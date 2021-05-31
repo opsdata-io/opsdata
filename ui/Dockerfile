@@ -1,6 +1,6 @@
 FROM node:current-alpine as build-stage
-RUN sed -i 's/http\:\/\/dl-cdn.alpinelinux.org/https\:\/\/alpine.global.ssl.fastly.net/g' /etc/apk/repositories
-RUN sed -i 's/https\:\/\/dl-cdn.alpinelinux.org/https\:\/\/alpine.global.ssl.fastly.net/g' /etc/apk/repositories
+RUN sed -i 's/http\:\/\/dl-cdn.alpinelinux.org/https\:\/\/alpine-mirror.support.tools/g' /etc/apk/repositories
+RUN sed -i 's/https\:\/\/dl-cdn.alpinelinux.org/https\:\/\/alpine-mirror.support.tools/g' /etc/apk/repositories
 RUN apk add --no-cache --update \
   curl=7.77.0-r0 \
   libjpeg-turbo \
@@ -13,8 +13,8 @@ COPY ./ /app/
 RUN npm run build
 
 FROM nginx:alpine
-RUN sed -i 's/http\:\/\/dl-cdn.alpinelinux.org/https\:\/\/alpine.global.ssl.fastly.net/g' /etc/apk/repositories
-RUN sed -i 's/https\:\/\/dl-cdn.alpinelinux.org/https\:\/\/alpine.global.ssl.fastly.net/g' /etc/apk/repositories
+RUN sed -i 's/http\:\/\/dl-cdn.alpinelinux.org/https\:\/\/alpine-mirror.support.tools/g' /etc/apk/repositories
+RUN sed -i 's/https\:\/\/dl-cdn.alpinelinux.org/https\:\/\/alpine-mirror.support.tools/g' /etc/apk/repositories
 RUN apk add --no-cache --update \
   curl=7.77.0-r0 \
   libjpeg-turbo \

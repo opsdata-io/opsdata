@@ -8,7 +8,6 @@ platform:
   arch: amd64
 
 steps:
-
   - name: Go-Build-API
     image: golang
     environment:
