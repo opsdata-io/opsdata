@@ -66,7 +66,6 @@ steps:
   - name: Customize-kube-files
     image: supporttools/kube-builder:32
     environment:
-      custom_dns: [ 172.27.2.23, 172.27.2.24 ]
       APPENV: ${DRONE_COMMIT_BRANCH}
       JWT:
         from_secret: jwt-secret-key
