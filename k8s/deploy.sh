@@ -25,4 +25,4 @@ REPO_USER=`echo ${DRONE_REPO} | awk -F'/' '{print $1}'`
 echo "Drone Repo: ${DRONE_REPO}"
 echo "Repo User: ${REPO_USER}"
 mkdir -p ./ingress-ready/
-cat ./ingress/master.yaml | sed "s/REPO_USER/${REPO_USER}/g" > ./ingress-ready/master.yaml
+sed -i "s/REPO_USER/${REPO_USER}/g" ./ingress/master.yaml
