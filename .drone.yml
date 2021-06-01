@@ -7,10 +7,16 @@ platform:
   os: linux
   arch: amd64
 
-steps:
+trigger:
+  branches:
+    - master
+  event:
+    - push
 
+steps:
   - name: Go-Build-API
     image: golang
+    custom_dns: [ 172.27.2.23, 172.27.2.24 ]
     environment:
       CGO_ENABLED: 0
     commands:
@@ -28,6 +34,7 @@ steps:
   - name: Docker-Build-API
     image: plugins/docker
     settings:
+      custom_dns: [ 172.27.2.23, 172.27.2.24 ]
       purge: false
       registry: a1-harbor.support.tools
       repo: a1-harbor.support.tools/opsdata/api
@@ -46,6 +53,7 @@ steps:
   - name: Docker-Build-UI
     image: plugins/docker
     settings:
+      custom_dns: [ 172.27.2.23, 172.27.2.24 ]
       purge: false
       registry: a1-harbor.support.tools
       repo: a1-harbor.support.tools/opsdata/ui
@@ -73,6 +81,7 @@ steps:
   - name: Deploy-to-User
     image: supporttools/kube-builder:32
     settings:
+      custom_dns: [ 172.27.2.23, 172.27.2.24 ]
       kubernetes_server:
         from_secret: a1-k3s-prd_server
       kubernetes_token:
@@ -100,6 +109,7 @@ steps:
   - name: Deploy-to-Dev
     image: supporttools/kube-builder:32
     settings:
+      custom_dns: [ 172.27.2.23, 172.27.2.24 ]
       kubernetes_server:
         from_secret: a1-k3s-prd_server
       kubernetes_token:
@@ -128,6 +138,7 @@ steps:
   - name: Deploy-to-Staging
     image: supporttools/kube-builder:32
     settings:
+      custom_dns: [ 172.27.2.23, 172.27.2.24 ]
       kubernetes_server:
         from_secret: a1-k3s-prd_server
       kubernetes_token:
@@ -160,6 +171,7 @@ steps:
   - name: Deploy-to-Production
     image: supporttools/kube-builder:32
     settings:
+      custom_dns: [ 172.27.2.23, 172.27.2.24 ]
       kubernetes_server:
         from_secret: a1-k3s-prd_server
       kubernetes_token:
