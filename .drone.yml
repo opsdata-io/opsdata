@@ -7,6 +7,12 @@ platform:
   os: linux
   arch: amd64
 
+trigger:
+  branches:
+    - master
+  event:
+    - push
+
 steps:
   - name: Go-Build-API
     image: golang
