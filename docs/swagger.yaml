@@ -1,0 +1,631 @@
+definitions:
+  gorm.DeletedAt:
+    properties:
+      time:
+        type: string
+      valid:
+        description: Valid is true if Time is not NULL
+        type: boolean
+    type: object
+  handlers.CreateUploadLinkRequest:
+    properties:
+      caseNumber:
+        type: string
+      customer:
+        type: string
+      notes:
+        type: string
+      subject:
+        type: string
+    required:
+    - caseNumber
+    - customer
+    - notes
+    - subject
+    type: object
+  models.Customer:
+    properties:
+      address:
+        type: string
+      companyName:
+        type: string
+      contactEmail:
+        type: string
+      contactName:
+        type: string
+      contactPhone:
+        type: string
+      contactTitle:
+        type: string
+      id:
+        type: integer
+      notes:
+        type: string
+      subscriptionStatus:
+        type: string
+    type: object
+  models.UploadLink:
+    properties:
+      caseNumber:
+        type: string
+      createdAt:
+        type: string
+      customer:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        type: string
+      notes:
+        type: string
+      subject:
+        type: string
+      userID:
+        type: string
+    type: object
+  models.User:
+    properties:
+      createdAt:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      password:
+        type: string
+      updatedAt:
+        type: string
+      username:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /download:
+    get:
+      description: Retrieves files uploaded by the authenticated user with download
+        links
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            items:
+              additionalProperties: true
+              type: object
+            type: array
+        "400":
+          description: Bad request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Download files uploaded by the user
+      tags:
+      - Files
+  /v1/customers:
+    get:
+      description: Retrieves all customers from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Customer'
+            type: array
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get all customers
+      tags:
+      - Customers
+    post:
+      consumes:
+      - application/json
+      description: Creates a new customer in the database
+      parameters:
+      - description: Customer object
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/models.Customer'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Customer'
+        "400":
+          description: Bad request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Create a new customer
+      tags:
+      - Customers
+  /v1/customers/{id}:
+    delete:
+      description: Deletes a customer from the database by ID
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Customer successfully deleted
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Delete a customer by ID
+      tags:
+      - Customers
+    get:
+      description: Retrieves a customer from the database by ID
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Customer'
+        "400":
+          description: Bad request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Customer not found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get a customer by ID
+      tags:
+      - Customers
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing customer in the database by ID
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated customer object
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/models.Customer'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Customer'
+        "400":
+          description: Bad request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Customer not found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Update a customer by ID
+      tags:
+      - Customers
+  /v1/customers/search:
+    get:
+      description: Searches customers in the database based on a query parameter
+      parameters:
+      - description: Search query
+        in: query
+        name: q
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Customer'
+            type: array
+        "400":
+          description: Bad request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Search customers by query parameter
+      tags:
+      - Customers
+  /v1/health:
+    get:
+      description: Retrieves the health status of the application
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get Health Status
+      tags:
+      - Health
+  /v1/login:
+    post:
+      consumes:
+      - application/json
+      description: Logs in a user and returns a JWT token
+      parameters:
+      - description: User credentials
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful login
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Invalid request format
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Invalid credentials
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: User login
+      tags:
+      - Authentication
+  /v1/ready:
+    get:
+      description: Retrieves the readiness status of the application
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get Ready Status
+      tags:
+      - Ready
+  /v1/upload-link:
+    post:
+      consumes:
+      - application/json
+      description: Creates an upload link for a specific customer case
+      parameters:
+      - description: Upload link details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.CreateUploadLinkRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.UploadLink'
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Create an upload link
+      tags:
+      - Uploads
+  /v1/upload/{link}:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Uploads a file to the specified upload link
+      parameters:
+      - description: Upload link ID
+        in: path
+        name: link
+        required: true
+        type: string
+      - description: File to upload
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: File uploaded successfully
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Upload link not found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Upload a file
+      tags:
+      - Uploads
+  /v1/users:
+    get:
+      description: Retrieves a list of all users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.User'
+            type: array
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get all users
+      tags:
+      - Users
+    post:
+      consumes:
+      - application/json
+      description: Creates a new user based on request payload
+      parameters:
+      - description: User object
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Invalid request payload
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Create a new user
+      tags:
+      - Users
+  /v1/users/{id}:
+    delete:
+      description: Deletes a user based on their ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Invalid user ID
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: User not found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Delete a user by ID
+      tags:
+      - Users
+    get:
+      description: Retrieves a user by their ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Bad request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: User not found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get a user by ID
+      tags:
+      - Users
+    put:
+      consumes:
+      - application/json
+      description: Updates a user's information based on their ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: User object
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Invalid request payload
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: User not found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Update a user by ID
+      tags:
+      - Users
+  /v1/users/search:
+    post:
+      description: Searches users based on criteria (not implemented)
+      produces:
+      - application/json
+      responses:
+        "501":
+          description: Search functionality not implemented
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Search users
+      tags:
+      - Users
+  /v1/version:
+    get:
+      description: Retrieves a JSON response with version information
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get version information
+      tags:
+      - Version
+swagger: "2.0"

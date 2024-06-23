@@ -40,8 +40,26 @@ jobs:
           go mod verify
           go mod tidy
 
+      - name: Outdated dependencies
+        run: go-mod-outdated -update
+
       - name: Security scanning
         run: gosec ./...
+
+      - name: Generate Swagger documentation
+        run: |
+          go get -u github.com/swaggo/swag/cmd/swag@latest
+          swag init -g main.go
+      
+      - name: Generate code coverage
+        run: go test -coverprofile=coverage.out ./...
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage.out
+          flags: backend
 
   test-frontend:
     runs-on: ubuntu-latest
