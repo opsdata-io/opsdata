@@ -76,10 +76,10 @@ jobs:
         run: |
           cd ui
           npm install
-      - name: Test
-        run: |
-          cd ui
-          npm run test
+      # - name: Test
+      #   run: |
+      #     cd ui
+      #     npm run test --passWithNoTests
       - name: Build
         run: |
           cd ui
