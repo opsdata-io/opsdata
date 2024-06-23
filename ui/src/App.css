@@ -1,0 +1,72 @@
+/* App.css */
+
+.app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+}
+
+.banner {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    /* Center items vertically */
+}
+
+.logo {
+    margin-right: 10px;
+    /* Adjust spacing between logo and text */
+}
+
+.banner-text {
+    flex: 1;
+    /* Take remaining space */
+    text-align: center;
+    /* Center align text horizontally */
+}
+
+.main-content {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.side-menu {
+    width: 250px;
+    background-color: #f0f0f0;
+    padding: 20px;
+}
+
+.side-menu .sidebar-heading {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.side-menu .list-group-item {
+    cursor: pointer;
+    border: none;
+    padding: 10px 0;
+    transition: all 0.3s ease;
+}
+
+.side-menu .list-group-item:hover {
+    background-color: #ddd;
+}
+
+.side-menu .submenu {
+    margin-left: 10px;
+    transform: translateX(0);
+    transition: transform 0.3s ease;
+}
+
+.side-menu .submenu-open {
+    transform: translateX(10px);
+}
+
+.side-menu .active {
+    background-color: #ccc;
+    font-weight: bold;
+}

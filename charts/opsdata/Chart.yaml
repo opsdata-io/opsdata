@@ -1,0 +1,15 @@
+apiVersion: v1
+name: opsdata
+version: 0.1.0
+appVersion: 0.1.0
+description: opsdata is a tool tunneling prometheus metrics from a kubernetes cluster to a remote exporter.
+keywords:
+- kubernetes
+- monitoring
+home: https://support.tools/
+sources:
+- https://github.com/supporttools/Prometheus-Tunnel
+maintainers:
+- name: mattmattox
+  email: mmattox@support.tools
+icon: https://cdn.support.tools/profiles/avatar-centered.png

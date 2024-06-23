@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app: "opsdata"
+    component: "frontend"
+    release: "{{ .Release.Name }}"
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: "opsdata"
+      component: "frontend"
+      release: "{{ .Release.Name }}"
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9000"
+        prometheus.io/path: "/metrics"
+      labels:
+        app: "opsdata"
+        component: "frontend"
+        release: "{{ .Release.Name }}"
+    spec:
+      imagePullSecrets:
+        {{- toYaml .Values.imagePullSecrets | nindent 8 }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      serviceAccountName: "{{ .Release.Name }}"
+      containers:
+        - name: frontend
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}/frontend:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: "{{ .Values.image.pullPolicy }}"  # Ensure imagePullPolicy is quoted
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+            - name: metrics
+              containerPort: 9000
+              protocol: TCP
+          env:
+            - name: BACKEND_API
+              value: "http://backend:8080"
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            {{- toYaml .Values.volumeMounts | nindent 12 }}  # Adjust indentation
+      volumes:
+        {{- toYaml .Values.volumes | nindent 8 }}  # Adjust indentation
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}  # Adjust indentation
+      affinity:
+        {{- toYaml .Values.affinity | nindent 8 }}  # Adjust indentation
+      tolerations:
+        {{- toYaml .Values.tolerations | nindent 8 }}  # Adjust indentation

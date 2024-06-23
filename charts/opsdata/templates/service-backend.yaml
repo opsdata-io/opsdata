@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  labels:
+    app: "opsdata"
+    component: "backend"
+    release: "{{ .Release.Name }}"
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9000"  # Ensure port is quoted to be interpreted as string
+    prometheus.io/path: "/metrics"
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+    - name: metrics
+      port: 9000
+      targetPort: 9000
+      protocol: TCP
+  selector:
+    app: "opsdata"
+    component: "backend"
+    release: "{{ .Release.Name }}"

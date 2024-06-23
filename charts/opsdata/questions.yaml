@@ -1,0 +1,28 @@
+questions:
+  - variable: settings.debug
+    default: false
+    description: "Enable debug logging for detailed output."
+    label: "Enable Debug Logging"
+    type: bool
+    group: "Debug Settings"
+
+  - variable: settings.metrics.enabled
+    default: true
+    description: "Enable metrics server to collect and expose metrics."
+    label: "Enable Metrics Server"
+    type: bool
+    group: "Metrics Settings"
+
+  - variable: settings.metrics.port
+    default: 9000
+    description: "Port on which the metrics server will be available."
+    label: "Metrics Server Port"
+    type: int
+    group: "Metrics Settings"
+
+  - variable: settings.serverPort
+    default: 8080
+    description: "Port on the server will be available."
+    label: "Server Port"
+    type: int
+    group: "Server Settings"

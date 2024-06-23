@@ -1,0 +1,114 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  labels:
+    app: "opsdata"
+    component: "backend"
+    release: "{{ .Release.Name }}"
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: "opsdata"
+      component: "backend"
+      release: "{{ .Release.Name }}"
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9000"  # Ensure port is quoted to be interpreted as string
+        prometheus.io/path: "/metrics"
+      labels:
+        app: "opsdata"
+        component: "backend"
+        release: "{{ .Release.Name }}"
+    spec:
+      imagePullSecrets:
+        {{- toYaml .Values.imagePullSecrets | nindent 8 }}  # Adjust indentation
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      serviceAccountName: "{{ .Release.Name }}"
+      containers:
+        - name: backend
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}/backend:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: "{{ .Values.image.pullPolicy }}"  # Ensure imagePullPolicy is quoted
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+            - name: metrics
+              containerPort: 9000
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+          env:
+            - name: DEBUG
+              value: "{{ .Values.settings.debug }}"
+            - name: METRICS_PORT
+              value: "9000"  # Ensure port is quoted to be interpreted as string
+            - name: SERVER_PORT
+              value: "8080"  # Ensure port is quoted to be interpreted as string
+            - name: JWT_SECRET
+              value: "{{ .Values.settings.jwtSecret }}"
+            - name: ENCRYPTION_KEY
+              value: "{{ .Values.settings.encryptionKey }}"
+            - name: S3_BUCKET
+              value: "{{ .Values.settings.s3Bucket }}"
+            - name: S3_REGION
+              value: "{{ .Values.settings.s3Region }}"
+            - name: S3_ENDPOINT
+              value: "{{ .Values.settings.s3Endpoint }}"
+            - name: DB_HOST
+              value: "{{ .Values.settings.dbHost }}"
+            - name: DB_PORT
+              value: "{{ .Values.settings.dbPort }}"
+            - name: DB_USER
+              value: "{{ .Values.settings.dbUser }}"
+            - name: DB_PASSWORD
+              value: "{{ .Values.settings.dbPassword }}"
+            - name: DB_NAME
+              value: "{{ .Values.settings.dbName }}"
+            - name: ADMIN_EMAIL
+              value: "{{ .Values.settings.adminEmail }}"
+            - name: ADMIN_PASSWORD
+              value: "{{ .Values.settings.adminPassword }}"
+            - name: SENDGRID_SENDER_EMAIL
+              value: "{{ .Values.settings.sendGridSenderEmail }}"
+            - name: SENDGRID_SENDER_NAME
+              value: "{{ .Values.settings.sendGridSenderName }}"
+            - name: S3_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: s3-credentials
+                  key: s3AccessKey
+            - name: S3_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: s3-credentials
+                  key: s3SecretKey
+            - name: SENDGRID_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: sendgrid-credentials
+                  key: sendGridAPIKey
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            {{- toYaml .Values.volumeMounts | nindent 12 }}  # Adjust indentation
+      volumes:
+        {{- toYaml .Values.volumes | nindent 8 }}  # Adjust indentation
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}  # Adjust indentation
+      affinity:
+        {{- toYaml .Values.affinity | nindent 8 }}  # Adjust indentation
+      tolerations:
+        {{- toYaml .Values.tolerations | nindent 8 }}  # Adjust indentation

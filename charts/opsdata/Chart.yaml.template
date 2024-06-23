@@ -1,0 +1,13 @@
+apiVersion: v1
+name: opsdata
+version: ${CHART_VERSION}
+appVersion: ${APP_VERSION}
+description: opsdata.io
+kubeVersion: ">=1.25"
+home: https://opsdata.io
+sources:
+- https://github.com/opsdata-io/opsdata
+maintainers:
+- name: mattmattox
+  email: mmattox@support.tools
+icon: https://cdn.support.tools/profiles/avatar-centered.png

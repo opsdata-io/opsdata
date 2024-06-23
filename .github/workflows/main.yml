@@ -1,0 +1,176 @@
+name: Test, Build, and Publish
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.22'
+
+      - name: Install static analysis tools
+        run: |
+          go install golang.org/x/lint/golint@latest
+          go install honnef.co/go/tools/cmd/staticcheck@latest
+
+      - name: Install dependency management tools
+        run: |
+          go install github.com/securego/gosec/v2/cmd/gosec@latest
+          go install github.com/psampaz/go-mod-outdated@latest
+
+      - name: Go static analysis
+        run: |
+          golint ./...
+          staticcheck ./...
+          go vet ./...
+
+      - name: Dependency management
+        run: |
+          go mod vendor
+          go mod verify
+          go mod tidy
+
+      - name: Security scanning
+        run: gosec ./...
+
+  test-frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: |
+          cd ui
+          npm install
+      - name: Test
+        run: |
+          cd ui
+          npm run test
+      - name: Build
+        run: |
+          cd ui
+          npm run build
+
+  build-backend:
+    runs-on: ubuntu-latest
+    needs: test-backend
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Docker build backend
+        run: |
+          docker buildx build \
+            --platform linux/amd64 \
+            --pull \
+            --build-arg VERSION=v${{ github.run_number }} \
+            --build-arg GIT_COMMIT=${{ github.sha }} \
+            --build-arg BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
+            --cache-from opsdata/backend:latest \
+            -t opsdata/backend:"v${{ github.run_number }}" \
+            -t opsdata/backend:latest \
+            --push \
+            -f Dockerfile .
+
+  build-frontend:
+    runs-on: ubuntu-latest
+    needs: test-frontend
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Docker build frontend
+        run: |
+          cd ui
+          docker buildx build \
+            --platform linux/amd64 \
+            --pull \
+            -t opsdata/frontend:"v${{ github.run_number }}" \
+            -t opsdata/frontend:latest \
+            --push \
+            -f Dockerfile .
+
+  publish:
+    runs-on: ubuntu-latest
+    needs:
+      - build-backend
+      - build-frontend
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v4.2.0
+
+      - name: Helm Lint
+        run: helm lint charts/opsdata/
+
+      - name: Package Helm chart
+        run: |
+          export CHART_VERSION="v${{ github.run_number }}"
+          export APP_VERSION="v${{ github.run_number }}"
+          export IMAGE_TAG="v${{ github.run_number }}"
+          echo "CHART_VERSION=${CHART_VERSION}"
+          echo "APP_VERSION=${APP_VERSION}"
+          echo "IMAGE_TAG=${IMAGE_TAG}"
+          envsubst < charts/opsdata/Chart.yaml.template > charts/opsdata/Chart.yaml
+          envsubst < charts/opsdata/values.yaml.template > charts/opsdata/values.yaml
+          helm package charts/opsdata --destination helm/repo
+
+      - name: Checkout helm-chart repository
+        uses: actions/checkout@v4
+        with:
+          repository: supporttools/helm-chart
+          path: helm-chart
+          token: ${{ secrets.BOT_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config --global user.email "github-action@users.noreply.github.com"
+          git config --global user.name "GitHub Action"
+
+      - name: Update Helm repository
+        run: |
+          cp helm/repo/opsdata-*.tgz helm-chart/
+          cd helm-chart
+          helm repo index . --url https://charts.support.tools
+          git add .
+          git commit -m "Update Helm chart for opsdata"
+          git push
