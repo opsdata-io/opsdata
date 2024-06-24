@@ -40,8 +40,9 @@ func main() {
 		AllowMethods: "GET, POST, PUT, DELETE, OPTIONS",
 	}))
 
+	// Custom logging middleware
 	app.Use(logger.New(logger.Config{
-		Format:     "${time} ${status} - ${method} ${path} - ${latency} - IP: ${reqHeader:X-Forwarded-For} - Host: ${host} - Protocol: ${protocol} - Referer: ${referer} - UserAgent: ${ua}\n",
+		Format:     "${time} ${status} - ${method} ${path} - ${latency} - IP: ${reqHeader:CF-Connecting-IP} - Host: ${host} - Protocol: ${protocol} - Referer: ${referer} - UserAgent: ${ua}\n",
 		TimeFormat: "02-Jan-2006 15:04:05",
 		TimeZone:   "Local",
 	}))
