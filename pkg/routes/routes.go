@@ -32,4 +32,6 @@ func SetupRoutes(app *fiber.App) {
 
 	// Version endpoint
 	app.Get("/v1/version", handlers.GetVersion)
+	app.Get("/v1/healthz", handlers.GetHealth)
+	app.Get("/v1/readyz", handlers.GetReady)
 }

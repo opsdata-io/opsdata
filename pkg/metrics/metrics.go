@@ -5,12 +5,10 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/opsdata-io/opsdata/pkg/config"
+	"github.com/opsdata-io/opsdata/pkg/logging"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"github.com/opsdata-io/opsdata/pkg/config"
-	"github.com/opsdata-io/opsdata/pkg/health"
-	"github.com/opsdata-io/opsdata/pkg/logging"
-	"github.com/opsdata-io/opsdata/pkg/version"
 )
 
 var logger = logging.SetupLogging()
@@ -37,9 +35,6 @@ func StartMetricsServer() {
 	logger.Debug("Starting metrics server setup")
 	mux := http.NewServeMux()
 	mux.Handle("/metrics", promhttp.Handler())
-	mux.HandleFunc("/healthz", health.HealthzHandler())
-	mux.HandleFunc("/readyz", health.ReadyzHandler())
-	mux.HandleFunc("/version", version.GetVersion) // Use version.GetVersion for version endpoint
 
 	serverPortStr := strconv.Itoa(config.CFG.MetricsPort)
 	logger.Printf("Metrics server starting on port %s\n", serverPortStr)

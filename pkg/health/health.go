@@ -2,7 +2,6 @@ package health
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/opsdata-io/opsdata/pkg/logging"
@@ -16,20 +15,6 @@ type VersionInfo struct {
 	Version   string `json:"version"`
 	GitCommit string `json:"gitCommit"`
 	BuildTime string `json:"buildTime"`
-}
-
-// HealthzHandler checks the health status of all monitors.
-func HealthzHandler() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, "ok")
-	}
-}
-
-// ReadyzHandler checks the readiness of the application components.
-func ReadyzHandler() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, "ok")
-	}
 }
 
 // VersionHandler returns version information as JSON.
