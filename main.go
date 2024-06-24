@@ -36,8 +36,8 @@ func main() {
 	// CORS middleware
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: "*",
-		AllowHeaders: "Content-Type, Authorization",
-		AllowMethods: "GET, POST, PUT, DELETE, OPTIONS",
+		AllowHeaders: "*",
+		AllowMethods: "*",
 	}))
 
 	// Custom logging middleware

@@ -30,7 +30,7 @@ func SetupRoutes(app *fiber.App) {
 	app.Post("/upload/:link", middleware.AuthenticateJWT, handlers.UploadFile)
 	app.Get("/files", middleware.AuthenticateJWT, handlers.DownloadFiles)
 
-	// Version endpoint
+	// Health check and version endpoints
 	app.Get("/v1/version", handlers.GetVersion)
 	app.Get("/v1/healthz", handlers.GetHealth)
 	app.Get("/v1/readyz", handlers.GetReady)
