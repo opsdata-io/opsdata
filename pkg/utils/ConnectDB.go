@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/opsdata-io/opsdata/pkg/config"
 	"github.com/opsdata-io/opsdata/pkg/models"
@@ -25,16 +26,19 @@ func ConnectDB() {
 	)
 	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
-		logger.Fatalln("Failed to connect to database:", err)
+		log.Fatalf("Failed to connect to database: %v", err)
 	}
 
 	// Migrate the schema
-	DB.AutoMigrate(
+	err = DB.AutoMigrate(
 		&models.User{},
 		&models.UploadLink{},
 		&models.FileMetadata{},
 		&models.Customer{},
 	)
+	if err != nil {
+		log.Fatalf("Failed to migrate database schema: %v", err)
+	}
 
 	// Check if admin user exists
 	var admin models.User
@@ -43,13 +47,13 @@ func ConnectDB() {
 		// Create the admin user
 		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(config.CFG.AdminPassword), bcrypt.DefaultCost)
 		if err != nil {
-			logger.Fatalf("Failed to hash password: %v", err)
+			log.Fatalf("Failed to hash password: %v", err)
 		}
 		admin = models.User{
 			Email:    config.CFG.AdminEmail,
 			Password: string(hashedPassword),
 		}
 		DB.Create(&admin)
-		logger.Printf("Admin user created with email: %s and password: %s\n", config.CFG.AdminEmail, config.CFG.AdminPassword)
+		log.Printf("Admin user created with email: %s and password: %s\n", config.CFG.AdminEmail, config.CFG.AdminPassword)
 	}
 }

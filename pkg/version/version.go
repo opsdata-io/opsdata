@@ -2,6 +2,7 @@ package version
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 )
 
@@ -31,5 +32,8 @@ var VersionResponse = info{
 // GetVersion returns the application version information
 func GetVersion(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(VersionResponse)
+	if err := json.NewEncoder(w).Encode(VersionResponse); err != nil {
+		http.Error(w, "Failed to encode version response", http.StatusInternalServerError)
+		log.Printf("Failed to encode version response: %v", err)
+	}
 }

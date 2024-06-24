@@ -21,6 +21,8 @@ func DownloadFromS3(filename string) ([]byte, error) {
 	}
 
 	buf := new(bytes.Buffer)
-	buf.ReadFrom(result.Body)
+	if _, err := buf.ReadFrom(result.Body); err != nil {
+		return nil, err
+	}
 	return buf.Bytes(), nil
 }
