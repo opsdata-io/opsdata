@@ -1,4 +1,3 @@
-
 # Default values for opsdata.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
@@ -7,12 +6,28 @@ settings:
   debug: false
   metrics:
     port: 9000
-  serverPort: 8080
+  jwtSecret: "your-jwt-secret"
+  encryptionKey: "your-encryption-key"
+  s3Bucket: "supporttools-upload"
+  s3Region: "us-east-1"
+  s3Endpoint: "https://s3.wasabisys.com"
+  s3AccessKey: "your-s3-access-key"
+  s3SecretKey: "your-s3-secret-key"
+  dbHost: "localhost"
+  dbPort: 3306
+  dbUser: "root"
+  dbPassword: "password"
+  dbName: "upload"
+  adminEmail: "admin@support.tools"
+  adminPassword: "password"
+  sendGridAPIKey: "your-sendgrid-api-key"
+  sendGridSenderEmail: "<EMAIL>"
+  sendGridSenderName: "<NAME>"
 
 replicaCount: 1
 
 image:
-  repository: opsdata/opsdata
+  repository: opsdata
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ${IMAGE_TAG}
