@@ -52,6 +52,7 @@ const AddCustomerPage = ({ token }) => {
         <div>
             <h2>Customer Management</h2>
             <h3>Add Customer</h3>
+            {error && <div style={{ color: 'red' }}>{error}</div>} {/* Display error message */}
             <form onSubmit={handleSubmit}>
                 <table style={{ width: '100%' }}>
                     <tbody>
@@ -121,7 +122,6 @@ const AddCustomerPage = ({ token }) => {
                                 <textarea name="notes" value={customerData.notes} onChange={handleChange} rows="4"></textarea>
                             </td>
                         </tr>
-
                     </tbody>
                 </table>
                 <button type="submit" style={{ marginTop: '1rem' }}>Submit</button>

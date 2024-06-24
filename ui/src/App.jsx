@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import Dashboard from './pages/Dashboard';
-import CustomerPage from './pages/CustomerPage';
 import UploadPage from './pages/UploadPage';
 import ConfirmationPage from './pages/ConfirmationPage';
 import DownloadPage from './pages/DownloadPage';
@@ -20,11 +19,6 @@ function App() {
     const handleSetToken = (token) => {
         localStorage.setItem('token', token); // Save token to local storage
         setToken(token); // Set token in component state
-    };
-
-    const handleLogout = () => {
-        localStorage.removeItem('token'); // Remove token from local storage
-        setToken(null); // Clear token in component state
     };
 
     return (
