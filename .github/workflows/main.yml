@@ -48,7 +48,7 @@ jobs:
 
       - name: Generate Swagger documentation
         run: |
-          go get -u github.com/swaggo/swag/cmd/swag@latest
+          go install github.com/swaggo/swag/cmd/swag@latest
           swag init -g main.go
       
       - name: Generate code coverage
