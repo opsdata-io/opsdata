@@ -16,8 +16,11 @@ COPY . .
 # Build the React application
 RUN npm run build
 
+# Install serve to serve the build directory
+RUN npm install -g serve
+
 # Expose the port on which your React app will run (default is 3000)
 EXPOSE 3000
 
-# Start the React app
-CMD ["npm", "start"]
+# Start the React app using serve
+CMD ["serve", "-s", "build"]

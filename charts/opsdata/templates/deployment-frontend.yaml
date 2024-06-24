@@ -43,7 +43,7 @@ spec:
               containerPort: 9000
               protocol: TCP
           env:
-            - name: BACKEND_API
+            - name: REACT_APP_BACKEND_API
               value: "http://backend:8080"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
