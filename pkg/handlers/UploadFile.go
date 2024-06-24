@@ -3,7 +3,6 @@ package handlers
 import (
 	"io"
 	"log"
-	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
@@ -70,10 +69,9 @@ func UploadFile(c *fiber.Ctx) error {
 
 	// Save file metadata to the database
 	fileMetadata := &models.FileMetadata{
-		ID:        fileID,
-		LinkID:    uploadLink.ID,
-		FileName:  file.Filename,
-		CreatedAt: time.Now(),
+		ID:       fileID,
+		LinkID:   uploadLink.ID,
+		FileName: file.Filename,
 	}
 	if err := utils.SaveFileMetadata(fileMetadata); err != nil {
 		log.Println("Error saving file metadata:", err)
