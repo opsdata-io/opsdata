@@ -18,12 +18,18 @@ func ConnectDB() {
 	var err error
 
 	// Connect to MySQL server without specifying the database
-	serverDSN := fmt.Sprintf("%s:%s@tcp(%s:%d)/?charset=utf8mb4&parseTime=True&loc=Local",
-		config.CFG.DBUser,
-		config.CFG.DBPassword,
-		config.CFG.DBHost,
-		config.CFG.DBPort,
-	)
+	var serverDSN string
+	if config.CFG.DSN != "" {
+		serverDSN = config.CFG.DSN
+	} else {
+		serverDSN = fmt.Sprintf("%s:%s@tcp(%s:%d)/?charset=utf8mb4&parseTime=True&loc=Local",
+			config.CFG.DBUser,
+			config.CFG.DBPassword,
+			config.CFG.DBHost,
+			config.CFG.DBPort,
+		)
+	}
+
 	serverDB, err := gorm.Open(mysql.Open(serverDSN), &gorm.Config{})
 	if err != nil {
 		logger.Fatalf("Failed to connect to MySQL server: %v", err)

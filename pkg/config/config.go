@@ -23,6 +23,7 @@ type AppConfig struct {
 	S3Endpoint          string `json:"s3Endpoint"`
 	S3AccessKey         string `json:"s3AccessKey"`
 	S3SecretKey         string `json:"s3SecretKey"`
+	DSN                 string `json:"dsn"`
 	DBHost              string `json:"dbHost"`
 	DBPort              int    `json:"dbPort"`
 	DBUser              string `json:"dbUser"`
@@ -51,6 +52,7 @@ func LoadConfiguration() {
 	s3Endpoint := getEnvOrDefault("S3_ENDPOINT", "https://s3.wasabisys.com")
 	s3AccessKey := getEnvOrDefault("S3_ACCESS_KEY", "your-access-key")
 	s3SecretKey := getEnvOrDefault("S3_SECRET_KEY", "your-secret-key")
+	dsn := getEnvOrDefault("DSN", "")
 	dbHost := getEnvOrDefault("DB_HOST", "localhost")
 	dbPort := parseEnvInt("DB_PORT", 3306)
 	dbUser := getEnvOrDefault("DB_USER", "root")
@@ -75,6 +77,7 @@ func LoadConfiguration() {
 	CFG.S3Endpoint = s3Endpoint
 	CFG.S3AccessKey = s3AccessKey
 	CFG.S3SecretKey = s3SecretKey
+	CFG.DSN = dsn
 	CFG.DBHost = dbHost
 	CFG.DBPort = dbPort
 	CFG.DBUser = dbUser
