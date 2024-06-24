@@ -17,11 +17,9 @@ var DB *gorm.DB
 func ConnectDB() {
 	var err error
 
-	// Connect to MySQL server without specifying the database
-	var serverDSN string
-	if config.CFG.DSN != "" {
-		serverDSN = config.CFG.DSN
-	} else {
+	// Determine the server DSN
+	serverDSN := config.CFG.DSN
+	if serverDSN == "" {
 		serverDSN = fmt.Sprintf("%s:%s@tcp(%s:%d)/?charset=utf8mb4&parseTime=True&loc=Local",
 			config.CFG.DBUser,
 			config.CFG.DBPassword,
@@ -30,6 +28,7 @@ func ConnectDB() {
 		)
 	}
 
+	// Connect to MySQL server
 	serverDB, err := gorm.Open(mysql.Open(serverDSN), &gorm.Config{})
 	if err != nil {
 		logger.Fatalf("Failed to connect to MySQL server: %v", err)
@@ -41,15 +40,20 @@ func ConnectDB() {
 		logger.Fatalf("Failed to create database: %v", err)
 	}
 
+	// Determine the database DSN
+	dbDSN := config.CFG.DSN
+	if dbDSN == "" {
+		dbDSN = fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+			config.CFG.DBUser,
+			config.CFG.DBPassword,
+			config.CFG.DBHost,
+			config.CFG.DBPort,
+			config.CFG.DBName,
+		)
+	}
+
 	// Connect to the specific database
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
-		config.CFG.DBUser,
-		config.CFG.DBPassword,
-		config.CFG.DBHost,
-		config.CFG.DBPort,
-		config.CFG.DBName,
-	)
-	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	DB, err = gorm.Open(mysql.Open(dbDSN), &gorm.Config{})
 	if err != nil {
 		logger.Fatalf("Failed to connect to database: %v", err)
 	}
