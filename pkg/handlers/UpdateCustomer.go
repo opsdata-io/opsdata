@@ -4,10 +4,9 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/opsdata-io/opsdata/pkg/models"
 	"github.com/opsdata-io/opsdata/pkg/utils"
-
-	_ "github.com/swaggo/fiber-swagger"
 )
 
+// UpdateCustomer handles updating an existing customer by ID
 // @Summary Update a customer by ID
 // @Description Updates an existing customer in the database by ID
 // @Tags Customers

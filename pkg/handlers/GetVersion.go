@@ -3,8 +3,6 @@ package handlers
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/opsdata-io/opsdata/pkg/version"
-
-	_ "github.com/swaggo/fiber-swagger"
 )
 
 // GetVersion handles fetching version information
@@ -17,13 +15,13 @@ import (
 func GetVersion(c *fiber.Ctx) error {
 	// Fetch version information from the version package
 	versionInfo := version.Version
-	commit := version.GitCommit
+	gitCommit := version.GitCommit
 	buildTime := version.BuildTime
 
 	// Construct JSON response
 	response := map[string]interface{}{
 		"version":   versionInfo,
-		"gitCommit": commit,
+		"gitCommit": gitCommit,
 		"buildTime": buildTime,
 	}
 

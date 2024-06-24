@@ -2,8 +2,6 @@ package handlers
 
 import (
 	"github.com/gofiber/fiber/v2"
-
-	_ "github.com/swaggo/fiber-swagger"
 )
 
 // SearchUsers handles searching users based on certain criteria

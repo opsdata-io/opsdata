@@ -6,6 +6,7 @@ import (
 	"github.com/opsdata-io/opsdata/pkg/middleware"
 )
 
+// SetupRoutes initializes all routes for the application
 func SetupRoutes(app *fiber.App) {
 	// Customer routes
 	app.Get("/v1/customers", handlers.GetCustomers)           // Get all customers

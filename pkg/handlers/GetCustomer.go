@@ -3,10 +3,9 @@ package handlers
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/opsdata-io/opsdata/pkg/utils"
-
-	_ "github.com/swaggo/fiber-swagger"
 )
 
+// GetCustomer handles fetching a customer from the database by ID.
 // @Summary Get a customer by ID
 // @Description Retrieves a customer from the database by ID
 // @Tags Customers

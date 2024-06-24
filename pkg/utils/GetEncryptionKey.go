@@ -4,10 +4,7 @@ import (
 	"github.com/opsdata-io/opsdata/pkg/config"
 )
 
-func GetJWTSecret() string {
-	return config.CFG.JWTSecret
-}
-
+// GetEncryptionKey returns the encryption key
 func GetEncryptionKey() string {
 	return config.CFG.EncryptionKey
 }

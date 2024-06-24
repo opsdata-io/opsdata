@@ -4,10 +4,9 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/opsdata-io/opsdata/pkg/models"
 	"github.com/opsdata-io/opsdata/pkg/utils"
-
-	_ "github.com/swaggo/fiber-swagger"
 )
 
+// CreateCustomer creates a new customer in the database and returns the new customer object in JSON format
 // @Summary Create a new customer
 // @Description Creates a new customer in the database
 // @Tags Customers

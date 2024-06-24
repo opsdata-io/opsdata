@@ -4,11 +4,9 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/opsdata-io/opsdata/pkg/models"
 	"github.com/opsdata-io/opsdata/pkg/utils"
-
-	_ "github.com/swaggo/fiber-swagger"
 )
 
-// CreateUser handles creating a new user
+// CreateUser handles creating a new user based on request payload
 // @Summary Create a new user
 // @Description Creates a new user based on request payload
 // @Tags Users

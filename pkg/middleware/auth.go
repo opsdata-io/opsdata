@@ -8,6 +8,7 @@ import (
 	"github.com/opsdata-io/opsdata/pkg/utils"
 )
 
+// AuthenticateJWT is a middleware function that authenticates a JWT token and sets the user to the context if successful
 func AuthenticateJWT(c *fiber.Ctx) error {
 	authHeader := c.Get("Authorization")
 	if authHeader == "" {

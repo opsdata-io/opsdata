@@ -3,8 +3,6 @@ package handlers
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/opsdata-io/opsdata/pkg/utils"
-
-	_ "github.com/swaggo/fiber-swagger"
 )
 
 // GetUser handles fetching a single user by ID

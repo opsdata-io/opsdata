@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"io/ioutil"
+	"io"
 	"log"
 	"time"
 
@@ -9,10 +9,9 @@ import (
 	"github.com/google/uuid"
 	"github.com/opsdata-io/opsdata/pkg/models"
 	"github.com/opsdata-io/opsdata/pkg/utils"
-
-	_ "github.com/swaggo/fiber-swagger"
 )
 
+// UploadFile handles uploading a file to the specified upload link
 // @Summary Upload a file
 // @Description Uploads a file to the specified upload link
 // @Tags Uploads
@@ -50,7 +49,7 @@ func UploadFile(c *fiber.Ctx) error {
 	defer fileContent.Close()
 
 	// Read the file content
-	fileData, err := ioutil.ReadAll(fileContent)
+	fileData, err := io.ReadAll(fileContent)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(map[string]interface{}{"error": "Cannot read file"})
 	}

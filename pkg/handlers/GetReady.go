@@ -2,10 +2,9 @@ package handlers
 
 import (
 	"github.com/gofiber/fiber/v2"
-
-	_ "github.com/swaggo/fiber-swagger"
 )
 
+// GetReady handles fetching the ready status of the application
 // @Summary Get Ready Status
 // @Description Retrieves the readiness status of the application
 // @Tags Ready

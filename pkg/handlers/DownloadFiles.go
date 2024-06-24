@@ -6,10 +6,9 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/opsdata-io/opsdata/pkg/models"
 	"github.com/opsdata-io/opsdata/pkg/utils"
-
-	_ "github.com/swaggo/fiber-swagger"
 )
 
+// DownloadFiles handles downloading files uploaded by the authenticated user
 // @Summary Download files uploaded by the user
 // @Description Retrieves files uploaded by the authenticated user with download links
 // @Tags Files

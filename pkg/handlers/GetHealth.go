@@ -2,10 +2,9 @@ package handlers
 
 import (
 	"github.com/gofiber/fiber/v2"
-
-	_ "github.com/swaggo/fiber-swagger"
 )
 
+// GetHealth handles fetching the health status of the application
 // @Summary Get Health Status
 // @Description Retrieves the health status of the application
 // @Tags Health

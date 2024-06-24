@@ -6,8 +6,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/opsdata-io/opsdata/pkg/models"
 	"github.com/opsdata-io/opsdata/pkg/utils"
-
-	_ "github.com/swaggo/fiber-swagger"
 )
 
 // CreateUploadLinkRequest defines the request structure for creating an upload link
@@ -18,6 +16,7 @@ type CreateUploadLinkRequest struct {
 	Notes      string `json:"notes" binding:"required"`
 }
 
+// CreateUploadLink handles creating an upload link for a specific customer case
 // @Summary Create an upload link
 // @Description Creates an upload link for a specific customer case
 // @Tags Uploads

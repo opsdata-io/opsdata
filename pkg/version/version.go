@@ -14,14 +14,15 @@ var GitCommit = "MISSING GIT COMMIT"
 // BuildTime is the time the application was built
 var BuildTime = "MISSING BUILD TIME"
 
-type VersionInfo struct {
+// VersionInfo holds the version information
+type info struct {
 	Version   string `json:"version"`
 	GitCommit string `json:"git_commit"`
 	BuildTime string `json:"build_time"`
 }
 
 // VersionResponse holds the version information
-var VersionResponse = VersionInfo{
+var VersionResponse = info{
 	Version:   Version,
 	GitCommit: GitCommit,
 	BuildTime: BuildTime,
