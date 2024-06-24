@@ -5,30 +5,26 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/opsdata-io/opsdata/pkg/config"
 	"github.com/opsdata-io/opsdata/pkg/metrics"
 	"github.com/opsdata-io/opsdata/pkg/routes"
 	"github.com/opsdata-io/opsdata/pkg/utils"
-	"github.com/sirupsen/logrus"
 
 	// Import swag
 	_ "github.com/opsdata-io/opsdata/docs"
-	swagger "github.com/swaggo/fiber-swagger" // replace with the name of your module
+	swagger "github.com/swaggo/fiber-swagger"
 )
 
 func main() {
 	// Load configuration
 	config.LoadConfiguration()
 
-	// Initialize logger
-	logger := logrus.New()
-	logger.SetFormatter(&logrus.TextFormatter{})
-
-	logger.Infoln("Starting OpsData API Server")
+	fmt.Println("Starting OpsData API Server")
 
 	// Initialize S3
 	if err := utils.InitS3(); err != nil {
-		logger.Fatalln("Failed to initialize S3:", err)
+		fmt.Println("Failed to initialize S3:", err)
 	}
 
 	// Start metrics server
@@ -37,20 +33,19 @@ func main() {
 	// Setup Fiber
 	app := fiber.New()
 
-	// Middleware
+	// CORS middleware
 	app.Use(cors.New(cors.Config{
-		AllowOrigins: "*",
-		AllowHeaders: "*",
-		AllowMethods: "*",
+		AllowOrigins:     "*",
+		AllowHeaders:     "Content-Type, Authorization",
+		AllowCredentials: true,
+		AllowMethods:     "GET, POST, PUT, DELETE, OPTIONS",
 	}))
 
-	// Custom logging middleware
-	app.Use(func(c *fiber.Ctx) error {
-		logger := logrus.New()
-		logger.SetFormatter(&logrus.TextFormatter{})
-		logger.Infof("%s %s", c.Method(), c.Path())
-		return c.Next()
-	})
+	app.Use(logger.New(logger.Config{
+		Format:     "${time} ${status} - ${method} ${path} - ${latency} - IP: ${reqHeader:X-Forwarded-For} - Host: ${host} - Protocol: ${protocol} - Referer: ${referer} - UserAgent: ${ua}\n",
+		TimeFormat: "02-Jan-2006 15:04:05",
+		TimeZone:   "Local",
+	}))
 
 	// Routes
 	routes.SetupRoutes(app)
@@ -63,6 +58,6 @@ func main() {
 
 	// Start Server
 	if err := app.Listen(fmt.Sprintf(":%d", config.CFG.ServerPort)); err != nil {
-		logger.Fatalln("Failed to start server:", err)
+		fmt.Println("Failed to start server:", err)
 	}
 }
