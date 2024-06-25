@@ -32,18 +32,6 @@ func CreateCustomer(c *fiber.Ctx) error {
 	if customer.Address == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(map[string]interface{}{"error": "Address is required"})
 	}
-	if customer.ContactName == "" {
-		return c.Status(fiber.StatusBadRequest).JSON(map[string]interface{}{"error": "ContactName is required"})
-	}
-	if customer.ContactTitle == "" {
-		return c.Status(fiber.StatusBadRequest).JSON(map[string]interface{}{"error": "ContactTitle is required"})
-	}
-	if customer.ContactEmail == "" {
-		return c.Status(fiber.StatusBadRequest).JSON(map[string]interface{}{"error": "ContactEmail is required"})
-	}
-	if customer.ContactPhone == "" {
-		return c.Status(fiber.StatusBadRequest).JSON(map[string]interface{}{"error": "ContactPhone is required"})
-	}
 	// Validate SubscriptionStatus
 	if !isValidSubscriptionStatus(customer.SubscriptionStatus) {
 		return c.Status(fiber.StatusBadRequest).JSON(map[string]interface{}{"error": "Invalid SubscriptionStatus"})

@@ -44,10 +44,6 @@ func UpdateCustomer(c *fiber.Ctx) error {
 	// Update customer fields
 	customer.CompanyName = updateCustomer.CompanyName
 	customer.Address = updateCustomer.Address
-	customer.ContactName = updateCustomer.ContactName
-	customer.ContactTitle = updateCustomer.ContactTitle
-	customer.ContactEmail = updateCustomer.ContactEmail
-	customer.ContactPhone = updateCustomer.ContactPhone
 	customer.Notes = updateCustomer.Notes
 	customer.SubscriptionStatus = updateCustomer.SubscriptionStatus
 
