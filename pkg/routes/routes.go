@@ -12,12 +12,12 @@ import (
 // SetupRoutes initializes all routes for the application
 func SetupRoutes(app *fiber.App) {
 	// Customer routes
-	app.Get("/api/customers", middleware.AuthenticateJWT, handlers.GetCustomers)           // Get all customers
-	app.Get("/api/customers/:id", middleware.AuthenticateJWT, handlers.GetCustomer)        // Get a single customer by ID
 	app.Post("/api/customers", middleware.AuthenticateJWT, handlers.CreateCustomer)        // Create a new customer
+	app.Get("/api/customers", middleware.AuthenticateJWT, handlers.GetCustomers)           // Get all customers
+	app.Get("/api/customers/search", middleware.AuthenticateJWT, handlers.SearchCustomers) // Search customers
+	app.Get("/api/customers/:id", middleware.AuthenticateJWT, handlers.GetCustomer)        // Get a single customer by ID
 	app.Put("/api/customers/:id", middleware.AuthenticateJWT, handlers.UpdateCustomer)     // Update a customer by ID
 	app.Delete("/api/customers/:id", middleware.AuthenticateJWT, handlers.DeleteCustomer)  // Delete a customer by ID
-	app.Get("/api/customers/search", middleware.AuthenticateJWT, handlers.SearchCustomers) // Search customers
 
 	// User routes
 	app.Get("/api/users", middleware.AuthenticateJWT, handlers.GetUsers)           // Get all users
