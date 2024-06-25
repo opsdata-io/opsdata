@@ -3,7 +3,7 @@
 import axios from 'axios';
 
 export const login = async (credentials) => {
-    return await axios.post(`/api/v1/login`, credentials);
+    return await axios.post(`/api/login`, credentials);
 };
 
 export const createUploadLink = async (token) => {
@@ -39,7 +39,7 @@ export const downloadFiles = async (token) => {
 };
 
 export const getCustomers = async (token) => {
-    return await axios.get(`/api/v1/customers`, {
+    return await axios.get(`/api/customers`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
@@ -47,7 +47,7 @@ export const getCustomers = async (token) => {
 };
 
 export const createCustomer = async (customerData, token) => {
-    return await axios.post(`/api/v1/customers`, customerData, {
+    return await axios.post(`/api/customers`, customerData, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
@@ -55,7 +55,7 @@ export const createCustomer = async (customerData, token) => {
 };
 
 export const updateCustomer = async (customerId, customerData, token) => {
-    return await axios.put(`/api/v1/customers/${customerId}`, customerData, {
+    return await axios.put(`/api/customers/${customerId}`, customerData, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
@@ -63,7 +63,7 @@ export const updateCustomer = async (customerId, customerData, token) => {
 };
 
 export const deleteCustomer = async (customerId, token) => {
-    return await axios.delete(`/api/v1/customers/${customerId}`, {
+    return await axios.delete(`/api/customers/${customerId}`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
@@ -71,7 +71,7 @@ export const deleteCustomer = async (customerId, token) => {
 };
 
 export const getVersion = async () => {
-    return await axios.get(`/api/v1/version`);
+    return await axios.get(`/api/version`);
 };
 
 export const postUploadLink = async (data) => {
