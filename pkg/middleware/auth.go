@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/dgrijalva/jwt-go"
@@ -10,7 +11,9 @@ import (
 
 // AuthenticateJWT is a middleware function that authenticates a JWT token and sets the user to the context if successful
 func AuthenticateJWT(c *fiber.Ctx) error {
+	fmt.Println("AuthenticateJWT")
 	authHeader := c.Get("Authorization")
+	fmt.Println(authHeader)
 	if authHeader == "" {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Missing or malformed JWT"})
 	}

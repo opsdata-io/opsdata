@@ -1,16 +1,18 @@
-// CustomerList.jsx
+// components/CustomerList.jsx
 
 import React, { useState, useEffect } from 'react';
-import { getCustomers } from '../utils/api'; // Adjusted import
+import { getCustomers } from '../utils/api';
+import { getToken } from '../utils/jwt';
 
 const CustomerList = () => {
     const [customers, setCustomers] = useState([]);
 
     useEffect(() => {
         const fetchCustomers = async () => {
+            const token = getToken(); // Retrieve the JWT token
             try {
-                const response = await getCustomers(); // Use getCustomers function to fetch customers
-                setCustomers(response.data); // Assuming response contains customer data
+                const customersData = await getCustomers(token); // Use getCustomers function to fetch customers
+                setCustomers(customersData); // Assuming customersData contains customer data
             } catch (error) {
                 console.error('Error fetching customers:', error);
             }

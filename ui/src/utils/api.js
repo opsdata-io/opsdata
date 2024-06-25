@@ -1,6 +1,7 @@
-// api.js
+// utils/api.js
 
 import axios from 'axios';
+import { getToken } from './jwt';
 
 export const login = async (credentials) => {
     return await axios.post(`/api/login`, credentials);
@@ -30,7 +31,8 @@ export const uploadFile = async (link, file, token) => {
     });
 };
 
-export const downloadFiles = async (token) => {
+export const downloadFiles = async () => {
+    const token = getToken();
     return await axios.get(`/api/files`, {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -38,7 +40,8 @@ export const downloadFiles = async (token) => {
     });
 };
 
-export const getCustomers = async (token) => {
+export const getCustomers = async () => {
+    const token = getToken();
     return await axios.get(`/api/customers`, {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -46,7 +49,8 @@ export const getCustomers = async (token) => {
     });
 };
 
-export const createCustomer = async (customerData, token) => {
+export const createCustomer = async (customerData) => {
+    const token = getToken();
     return await axios.post(`/api/customers`, customerData, {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -54,7 +58,8 @@ export const createCustomer = async (customerData, token) => {
     });
 };
 
-export const updateCustomer = async (customerId, customerData, token) => {
+export const updateCustomer = async (customerId, customerData) => {
+    const token = getToken();
     return await axios.put(`/api/customers/${customerId}`, customerData, {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -62,7 +67,8 @@ export const updateCustomer = async (customerId, customerData, token) => {
     });
 };
 
-export const deleteCustomer = async (customerId, token) => {
+export const deleteCustomer = async (customerId) => {
+    const token = getToken();
     return await axios.delete(`/api/customers/${customerId}`, {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -75,5 +81,14 @@ export const getVersion = async () => {
 };
 
 export const postUploadLink = async (data) => {
-    // Implement the postUploadLink function to send data to the backend
+    const token = getToken();
+    return await axios.post(
+        `/api/create-link`,
+        data,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    );
 };

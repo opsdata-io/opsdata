@@ -1,8 +1,10 @@
+// pages/DownloadPage.jsx
+
 import React from 'react';
 import FileDownloadList from '../components/FileDownloadList';
 
 const DownloadPage = () => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('jwtToken'); // Use jwtToken for consistency
 
     return (
         <div>

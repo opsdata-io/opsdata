@@ -1,24 +1,33 @@
-// SearchCustomerPage.jsx
+// pages/SearchCustomerPage.jsx
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Import Link from React Router
+import { Link } from 'react-router-dom';
 
 const SearchCustomerPage = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [searchResults, setSearchResults] = useState([]);
+    const [error, setError] = useState(''); // State to hold error messages
 
     const handleSearch = async (e) => {
         e.preventDefault();
+        const token = localStorage.getItem('jwtToken');
         try {
-            const response = await fetch(`/api/customers/search?q=${encodeURIComponent(searchQuery)}`);
+            const response = await fetch(`/api/customers/search?q=${encodeURIComponent(searchQuery)}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
             if (response.ok) {
                 const data = await response.json();
-                setSearchResults(data); // Update search results state with fetched data
+                setSearchResults(data);
+                setError(''); // Clear any previous errors
             } else {
                 console.error('Failed to fetch search results');
+                setError('Failed to fetch search results'); // Set error state with error message
             }
         } catch (error) {
             console.error('Failed to fetch search results', error);
+            setError('Failed to fetch search results'); // Set error state with error message
         }
     };
 
@@ -35,6 +44,7 @@ const SearchCustomerPage = () => {
     return (
         <div style={{ marginTop: '20px', marginLeft: '20px' }}>
             <h2>Customers</h2>
+            {error && <div style={{ color: 'red' }}>{error}</div>} {/* Display error message */}
             <form onSubmit={handleSearch} style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
                 <input
                     type="text"
@@ -45,6 +55,7 @@ const SearchCustomerPage = () => {
                     required
                     style={{ marginRight: '0.5rem' }}
                 />
+                <button type="submit">Search</button>
             </form>
             <div>
                 {searchResults.length === 0 ? (

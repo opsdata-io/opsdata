@@ -1,5 +1,8 @@
+// pages/AddUserPage.jsx
+
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { getToken } from '../utils/jwt'; // Import getToken from jwt utility
 
 const AddUserPage = ({ token }) => {
     const history = useHistory();
@@ -17,12 +20,13 @@ const AddUserPage = ({ token }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const jwtToken = token || getToken(); // Retrieve the JWT token using the utility function
         try {
             const response = await fetch(`/api/users`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${jwtToken}`,
                 },
                 body: JSON.stringify(userData),
             });
@@ -63,3 +67,4 @@ const AddUserPage = ({ token }) => {
 };
 
 export default AddUserPage;
+

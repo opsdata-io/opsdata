@@ -1,30 +1,45 @@
+// pages/CustomerDetailsPage.jsx
+
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 const CustomerDetailsPage = () => {
     const { id } = useParams();
     const [customer, setCustomer] = useState(null);
+    const [error, setError] = useState(null); // State to hold error messages
+    const [loading, setLoading] = useState(true); // State to handle loading
 
     useEffect(() => {
         const fetchCustomer = async () => {
+            const token = localStorage.getItem('jwtToken'); // Retrieve the JWT token from local storage
             try {
-                const response = await fetch(`/api/customers/${id}`);
+                const response = await fetch(`/api/customers/${id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}` // Add the token to the request headers
+                    }
+                });
                 if (response.ok) {
                     const data = await response.json();
                     setCustomer(data);
                 } else {
-                    console.error('Failed to fetch customer details');
+                    setError('Failed to fetch customer details');
                 }
             } catch (error) {
-                console.error('Failed to fetch customer details', error);
+                setError('Failed to fetch customer details');
+            } finally {
+                setLoading(false); // Set loading to false regardless of the outcome
             }
         };
 
         fetchCustomer();
     }, [id]);
 
-    if (!customer) {
+    if (loading) {
         return <p>Loading...</p>;
+    }
+
+    if (error) {
+        return <p style={{ color: 'red' }}>{error}</p>;
     }
 
     return (

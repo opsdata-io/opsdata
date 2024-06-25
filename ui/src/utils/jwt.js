@@ -1,4 +1,4 @@
-// jwt.js
+// utils/jwt.js
 
 export const setToken = (token) => {
     localStorage.setItem('token', token);

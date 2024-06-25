@@ -1,15 +1,17 @@
-// CustomerDropdown.jsx
+// components/CustomerDropdown.jsx
 
 import React, { useState } from 'react';
 import { createCustomer } from '../utils/api';
+import { getToken } from '../utils/jwt';
 
 const CustomerDropdown = ({ value, onChange }) => {
     const [newCustomerName, setNewCustomerName] = useState('');
 
     const handleCreateCustomer = async (e) => {
         e.preventDefault();
+        const token = getToken(); // Retrieve the JWT token
         try {
-            const newCustomer = await createCustomer({ name: newCustomerName });
+            const newCustomer = await createCustomer({ name: newCustomerName }, token);
             // Optionally update dropdown list or perform other actions
             console.log('New customer created:', newCustomer);
             setNewCustomerName(''); // Clear input after successful creation

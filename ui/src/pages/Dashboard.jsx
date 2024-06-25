@@ -1,22 +1,25 @@
-// Dashboard.jsx
+// pages/Dashboard.jsx
 
 import React, { useState, useEffect } from 'react';
-import { getVersion } from '../utils/api'; // Removed unused imports
+import { getVersion } from '../utils/api';
+import { getToken } from '../utils/jwt';
 
 const Dashboard = ({ token }) => {
     const [versionInfo, setVersionInfo] = useState('');
 
+    const jwtToken = token || getToken(); // Retrieve the JWT token from props or local storage
+
     useEffect(() => {
         const fetchVersion = async () => {
             try {
-                const response = await getVersion(); // Assuming getVersion fetches the version info
+                const response = await getVersion(jwtToken); // Pass the token to getVersion
                 setVersionInfo(response.data.version); // Assuming response.data.version contains the version info
             } catch (error) {
                 console.error('Error fetching version:', error);
             }
         };
         fetchVersion();
-    }, []);
+    }, [jwtToken]);
 
     return (
         <div>

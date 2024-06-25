@@ -1,3 +1,5 @@
+// App.jsx
+
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
@@ -34,15 +36,25 @@ function App() {
                         <Route path="/dashboard">
                             {token ? <Dashboard token={token} /> : <Redirect to="/login" />}
                         </Route>
-                        <Route path="/customers/add" component={AddCustomerPage} />
-                        <Route path="/customers/search" component={SearchCustomerPage} />
-                        <Route path="/customer/:id" component={CustomerDetailsPage} />
-                        <Route path="/upload/:link" component={UploadPage} />
+                        <Route path="/customers/add">
+                            {token ? <AddCustomerPage token={token} /> : <Redirect to="/login" />}
+                        </Route>
+                        <Route path="/customers/search">
+                            {token ? <SearchCustomerPage token={token} /> : <Redirect to="/login" />}
+                        </Route>
+                        <Route path="/customer/:id">
+                            {token ? <CustomerDetailsPage token={token} /> : <Redirect to="/login" />}
+                        </Route>
+                        <Route path="/upload/:link">
+                            {token ? <UploadPage token={token} /> : <Redirect to="/login" />}
+                        </Route>
                         <Route path="/confirmation" component={ConfirmationPage} />
                         <Route path="/downloads">
-                            {token ? <DownloadPage /> : <Redirect to="/login" />}
+                            {token ? <DownloadPage token={token} /> : <Redirect to="/login" />}
                         </Route>
-                        <Route path="/users/add" component={AddUserPage} />
+                        <Route path="/users/add">
+                            {token ? <AddUserPage token={token} /> : <Redirect to="/login" />}
+                        </Route>
                         <Route exact path="/">
                             <Redirect to={token ? "/dashboard" : "/login"} />
                         </Route>

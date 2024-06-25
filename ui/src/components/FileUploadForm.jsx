@@ -1,6 +1,9 @@
+// components/FileUploadForm.jsx
+
 import React, { useState } from 'react';
 import { postUploadLink } from '../utils/api';
-import CustomerDropdown from './CustomerDropdown'; // Import the CustomerDropdown component
+import { getToken } from '../utils/jwt'; // Import getToken to retrieve JWT token
+import CustomerDropdown from './CustomerDropdown';
 
 const FileUploadForm = () => {
     const [customer, setCustomer] = useState('');
@@ -12,9 +15,9 @@ const FileUploadForm = () => {
         e.preventDefault();
         try {
             const data = { customer, caseNumber, subject, notes };
-            const token = localStorage.getItem('token');
+            const token = getToken(); // Retrieve the JWT token
             const response = await postUploadLink(data, token);
-            console.log('Upload link created:', response.data);
+            console.log('Upload link created:', response);
             // Handle success or navigate to confirmation page
         } catch (error) {
             console.error('Error creating upload link:', error);

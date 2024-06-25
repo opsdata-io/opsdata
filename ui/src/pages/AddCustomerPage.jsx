@@ -1,5 +1,8 @@
+// pages/AddCustomerPage.jsx
+
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { getToken } from '../utils/jwt'; // Import getToken from jwt utility
 
 const AddCustomerPage = ({ token }) => {
     const history = useHistory();
@@ -22,12 +25,13 @@ const AddCustomerPage = ({ token }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const jwtToken = token || getToken(); // Retrieve the JWT token using the utility function
         try {
             const response = await fetch(`/api/customers`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${jwtToken}`,
                 },
                 body: JSON.stringify(customerData),
             });
@@ -60,7 +64,7 @@ const AddCustomerPage = ({ token }) => {
                                 <label>Company Name:</label>
                             </td>
                             <td>
-                                <input type="text" name="companyName" value={customerData.companyName} onChange={handleChange} />
+                                <input type="text" name="companyName" value={customerData.companyName} onChange={handleChange} required />
                             </td>
                         </tr>
                         <tr>
@@ -68,7 +72,7 @@ const AddCustomerPage = ({ token }) => {
                                 <label>Address:</label>
                             </td>
                             <td>
-                                <input type="text" name="address" value={customerData.address} onChange={handleChange} />
+                                <input type="text" name="address" value={customerData.address} onChange={handleChange} required />
                             </td>
                         </tr>
                         <tr>
@@ -76,7 +80,7 @@ const AddCustomerPage = ({ token }) => {
                                 <label>Contact Name:</label>
                             </td>
                             <td>
-                                <input type="text" name="contactName" value={customerData.contactName} onChange={handleChange} />
+                                <input type="text" name="contactName" value={customerData.contactName} onChange={handleChange} required />
                             </td>
                         </tr>
                         <tr>
@@ -84,7 +88,7 @@ const AddCustomerPage = ({ token }) => {
                                 <label>Contact Title:</label>
                             </td>
                             <td>
-                                <input type="text" name="contactTitle" value={customerData.contactTitle} onChange={handleChange} />
+                                <input type="text" name="contactTitle" value={customerData.contactTitle} onChange={handleChange} required />
                             </td>
                         </tr>
                         <tr>
@@ -92,7 +96,7 @@ const AddCustomerPage = ({ token }) => {
                                 <label>Contact Email:</label>
                             </td>
                             <td>
-                                <input type="email" name="contactEmail" value={customerData.contactEmail} onChange={handleChange} />
+                                <input type="email" name="contactEmail" value={customerData.contactEmail} onChange={handleChange} required />
                             </td>
                         </tr>
                         <tr>
@@ -100,7 +104,7 @@ const AddCustomerPage = ({ token }) => {
                                 <label>Contact Phone:</label>
                             </td>
                             <td>
-                                <input type="tel" name="contactPhone" value={customerData.contactPhone} onChange={handleChange} />
+                                <input type="tel" name="contactPhone" value={customerData.contactPhone} onChange={handleChange} required />
                             </td>
                         </tr>
                         <tr>
@@ -108,7 +112,7 @@ const AddCustomerPage = ({ token }) => {
                                 <label>Subscription Status:</label>
                             </td>
                             <td>
-                                <input type="text" name="subscriptionStatus" value={customerData.subscriptionStatus} onChange={handleChange} />
+                                <input type="text" name="subscriptionStatus" value={customerData.subscriptionStatus} onChange={handleChange} required />
                             </td>
                         </tr>
                         <tr>
@@ -118,7 +122,7 @@ const AddCustomerPage = ({ token }) => {
                         </tr>
                         <tr>
                             <td style={{ textAlign: 'center', paddingRight: '1rem' }} colSpan={2}>
-                                <textarea name="notes" value={customerData.notes} onChange={handleChange} rows="4"></textarea>
+                                <textarea name="notes" value={customerData.notes} onChange={handleChange} rows="4" required></textarea>
                             </td>
                         </tr>
                     </tbody>

@@ -1,3 +1,5 @@
+// pages/ListCustomerPage.jsx
+
 import React, { useState, useEffect } from 'react';
 
 const ListCustomerPage = () => {
@@ -8,8 +10,13 @@ const ListCustomerPage = () => {
     }, []);
 
     const fetchCustomers = async () => {
+        const token = localStorage.getItem('jwtToken'); // Retrieve the JWT token from local storage
         try {
-            const response = await fetch(`/api/customers`);
+            const response = await fetch(`/api/customers`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`, // Add the token to the request headers
+                },
+            });
             if (response.ok) {
                 const data = await response.json();
                 setCustomers(data); // Update customers state with fetched data

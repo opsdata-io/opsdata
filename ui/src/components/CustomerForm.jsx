@@ -1,16 +1,18 @@
-// CustomerForm.jsx
+// components/CustomerForm.jsx
 
 import React, { useState } from 'react';
 import { createCustomer } from '../utils/api';
+import { getToken } from '../utils/jwt';
 
 const CustomerForm = ({ onSubmit }) => {
     const [name, setName] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const token = getToken(); // Retrieve the JWT token
         try {
-            const response = await createCustomer({ name });
-            onSubmit(response.data); // Handle success, e.g., update dropdown list
+            const response = await createCustomer({ name }, token);
+            onSubmit(response); // Handle success, e.g., update dropdown list
             setName(''); // Clear form
         } catch (error) {
             console.error('Error creating customer:', error);

@@ -1,14 +1,18 @@
+// components/FileDownloadList.jsx
+
 import React, { useEffect, useState } from 'react';
 import { downloadFiles } from '../utils/api';
+import { getToken } from '../utils/jwt';
 
-const FileDownloadList = ({ token }) => {
+const FileDownloadList = () => {
     const [files, setFiles] = useState([]);
+    const token = getToken(); // Retrieve the JWT token
 
     useEffect(() => {
         const fetchFiles = async () => {
             try {
-                const response = await downloadFiles(token);
-                setFiles(response.data);
+                const filesData = await downloadFiles(token);
+                setFiles(filesData);
             } catch (error) {
                 console.error('Error fetching files:', error);
             }
