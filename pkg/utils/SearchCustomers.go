@@ -16,7 +16,7 @@ func SearchCustomers(query string) ([]models.Customer, error) {
 	// Perform case-insensitive search
 	var customers []models.Customer
 	query = strings.ToLower(query)
-	if err := DB.Where("LOWER(companyName) LIKE ?", "%"+query+"%").Find(&customers).Error; err != nil {
+	if err := DB.Where("LOWER(company_name) LIKE ?", "%"+query+"%").Find(&customers).Error; err != nil {
 		return nil, err
 	}
 	return customers, nil

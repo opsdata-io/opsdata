@@ -9,10 +9,6 @@ const AddCustomerPage = ({ token }) => {
     const [customerData, setCustomerData] = useState({
         companyName: '',
         address: '',
-        contactName: '',
-        contactTitle: '',
-        contactEmail: '',
-        contactPhone: '',
         notes: '',
         subscriptionStatus: '',
     });
@@ -77,38 +73,6 @@ const AddCustomerPage = ({ token }) => {
                         </tr>
                         <tr>
                             <td style={{ textAlign: 'right', paddingRight: '1rem' }}>
-                                <label>Contact Name:</label>
-                            </td>
-                            <td>
-                                <input type="text" name="contactName" value={customerData.contactName} onChange={handleChange} required />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style={{ textAlign: 'right', paddingRight: '1rem' }}>
-                                <label>Contact Title:</label>
-                            </td>
-                            <td>
-                                <input type="text" name="contactTitle" value={customerData.contactTitle} onChange={handleChange} required />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style={{ textAlign: 'right', paddingRight: '1rem' }}>
-                                <label>Contact Email:</label>
-                            </td>
-                            <td>
-                                <input type="email" name="contactEmail" value={customerData.contactEmail} onChange={handleChange} required />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style={{ textAlign: 'right', paddingRight: '1rem' }}>
-                                <label>Contact Phone:</label>
-                            </td>
-                            <td>
-                                <input type="tel" name="contactPhone" value={customerData.contactPhone} onChange={handleChange} required />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style={{ textAlign: 'right', paddingRight: '1rem' }}>
                                 <label>Subscription Status:</label>
                             </td>
                             <td>
@@ -122,7 +86,7 @@ const AddCustomerPage = ({ token }) => {
                         </tr>
                         <tr>
                             <td style={{ textAlign: 'center', paddingRight: '1rem' }} colSpan={2}>
-                                <textarea name="notes" value={customerData.notes} onChange={handleChange} rows="4" required></textarea>
+                                <textarea name="notes" value={customerData.notes} onChange={handleChange} rows="4"></textarea>
                             </td>
                         </tr>
                     </tbody>
