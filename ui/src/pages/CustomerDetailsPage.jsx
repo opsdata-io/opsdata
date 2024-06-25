@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { API_URL } from '../utils/api';
 
 const CustomerDetailsPage = () => {
     const { id } = useParams();

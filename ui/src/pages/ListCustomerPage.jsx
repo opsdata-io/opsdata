@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { API_URL } from '../utils/api';
 
 const ListCustomerPage = () => {
     const [customers, setCustomers] = useState([]);

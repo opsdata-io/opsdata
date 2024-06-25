@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { API_URL } from '../utils/api';
 
 const AddUserPage = ({ token }) => {
     const history = useHistory();
