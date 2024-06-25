@@ -3,15 +3,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-const CustomerDetailsPage = () => {
+const CustomerDetailsPage = ({ token }) => {
     const { id } = useParams();
     const [customer, setCustomer] = useState(null);
-    const [error, setError] = useState(null); // State to hold error messages
-    const [loading, setLoading] = useState(true); // State to handle loading
 
     useEffect(() => {
         const fetchCustomer = async () => {
-            const token = localStorage.getItem('jwtToken'); // Retrieve the JWT token from local storage
             try {
                 const response = await fetch(`/api/customers/${id}`, {
                     headers: {
@@ -22,24 +19,18 @@ const CustomerDetailsPage = () => {
                     const data = await response.json();
                     setCustomer(data);
                 } else {
-                    setError('Failed to fetch customer details');
+                    console.error('Failed to fetch customer details');
                 }
             } catch (error) {
-                setError('Failed to fetch customer details');
-            } finally {
-                setLoading(false); // Set loading to false regardless of the outcome
+                console.error('Failed to fetch customer details', error);
             }
         };
 
         fetchCustomer();
-    }, [id]);
+    }, [id, token]);
 
-    if (loading) {
+    if (!customer) {
         return <p>Loading...</p>;
-    }
-
-    if (error) {
-        return <p style={{ color: 'red' }}>{error}</p>;
     }
 
     return (
