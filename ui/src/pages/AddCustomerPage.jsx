@@ -23,7 +23,7 @@ const AddCustomerPage = ({ token }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`/api/v1/customers`, {
+            const response = await fetch(`/api/customers`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

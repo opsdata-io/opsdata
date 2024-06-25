@@ -9,7 +9,7 @@ const ListCustomerPage = () => {
 
     const fetchCustomers = async () => {
         try {
-            const response = await fetch(`/api/v1/customers`);
+            const response = await fetch(`/api/customers`);
             if (response.ok) {
                 const data = await response.json();
                 setCustomers(data); // Update customers state with fetched data
