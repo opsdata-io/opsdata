@@ -4,6 +4,9 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/opsdata-io/opsdata/pkg/handlers"
 	"github.com/opsdata-io/opsdata/pkg/middleware"
+
+	_ "github.com/opsdata-io/opsdata/docs"
+	swagger "github.com/swaggo/fiber-swagger"
 )
 
 // SetupRoutes initializes all routes for the application
@@ -34,4 +37,7 @@ func SetupRoutes(app *fiber.App) {
 	app.Get("/api/version", handlers.GetVersion)
 	app.Get("/api/healthz", handlers.GetHealth)
 	app.Get("/api/readyz", handlers.GetReady)
+
+	// Swagger documentation
+	app.Get("/swagger/*", swagger.FiberWrapHandler(swagger.URL("doc.json")))
 }

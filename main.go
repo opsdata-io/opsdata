@@ -10,10 +10,6 @@ import (
 	"github.com/opsdata-io/opsdata/pkg/metrics"
 	"github.com/opsdata-io/opsdata/pkg/routes"
 	"github.com/opsdata-io/opsdata/pkg/utils"
-
-	// Import swag
-	_ "github.com/opsdata-io/opsdata/docs"
-	swagger "github.com/swaggo/fiber-swagger"
 )
 
 func main() {
@@ -49,9 +45,6 @@ func main() {
 
 	// Routes
 	routes.SetupRoutes(app)
-
-	// Serve Swagger UI at the root path
-	app.Get("/api", swagger.FiberWrapHandler(swagger.URL("doc.json")))
 
 	// Connect to Database
 	utils.ConnectDB()
