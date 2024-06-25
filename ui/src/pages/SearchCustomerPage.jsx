@@ -11,7 +11,7 @@ const SearchCustomerPage = () => {
     const handleSearch = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`${API_URL}/api/customers/search?q=${encodeURIComponent(searchQuery)}`);
+            const response = await fetch(`/api/v1/customers/search?q=${encodeURIComponent(searchQuery)}`);
             if (response.ok) {
                 const data = await response.json();
                 setSearchResults(data); // Update search results state with fetched data

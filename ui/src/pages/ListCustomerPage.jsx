@@ -1,6 +1,5 @@
-// ListCustomerPage.jsx
-
 import React, { useState, useEffect } from 'react';
+import { API_URL } from '../utils/api';
 
 const ListCustomerPage = () => {
     const [customers, setCustomers] = useState([]);
@@ -11,7 +10,7 @@ const ListCustomerPage = () => {
 
     const fetchCustomers = async () => {
         try {
-            const response = await fetch('/api/customers');
+            const response = await fetch(`/api/v1/customers`);
             if (response.ok) {
                 const data = await response.json();
                 setCustomers(data); // Update customers state with fetched data

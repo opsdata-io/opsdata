@@ -9,7 +9,7 @@ const CustomerDetailsPage = () => {
     useEffect(() => {
         const fetchCustomer = async () => {
             try {
-                const response = await fetch(`${API_URL}/api/customers/${id}`);
+                const response = await fetch(`/api/v1/customers/${id}`);
                 if (response.ok) {
                     const data = await response.json();
                     setCustomer(data);

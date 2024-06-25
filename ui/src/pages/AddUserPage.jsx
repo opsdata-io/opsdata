@@ -19,7 +19,7 @@ const AddUserPage = ({ token }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`${API_URL}/api/users`, {
+            const response = await fetch(`/api/v1/users`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

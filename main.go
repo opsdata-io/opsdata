@@ -51,7 +51,7 @@ func main() {
 	routes.SetupRoutes(app)
 
 	// Serve Swagger UI at the root path
-	app.Get("/", swagger.FiberWrapHandler(swagger.URL("doc.json")))
+	app.Get("/api", swagger.FiberWrapHandler(swagger.URL("doc.json")))
 
 	// Connect to Database
 	utils.ConnectDB()

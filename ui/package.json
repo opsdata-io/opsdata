@@ -1,6 +1,8 @@
 {
-    "name": "upload-ui",
+    "name": "opsdata",
     "version": "1.0.0",
+    "description": "OpsData",
+    "author": "Matt Mattox <mmattox@support.tools>",
     "private": true,
     "dependencies": {
         "axios": "^0.28.0",
@@ -9,7 +11,7 @@
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
         "react-router-dom": "^5.3.4",
-        "react-scripts": "^3.0.1"
+        "react-scripts": "^5.0.1"
     },
     "scripts": {
         "start": "react-scripts start",
