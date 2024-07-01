@@ -127,7 +127,7 @@ spec:
         accessModes:
           - ReadWriteOnce
   service:
-    type: ClusterIP
+    type: LoadBalancer
   connection:
     secretName: mariadb-galera-conn
     secretTemplate:

@@ -47,22 +47,6 @@ const CustomerDetailsPage = ({ token }) => {
                         <td style={{ padding: '8px' }}>{customer.address}</td>
                     </tr>
                     <tr style={{ borderBottom: '1px solid lightgrey' }}>
-                        <td style={{ padding: '8px' }}><strong>Contact Name:</strong></td>
-                        <td style={{ padding: '8px' }}>{customer.contactName}</td>
-                    </tr>
-                    <tr style={{ borderBottom: '1px solid lightgrey' }}>
-                        <td style={{ padding: '8px' }}><strong>Contact Title:</strong></td>
-                        <td style={{ padding: '8px' }}>{customer.contactTitle}</td>
-                    </tr>
-                    <tr style={{ borderBottom: '1px solid lightgrey' }}>
-                        <td style={{ padding: '8px' }}><strong>Contact Email:</strong></td>
-                        <td style={{ padding: '8px' }}>{customer.contactEmail}</td>
-                    </tr>
-                    <tr style={{ borderBottom: '1px solid lightgrey' }}>
-                        <td style={{ padding: '8px' }}><strong>Contact Phone:</strong></td>
-                        <td style={{ padding: '8px' }}>{customer.contactPhone}</td>
-                    </tr>
-                    <tr style={{ borderBottom: '1px solid lightgrey' }}>
                         <td style={{ padding: '8px' }}><strong>Subscription Status:</strong></td>
                         <td style={{ padding: '8px' }}>{customer.subscriptionStatus}</td>
                     </tr>

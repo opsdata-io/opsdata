@@ -6,4 +6,16 @@ type User struct {
 	Username string `json:"username" gorm:"uniqueIndex;not null"`
 	Email    string `gorm:"uniqueIndex;not null"`
 	Password string `gorm:"not null"`
+	Role     Role
 }
+
+// Role represents the role model
+type Role string
+
+const (
+	RoleRoot             Role = "root"
+	RoleTech             Role = "tech"
+	RoleCustomerManager  Role = "customer_manager"
+	RoleCustomerUser     Role = "customer_user"
+	RoleCustomerReadonly Role = "customer_readonly"
+)

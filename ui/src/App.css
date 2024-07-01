@@ -8,7 +8,7 @@
 }
 
 .banner {
-    background-color: #333;
+    background-color: #009736;
     color: #fff;
     padding: 10px;
     display: flex;
@@ -23,9 +23,7 @@
 
 .banner-text {
     flex: 1;
-    /* Take remaining space */
-    text-align: center;
-    /* Center align text horizontally */
+    text-align: left;
 }
 
 .main-content {
@@ -34,15 +32,19 @@
     overflow: hidden;
 }
 
+
+
 .side-menu {
     width: 250px;
     background-color: #f0f0f0;
     padding: 20px;
+    font-family: 'Neuropol X Free', sans-serif; /* Ensure the font is applied */
 }
 
 .side-menu .sidebar-heading {
     font-weight: bold;
     margin-bottom: 10px;
+    font-family: 'Neuropol X Free', sans-serif; /* Apply the font to headings */
 }
 
 .side-menu .list-group-item {
@@ -50,10 +52,12 @@
     border: none;
     padding: 10px 0;
     transition: all 0.3s ease;
+    font-family: 'Neuropol X Free', sans-serif; /* Apply the font to menu items */
 }
 
 .side-menu .list-group-item:hover {
-    background-color: #ddd;
+    background-color: #009736;
+    color: #fff; /* Ensure text color is readable against the background */
 }
 
 .side-menu .submenu {
@@ -67,6 +71,14 @@
 }
 
 .side-menu .active {
-    background-color: #ccc;
+    background-color: #009736;
     font-weight: bold;
+    color: #fff; /* Ensure text color is readable against the background */
+}
+
+/* Increase specificity to override Bootstrap or other framework styles */
+.side-menu .list-group-item.active {
+    background-color: #009736 !important; /* Apply your desired active background color */
+    color: #fff !important; /* Ensure text color is readable against the background */
+    font-weight: bold; /* Optionally set font weight */
 }
