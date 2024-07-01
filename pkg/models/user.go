@@ -12,6 +12,7 @@ type User struct {
 // Role represents the role model
 type Role string
 
+// Standard list of Roles
 const (
 	RoleRoot             Role = "root"
 	RoleTech             Role = "tech"

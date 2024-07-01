@@ -5,7 +5,6 @@ import (
 	"github.com/opsdata-io/opsdata/pkg/handlers"
 	"github.com/opsdata-io/opsdata/pkg/middleware"
 
-	_ "github.com/opsdata-io/opsdata/docs"
 	swagger "github.com/swaggo/fiber-swagger"
 )
 
