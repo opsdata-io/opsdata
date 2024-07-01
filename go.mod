@@ -5,7 +5,7 @@ go 1.22.2
 require (
 	github.com/aws/aws-sdk-go v1.54.6
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
-	github.com/gofiber/fiber/v2 v2.52.4
+	github.com/gofiber/fiber/v2 v2.52.5
 	github.com/google/uuid v1.6.0
 	github.com/prometheus/client_golang v1.19.1
 	github.com/sirupsen/logrus v1.9.3
