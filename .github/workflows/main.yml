@@ -210,7 +210,7 @@ jobs:
           tar -xvf rancher-projects.tar.gz
           chmod +x rancher-projects
           mv rancher-projects /usr/local/bin/
-          rancher-projects --rancher-server ${{ secrets.CATTLE_SERVER }} --rancher-access-key ${{ secrets.CATTLE_ACCESS_KEY }} --rancher-secret-key ${{ secrets.CATTLE_SECRET_KEY }} --cluster-name a1-ops-prd --project-name "OpsData" --namespace argocd --create-kubeconfig --kubeconfig "kubeconfig"
+          rancher-projects --rancher-server ${{ secrets.CATTLE_SERVER }} --rancher-access-key ${{ secrets.CATTLE_ACCESS_KEY }} --rancher-secret-key ${{ secrets.CATTLE_SECRET_KEY }} --cluster-name a1-ops-prd --project-name "OpsData" --namespace opsdata --create-kubeconfig --kubeconfig "kubeconfig"
 
       - name: Deploy Master
         run: |
