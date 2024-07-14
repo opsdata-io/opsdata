@@ -1,0 +1,11 @@
+version: 2
+updates:
+  - package-ecosystem: "gomod" # For Go modules
+    directory: "/" # Location of Go modules (usually at the root of the repository)
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "npm" # For npm packages (use "yarn" if you're using yarn)
+    directory: "/ui" # Location of the React app's package.json
+    schedule:
+      interval: "weekly"
