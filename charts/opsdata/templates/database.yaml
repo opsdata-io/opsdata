@@ -18,7 +18,8 @@ data:
 {{- $rootPasswordSecret := .Values.mariadbRootPasswordSecret.name | default "mariadb-root-password" -}}
 {{- $appPasswordSecret := .Values.mariadbAppPasswordSecret.name | default "mariadb-app-password" -}}
 {{- $maxscalePasswordSecret := .Values.maxscalePasswordSecret.name | default "maxscale" -}}
-{{- if not (lookup "v1" "Secret" .Release.Namespace $rootPasswordSecret) -}}
+{{- if not (lookup "v1" "Secret" .Release.Namespace $rootPasswordSecret) }}
+---
 apiVersion: v1
 kind: Secret
 metadata:
@@ -28,9 +29,10 @@ metadata:
   annotations:
     secret-generator.v1.mittwald.de/autogenerate: password
 data: {}
-{{- end -}}
 ---
-{{- if not (lookup "v1" "Secret" .Release.Namespace $appPasswordSecret) -}}
+{{- end }}
+{{- if not (lookup "v1" "Secret" .Release.Namespace $appPasswordSecret) }}
+---
 apiVersion: v1
 kind: Secret
 metadata:
@@ -40,9 +42,10 @@ metadata:
   annotations:
     secret-generator.v1.mittwald.de/autogenerate: password
 data: {}
-{{- end -}}
 ---
-{{- if not (lookup "v1" "Secret" .Release.Namespace $maxscalePasswordSecret) -}}
+{{- end }}
+{{- if not (lookup "v1" "Secret" .Release.Namespace $maxscalePasswordSecret) }}
+---
 apiVersion: v1
 kind: Secret
 metadata:
@@ -52,8 +55,8 @@ metadata:
   annotations:
     secret-generator.v1.mittwald.de/autogenerate: password
 data: {}
-{{- end -}}
 ---
+{{- end }}
 apiVersion: k8s.mariadb.com/v1alpha1
 kind: MariaDB
 metadata:
