@@ -58,9 +58,15 @@ spec:
             - name: SERVER_PORT
               value: "8080"  # Ensure port is quoted to be interpreted as string
             - name: JWT_SECRET
-              value: "{{ .Values.settings.jwtSecret }}"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretGenerator.jwtSecret.name }}
+                  key: token
             - name: ENCRYPTION_KEY
-              value: "{{ .Values.settings.encryptionKey }}"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretGenerator.encryptionKey.name }}
+                  key: token              
             - name: S3_BUCKET
               value: "{{ .Values.settings.s3Bucket }}"
             - name: S3_REGION

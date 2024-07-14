@@ -193,7 +193,7 @@ jobs:
           git commit -m "Update Helm chart for opsdata"
           git push
 
-  Deploy-to-NPD:
+  Deploy:
     runs-on: ubuntu-latest
     needs: Publish
 
@@ -210,7 +210,7 @@ jobs:
           tar -xvf rancher-projects.tar.gz
           chmod +x rancher-projects
           mv rancher-projects /usr/local/bin/
-          rancher-projects --rancher-server ${{ secrets.CATTLE_SERVER }} --rancher-access-key ${{ secrets.CATTLE_ACCESS_KEY }} --rancher-secret-key ${{ secrets.CATTLE_SECRET_KEY }} --cluster-name a1-ops-dev --project-name "OpsData" --namespace argocd --create-kubeconfig --kubeconfig "kubeconfig"
+          rancher-projects --rancher-server ${{ secrets.CATTLE_SERVER }} --rancher-access-key ${{ secrets.CATTLE_ACCESS_KEY }} --rancher-secret-key ${{ secrets.CATTLE_SECRET_KEY }} --cluster-name a1-ops-prd --project-name "OpsData" --namespace argocd --create-kubeconfig --kubeconfig "kubeconfig"
 
       - name: Deploy Master
         run: |
@@ -283,26 +283,7 @@ jobs:
             echo "Application did not become healthy in time."
             exit 1
           fi
-
-  Deploy-to-PRD:
-    runs-on: ubuntu-latest
-    needs: Deploy-to-NPD
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup kubectl
-        uses: azure/setup-kubectl@v3
-  
-      - name: Install and Configure rancher-projects
-        run: |
-          curl -fsSL -o rancher-projects.tar.gz https://github.com/SupportTools/rancher-projects/releases/download/v0.2.2/rancher-projects_0.2.2_linux_amd64.tar.gz
-          tar -xvf rancher-projects.tar.gz
-          chmod +x rancher-projects
-          mv rancher-projects /usr/local/bin/
-          rancher-projects --rancher-server ${{ secrets.CATTLE_SERVER }} --rancher-access-key ${{ secrets.CATTLE_ACCESS_KEY }} --rancher-secret-key ${{ secrets.CATTLE_SECRET_KEY }} --cluster-name a1-ops-prd --project-name "OpsData" --namespace argocd --create-kubeconfig --kubeconfig "kubeconfig"
-
+                    
       - name: Deploy Test
         run: |
           cat ./argocd/tst.yaml | sed "s/CHARTVERSION/v${{ github.run_number }}/g" | kubectl --kubeconfig kubeconfig apply -f -

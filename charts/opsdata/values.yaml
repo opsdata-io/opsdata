@@ -6,23 +6,34 @@ settings:
   debug: false
   metrics:
     port: 9000
-  jwtSecret: "your-jwt-secret"
-  encryptionKey: "your-encryption-key"
   s3Bucket: "supporttools-upload"
   s3Region: "us-east-1"
   s3Endpoint: "https://s3.wasabisys.com"
   s3AccessKey: "your-s3-access-key"
   s3SecretKey: "your-s3-secret-key"
-  dbHost: "localhost"
-  dbPort: 3306
-  dbUser: "root"
-  dbPassword: "password"
-  dbName: "upload"
   adminEmail: "admin@support.tools"
   adminPassword: "password"
   sendGridAPIKey: "your-sendgrid-api-key"
   sendGridSenderEmail: "<EMAIL>"
   sendGridSenderName: "<NAME>"
+
+secretGenerator:
+  enabled: true
+  jwtSecret:
+    name: jwt-secret
+    length: 64
+  encryptionKey:
+    name: encryption-key
+    length: 64
+
+mariadbRootPasswordSecret:
+  name: mariadb-root-password
+
+mariadbAppPasswordSecret:
+  name: mariadb-app-password
+
+maxscalePasswordSecret:
+  name: maxscale
 
 replicaCount: 1
 

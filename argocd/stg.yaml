@@ -1,0 +1,49 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: opsdata-io
+  namespace: argocd
+spec:
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"
+  description: OspData.IO
+  destinations:
+    - namespace: "*"
+      server: "*"
+  sourceRepos:
+    - "*"
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: opsdata-stg
+  namespace: argocd
+spec:
+  destination:
+    namespace: opsdata-stg
+    server: https://kubernetes.default.svc
+  project: opsdata-io
+  source:
+    chart: website
+    helm:
+      parameters:
+        - name: settings.debug
+          value: "true"
+        - name: ingress.host
+          value: stg.opsdata.io
+    repoURL: https://charts.support.tools
+    targetRevision: CHARTVERSION
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      limit: 3
+      backoff:
+        duration: "30m"
+        factor: 2
+        maxDuration: "5m"
