@@ -1,7 +1,5 @@
-// App.jsx
-
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import Dashboard from './pages/Dashboard';
 import UploadPage from './pages/UploadPage';
@@ -19,8 +17,8 @@ function App() {
     const [token, setToken] = useState(localStorage.getItem('token'));
 
     const handleSetToken = (token) => {
-        localStorage.setItem('token', token); // Save token to local storage
-        setToken(token); // Set token in component state
+        localStorage.setItem('token', token);
+        setToken(token);
     };
 
     return (
@@ -29,36 +27,18 @@ function App() {
                 <Banner />
                 <div className="main-content">
                     <SideMenu />
-                    <Switch>
-                        <Route path="/login">
-                            <LoginPage setToken={handleSetToken} />
-                        </Route>
-                        <Route path="/dashboard">
-                            {token ? <Dashboard token={token} /> : <Redirect to="/login" />}
-                        </Route>
-                        <Route path="/customers/add">
-                            {token ? <AddCustomerPage token={token} /> : <Redirect to="/login" />}
-                        </Route>
-                        <Route path="/customers/search">
-                            {token ? <SearchCustomerPage token={token} /> : <Redirect to="/login" />}
-                        </Route>
-                        <Route path="/customer/:id">
-                            {token ? <CustomerDetailsPage token={token} /> : <Redirect to="/login" />}
-                        </Route>
-                        <Route path="/upload/:link">
-                            {token ? <UploadPage token={token} /> : <Redirect to="/login" />}
-                        </Route>
-                        <Route path="/confirmation" component={ConfirmationPage} />
-                        <Route path="/downloads">
-                            {token ? <DownloadPage token={token} /> : <Redirect to="/login" />}
-                        </Route>
-                        <Route path="/users/add">
-                            {token ? <AddUserPage token={token} /> : <Redirect to="/login" />}
-                        </Route>
-                        <Route exact path="/">
-                            <Redirect to={token ? "/dashboard" : "/login"} />
-                        </Route>
-                    </Switch>
+                    <Routes>
+                        <Route path="/login" element={<LoginPage setToken={handleSetToken} />} />
+                        <Route path="/dashboard" element={token ? <Dashboard token={token} /> : <Navigate to="/login" />} />
+                        <Route path="/customers/add" element={token ? <AddCustomerPage token={token} /> : <Navigate to="/login" />} />
+                        <Route path="/customers/search" element={token ? <SearchCustomerPage token={token} /> : <Navigate to="/login" />} />
+                        <Route path="/customer/:id" element={token ? <CustomerDetailsPage token={token} /> : <Navigate to="/login" />} />
+                        <Route path="/upload/:link" element={token ? <UploadPage token={token} /> : <Navigate to="/login" />} />
+                        <Route path="/confirmation" element={<ConfirmationPage />} />
+                        <Route path="/downloads" element={token ? <DownloadPage token={token} /> : <Navigate to="/login" />} />
+                        <Route path="/users/add" element={token ? <AddUserPage token={token} /> : <Navigate to="/login" />} />
+                        <Route exact path="/" element={<Navigate to={token ? "/dashboard" : "/login"} />} />
+                    </Routes>
                 </div>
             </div>
         </Router>
