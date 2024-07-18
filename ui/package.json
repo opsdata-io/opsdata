@@ -8,8 +8,8 @@
         "axios": "^0.28.0",
         "bootstrap": "^5.3.3",
         "env-cmd": "^10.1.0",
-        "react": "^17.0.2",
-        "react-dom": "^17.0.2",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
         "react-router-dom": "^6.24.1",
         "react-scripts": "^5.0.1"
     },
