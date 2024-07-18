@@ -5,7 +5,7 @@
     "author": "Matt Mattox <mmattox@support.tools>",
     "private": true,
     "dependencies": {
-        "axios": "^0.28.0",
+        "axios": "^1.7.2",
         "bootstrap": "^5.3.3",
         "env-cmd": "^10.1.0",
         "react": "^17.0.2",
