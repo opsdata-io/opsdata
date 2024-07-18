@@ -1,11 +1,10 @@
-// pages/CustomerDetailsPage.jsx
-
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 const CustomerDetailsPage = ({ token }) => {
     const { id } = useParams();
     const [customer, setCustomer] = useState(null);
+    const [error, setError] = useState('');
 
     useEffect(() => {
         const fetchCustomer = async () => {
@@ -19,18 +18,23 @@ const CustomerDetailsPage = ({ token }) => {
                     const data = await response.json();
                     setCustomer(data);
                 } else {
-                    console.error('Failed to fetch customer details');
+                    throw new Error('Failed to fetch customer details');
                 }
             } catch (error) {
-                console.error('Failed to fetch customer details', error);
+                console.error(error);
+                setError(error.message || 'Failed to load customer data.');
             }
         };
 
         fetchCustomer();
     }, [id, token]);
 
+    if (error) {
+        return <p>Error: {error}</p>; // Display errors if any
+    }
+
     if (!customer) {
-        return <p>Loading...</p>;
+        return <p>Loading...</p>; // Loading state
     }
 
     return (

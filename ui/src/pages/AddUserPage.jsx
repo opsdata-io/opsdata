@@ -1,11 +1,9 @@
-// pages/AddUserPage.jsx
-
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate instead of useHistory
 import { getToken } from '../utils/jwt'; // Import getToken from jwt utility
 
 const AddUserPage = ({ token }) => {
-    const history = useHistory();
+    const navigate = useNavigate(); // useNavigate hook for navigation
     const [userData, setUserData] = useState({
         username: '',
         email: '',
@@ -34,7 +32,7 @@ const AddUserPage = ({ token }) => {
                 const newUser = await response.json();
                 console.log('New user:', newUser); // Handle success as needed
                 // Optionally, redirect to user list page or show a success message
-                history.push('/users'); // Redirect to users page after successful creation
+                navigate('/users'); // Redirect to users page after successful creation using navigate
             } else {
                 console.error('Failed to create user:', response.statusText);
             }
@@ -67,4 +65,3 @@ const AddUserPage = ({ token }) => {
 };
 
 export default AddUserPage;
-

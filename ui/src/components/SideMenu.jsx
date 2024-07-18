@@ -1,5 +1,3 @@
-// components/SideMenu.jsx
-
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -18,11 +16,13 @@ const SideMenu = () => {
         }));
     };
 
-    const renderMenu = (menuName, displayName, submenuItems) => (
-        <li className={`list-group-item ${location.pathname.includes(`/${menuName}`) ? 'active' : ''}`} onClick={() => toggleMenu(menuName)}>
+    const isActive = (path) => location.pathname.includes(path);
+
+    const MenuItem = ({ menuName, displayName, submenuItems }) => (
+        <li className={`list-group-item ${isActive(`/${menuName}`) ? 'active' : ''}`} onClick={() => toggleMenu(menuName)}>
             <span className="menu-item">
                 {displayName}
-                {menuState[menuName] ? <i className="fa fa-caret-up float-right"></i> : <i className="fa fa-caret-down float-right"></i>}
+                <i className={`fa fa-caret-${menuState[menuName] ? 'up' : 'down'} float-right`}></i>
             </span>
             {menuState[menuName] && (
                 <ul className="submenu list-group list-group-flush">
@@ -40,23 +40,23 @@ const SideMenu = () => {
         <div className="bg-light border-right side-menu">
             <div className="sidebar-heading">Menu</div>
             <ul className="list-group list-group-flush">
-                <li className={`list-group-item ${location.pathname === '/dashboard' ? 'active' : ''}`}>
+                <li className={`list-group-item ${isActive('/dashboard') ? 'active' : ''}`}>
                     <Link to="/dashboard" className="nav-link">Dashboard</Link>
                 </li>
-                {renderMenu('customers', 'Customers', [
+                <MenuItem menuName="customers" displayName="Customers" submenuItems={[
                     { path: '/customers/add', label: 'Add' },
                     { path: '/customers/search', label: 'Search' }
-                ])}
-                {renderMenu('users', 'Users', [
+                ]} />
+                <MenuItem menuName="users" displayName="Users" submenuItems={[
                     { path: '/users/add', label: 'Add User' },
                     { path: '/users/search', label: 'Search Users' },
                     { path: '/users/manage', label: 'Manage Users' },
                     { path: '/users/permissions', label: 'User Permissions' }
-                ])}
-                {renderMenu('fileManagement', 'File Management', [
+                ]} />
+                <MenuItem menuName="fileManagement" displayName="File Management" submenuItems={[
                     { path: '/file-management/request', label: 'Request a File' },
                     { path: '/file-management/uploaded', label: 'Uploaded Files' }
-                ])}
+                ]} />
             </ul>
         </div>
     );

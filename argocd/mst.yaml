@@ -8,7 +8,7 @@ spec:
   clusterResourceWhitelist:
     - group: "*"
       kind: "*"
-  description: OspData.IO
+  description: opsdata.io
   destinations:
     - namespace: "*"
       server: "*"

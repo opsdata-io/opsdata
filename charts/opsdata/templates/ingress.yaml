@@ -1,0 +1,39 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: opsdata
+  labels:
+    app: opsdata
+    team: opsdata-io
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-dns01
+    cert-manager.io/cluster-issuer-duration: 8760h
+    cert-manager.io/cluster-issuer-email: mmattox@support.tools
+    cert-manager.io/issue-temporary-certificate: "true"
+    external-dns.alpha.kubernetes.io/hostname: {{ .Values.ingress.host | quote }}
+    external-dns.alpha.kubernetes.io/ttl: "120"
+    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: {{ .Values.ingress.host | quote }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend
+            port:
+              number: 8080
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: backend
+            port:
+              number: 8080              
+  tls:
+  - hosts:
+    - {{ .Values.ingress.host | quote }}
+    secretName: cert-tls

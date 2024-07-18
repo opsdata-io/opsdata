@@ -1,32 +1,46 @@
-// pages/ListCustomerPage.jsx
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';  // Assuming you have a context for auth
 
 const ListCustomerPage = () => {
     const [customers, setCustomers] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const { token } = useContext(AuthContext);  // Retrieve token from AuthContext
 
     useEffect(() => {
         fetchCustomers();
-    }, []);
+    }, []); // Dependency array left empty to mimic componentDidMount
 
     const fetchCustomers = async () => {
-        const token = localStorage.getItem('jwtToken'); // Retrieve the JWT token from local storage
+        setLoading(true);
         try {
             const response = await fetch(`/api/customers`, {
                 headers: {
-                    'Authorization': `Bearer ${token}`, // Add the token to the request headers
+                    'Authorization': `Bearer ${token}`, // Use context token
                 },
             });
             if (response.ok) {
                 const data = await response.json();
-                setCustomers(data); // Update customers state with fetched data
+                setCustomers(data);
+                setError(null); // Clear any previous errors
             } else {
-                console.error('Failed to fetch customers');
+                throw new Error('Failed to fetch customers');
             }
         } catch (error) {
             console.error('Failed to fetch customers', error);
+            setError(error.message);
+        } finally {
+            setLoading(false); // Ensure loading is false after fetch
         }
     };
+
+    if (loading) {
+        return <p>Loading...</p>;
+    }
+
+    if (error) {
+        return <p>Error: {error}</p>;
+    }
 
     return (
         <div>

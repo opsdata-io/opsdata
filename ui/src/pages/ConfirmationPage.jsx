@@ -1,17 +1,15 @@
-// pages/ConfirmationPage.jsx
-
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate instead of useHistory
 
 const ConfirmationPage = () => {
-    const history = useHistory();
+    const navigate = useNavigate(); // useNavigate hook for navigation
 
     const handleGoBack = () => {
-        history.push('/upload');
+        navigate('/upload'); // navigate replaces history.push
     };
 
     const handleGoHome = () => {
-        history.push('/');
+        navigate('/'); // navigate replaces history.push
     };
 
     return (

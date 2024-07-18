@@ -1,30 +1,51 @@
-// components/CustomerDropdown.jsx
-
-import React, { useState } from 'react';
-import { createCustomer } from '../utils/api';
+import React, { useState, useEffect } from 'react';
+import { createCustomer, getCustomers } from '../utils/api';
 import { getToken } from '../utils/jwt';
 
 const CustomerDropdown = ({ value, onChange }) => {
+    const [customers, setCustomers] = useState([]);
     const [newCustomerName, setNewCustomerName] = useState('');
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        const fetchCustomers = async () => {
+            const token = getToken();
+            try {
+                const fetchedCustomers = await getCustomers(token);
+                setCustomers(fetchedCustomers);
+            } catch (error) {
+                console.error('Error fetching customers:', error);
+                setError('Failed to fetch customers');
+            }
+        };
+
+        fetchCustomers();
+    }, []);
 
     const handleCreateCustomer = async (e) => {
         e.preventDefault();
-        const token = getToken(); // Retrieve the JWT token
+        const token = getToken();
         try {
             const newCustomer = await createCustomer({ name: newCustomerName }, token);
-            // Optionally update dropdown list or perform other actions
-            console.log('New customer created:', newCustomer);
-            setNewCustomerName(''); // Clear input after successful creation
+            setCustomers([...customers, newCustomer]);  // Update the customer list locally
+            setNewCustomerName('');  // Clear input after successful creation
+            onChange(newCustomer.id);  // Optionally update the selected customer
+            setError('');  // Reset error message
         } catch (error) {
             console.error('Error creating customer:', error);
-            // Handle error
+            setError('Error creating customer. Please try again.');
         }
     };
 
     return (
         <div>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
             <select value={value} onChange={(e) => onChange(e.target.value)}>
-                {/* Render customer options here */}
+                {customers.map(customer => (
+                    <option key={customer.id} value={customer.id}>
+                        {customer.name}
+                    </option>
+                ))}
             </select>
             <form onSubmit={handleCreateCustomer}>
                 <input

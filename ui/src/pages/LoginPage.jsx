@@ -1,15 +1,14 @@
-// pages/LoginPage.jsx
-
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { login } from '../utils/api';
 import { setToken as saveToken } from '../utils/jwt';
+import './Login.css'; // Import the CSS file
 
 const LoginPage = ({ setToken }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState(''); // State to hold error messages
-    const history = useHistory();
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -18,17 +17,17 @@ const LoginPage = ({ setToken }) => {
             const token = response.data.token;
             saveToken(token);
             setToken(token);
-            history.push('/dashboard');  // Redirect to dashboard after successful login
+            navigate('/dashboard');
         } catch (error) {
-            setError('Login failed. Please check your credentials and try again.'); // Set error state
+            setError('Login failed. Please check your credentials and try again.');
         }
     };
 
     return (
-        <div>
+        <div className="login-container">
             <h2>Login</h2>
-            {error && <div style={{ color: 'red' }}>{error}</div>} {/* Display error message */}
-            <form onSubmit={handleSubmit}>
+            {error && <div style={{ color: 'red' }}>{error}</div>}
+            <form className="login-form" onSubmit={handleSubmit}>
                 <div>
                     <label>Email:</label>
                     <input

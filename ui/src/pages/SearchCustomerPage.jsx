@@ -1,39 +1,38 @@
-// pages/SearchCustomerPage.jsx
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const SearchCustomerPage = ({ token }) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [searchResults, setSearchResults] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
 
     const handleSearch = async (e) => {
-        e.preventDefault();
+        e.preventDefault();  // Prevent the default form submission behavior
+        setLoading(true);  // Set loading to true to indicate search is in progress
+        setError('');  // Clear any existing errors
         try {
             const response = await fetch(`/api/customers/search?q=${encodeURIComponent(searchQuery)}`, {
                 headers: {
-                    'Authorization': `Bearer ${token}` // Add the token to the request headers
+                    'Authorization': `Bearer ${token}`
                 }
             });
             if (response.ok) {
                 const data = await response.json();
                 setSearchResults(data);
             } else {
-                console.error('Failed to fetch search results');
+                throw new Error('Failed to fetch search results');  // Throw an error if response is not OK
             }
         } catch (error) {
             console.error('Failed to fetch search results', error);
+            setError('Failed to fetch search results. Please try again.');
+        } finally {
+            setLoading(false);  // Set loading to false after the fetch operation is done
         }
     };
 
     const handleChange = (e) => {
         setSearchQuery(e.target.value);
-    };
-
-    const handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
-            handleSearch(e);
-        }
     };
 
     return (
@@ -45,13 +44,15 @@ const SearchCustomerPage = ({ token }) => {
                     id="searchQuery"
                     value={searchQuery}
                     onChange={handleChange}
-                    onKeyPress={handleKeyPress} // Handle Enter key press
                     required
                     style={{ marginRight: '0.5rem' }}
                 />
+                <button type="submit" disabled={loading}>Search</button>
             </form>
+            {loading && <p>Searching...</p>}
+            {error && <div style={{ color: 'red' }}>{error}</div>}
             <div>
-                {searchResults.length === 0 ? (
+                {searchResults.length === 0 && !loading ? (
                     <p>No results found</p>
                 ) : (
                     <table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid #ccc' }}>

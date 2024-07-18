@@ -1,22 +1,17 @@
-// pages/CustomerPage.jsx
-
 import React, { useState, useEffect } from 'react';
 import CustomerList from '../components/CustomerList';
 import CustomerForm from '../components/CustomerForm';
 import { getCustomers, createCustomer, updateCustomer, deleteCustomer } from '../utils/api';
-import { getToken } from '../utils/jwt';
 
 const CustomerPage = () => {
     const [customers, setCustomers] = useState([]);
     const [showCustomerForm, setShowCustomerForm] = useState(false);
     const [error, setError] = useState(null);
 
-    const token = getToken(); // Retrieve the JWT token from local storage
-
     useEffect(() => {
         const fetchCustomers = async () => {
             try {
-                const customersData = await getCustomers(token);
+                const customersData = await getCustomers();
                 setCustomers(customersData);
             } catch (error) {
                 console.error('Error fetching customers:', error);
@@ -24,13 +19,14 @@ const CustomerPage = () => {
             }
         };
         fetchCustomers();
-    }, [token]);
+    }, []);
 
     const handleCreateCustomer = async (customerData) => {
         try {
-            const newCustomer = await createCustomer(customerData, token);
-            setCustomers([...customers, newCustomer]);
-            setShowCustomerForm(false); // Hide the form after successful creation
+            const newCustomer = await createCustomer(customerData);
+            setCustomers(prev => [...prev, newCustomer]);
+            setShowCustomerForm(false);
+            setError(null); // Reset error on successful operation
         } catch (error) {
             console.error('Error creating customer:', error);
             setError('Error creating customer. Please try again.');
@@ -39,9 +35,10 @@ const CustomerPage = () => {
 
     const handleUpdateCustomer = async (customerId, customerData) => {
         try {
-            await updateCustomer(customerId, customerData, token);
+            await updateCustomer(customerId, customerData);
             const updatedCustomers = customers.map(cust => (cust.id === customerId ? { ...cust, ...customerData } : cust));
             setCustomers(updatedCustomers);
+            setError(null); // Reset error on successful operation
         } catch (error) {
             console.error('Error updating customer:', error);
             setError('Error updating customer. Please try again.');
@@ -50,9 +47,10 @@ const CustomerPage = () => {
 
     const handleDeleteCustomer = async (customerId) => {
         try {
-            await deleteCustomer(customerId, token);
+            await deleteCustomer(customerId);
             const updatedCustomers = customers.filter(cust => cust.id !== customerId);
             setCustomers(updatedCustomers);
+            setError(null); // Reset error on successful operation
         } catch (error) {
             console.error('Error deleting customer:', error);
             setError('Error deleting customer. Please try again.');
@@ -62,8 +60,10 @@ const CustomerPage = () => {
     return (
         <div>
             <h1>Customer Management</h1>
-            {error && <div style={{ color: 'red' }}>{error}</div>} {/* Display error message */}
-            <button onClick={() => setShowCustomerForm(true)}>Add Customer</button>
+            {error && <div style={{ color: 'red' }}>{error}</div>}
+            <button onClick={() => setShowCustomerForm(!showCustomerForm)}>
+                {showCustomerForm ? 'Cancel' : 'Add Customer'}
+            </button>
             {showCustomerForm && <CustomerForm onSubmit={handleCreateCustomer} />}
             <CustomerList
                 customers={customers}

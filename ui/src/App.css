@@ -29,22 +29,79 @@
 .main-content {
     display: flex;
     flex: 1;
-    overflow: hidden;
 }
 
+.main-content.full-width {
+    justify-content: center;
+    align-items: center;
+}
 
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+    background-color: #f8f9fa;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-form div {
+    margin-bottom: 15px;
+}
+
+.login-form label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.login-form input {
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    width: 100%;
+}
+
+.login-form button {
+    padding: 10px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.login-form button:hover {
+    background-color: #0056b3;
+}
 
 .side-menu {
     width: 250px;
     background-color: #f0f0f0;
     padding: 20px;
-    font-family: 'Neuropol X Free', sans-serif; /* Ensure the font is applied */
+    font-family: 'Neuropol X Free', sans-serif;
+    /* Ensure the font is applied */
 }
 
 .side-menu .sidebar-heading {
     font-weight: bold;
     margin-bottom: 10px;
-    font-family: 'Neuropol X Free', sans-serif; /* Apply the font to headings */
+    font-family: 'Neuropol X Free', sans-serif;
+    /* Apply the font to headings */
 }
 
 .side-menu .list-group-item {
@@ -52,12 +109,14 @@
     border: none;
     padding: 10px 0;
     transition: all 0.3s ease;
-    font-family: 'Neuropol X Free', sans-serif; /* Apply the font to menu items */
+    font-family: 'Neuropol X Free', sans-serif;
+    /* Apply the font to menu items */
 }
 
 .side-menu .list-group-item:hover {
     background-color: #009736;
-    color: #fff; /* Ensure text color is readable against the background */
+    color: #fff;
+    /* Ensure text color is readable against the background */
 }
 
 .side-menu .submenu {
@@ -73,12 +132,16 @@
 .side-menu .active {
     background-color: #009736;
     font-weight: bold;
-    color: #fff; /* Ensure text color is readable against the background */
+    color: #fff;
+    /* Ensure text color is readable against the background */
 }
 
 /* Increase specificity to override Bootstrap or other framework styles */
 .side-menu .list-group-item.active {
-    background-color: #009736 !important; /* Apply your desired active background color */
-    color: #fff !important; /* Ensure text color is readable against the background */
-    font-weight: bold; /* Optionally set font weight */
+    background-color: #009736 !important;
+    /* Apply your desired active background color */
+    color: #fff !important;
+    /* Ensure text color is readable against the background */
+    font-weight: bold;
+    /* Optionally set font weight */
 }

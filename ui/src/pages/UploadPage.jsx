@@ -1,12 +1,11 @@
-// pages/UploadPage.jsx
-
 import React from 'react';
+import { useParams } from 'react-router-dom'; // Import useParams for route parameters
 import FileUploadForm from '../components/FileUploadForm';
 import { getToken } from '../utils/jwt';
 
-const UploadPage = ({ match }) => {
-    const { link } = match.params;
-    const token = getToken(); // Use getToken to retrieve the token
+const UploadPage = () => {
+    const { link } = useParams(); // Use useParams to access route parameters
+    const token = getToken(); // Retrieve the JWT token
 
     return (
         <div>

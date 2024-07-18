@@ -1,23 +1,19 @@
-// components/Banner.jsx
-
 import React from 'react';
-import '../styles.css'; // Assuming styles.css imports global styles
+import '../styles.css';
 
 const Banner = () => {
-    const greenColor = '#009736'; // Define the green color
-
     return (
-        <div className="banner" style={{ backgroundColor: 'white' }}>
+        <header className="banner">
             <div className="logo">
-                <img src="https://cdn.opsdata.io/logos/small-logo.png" alt="OpsData" />
+                <img src="https://cdn.opsdata.io/logos/small-logo.png" alt="OpsData Logo" />
             </div>
-            <div className="banner-text" style={{ fontFamily: 'Neuropol X Free, sans-serif' }}>
+            <div className="banner-text">
                 <h1>
-                    <span style={{ color: greenColor }}>Ops</span>
-                    <span style={{ color: 'black' }}>Data</span>
+                    <span className="ops-color">Ops</span>
+                    <span className="data-color">Data</span>
                 </h1>
             </div>
-        </div>
+        </header>
     );
 };
 

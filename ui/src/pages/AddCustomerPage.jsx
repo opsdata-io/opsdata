@@ -1,11 +1,9 @@
-// pages/AddCustomerPage.jsx
-
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; // Replace useHistory with useNavigate
 import { getToken } from '../utils/jwt'; // Import getToken from jwt utility
 
 const AddCustomerPage = ({ token }) => {
-    const history = useHistory();
+    const navigate = useNavigate(); // useNavigate hook for navigation
     const [customerData, setCustomerData] = useState({
         companyName: '',
         address: '',
@@ -35,7 +33,7 @@ const AddCustomerPage = ({ token }) => {
                 const newCustomer = await response.json();
                 console.log('New customer:', newCustomer); // Handle success as needed
                 // Redirect to CustomerDetailsPage for the new customer
-                history.push(`/customer/${newCustomer.id}`); // Assuming newCustomer.id exists
+                navigate(`/customer/${newCustomer.id}`); // Use navigate for redirection
             } else {
                 // Handle error response
                 const errorResponse = await response.json();
