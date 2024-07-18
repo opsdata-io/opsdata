@@ -72,14 +72,18 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '22'
+
       - name: Install dependencies
         run: |
           cd ui
+          rm -rf node_modules package-lock.json
           npm install
+
       # - name: Test
       #   run: |
       #     cd ui
       #     npm run test --passWithNoTests
+
       - name: Build
         run: |
           cd ui
