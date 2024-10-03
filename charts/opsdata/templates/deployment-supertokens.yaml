@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: supertokens
+  labels:
+    app: "opsdata"
+    component: "supertokens"
+    release: "{{ .Release.Name }}"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "opsdata"
+      component: "supertokens"
+      release: "{{ .Release.Name }}"
+  template:
+    metadata:
+      labels:
+        app: "opsdata"
+        component: "supertokens"
+        release: "{{ .Release.Name }}"
+    spec:
+      serviceAccountName: "{{ .Release.Name }}"
+      containers:
+        - name: supertokens
+          image: "registry.supertokens.io/supertokens/supertokens-mysql:9.1.0"
+          imagePullPolicy: "{{ .Values.image.pullPolicy }}"  # Ensure imagePullPolicy is quoted
+          ports:
+            - name: http
+              containerPort: 3567
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+          env:
+            - name: MYSQL_CONNECTION_URI
+              value: "mysql://root:root@mysql:3306/supertokens" # Need to make this configurable in the future
