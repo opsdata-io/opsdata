@@ -1,9 +1,11 @@
 # Use golang alpine image as the builder stage
 FROM golang:1.22.4-alpine3.20 AS builder
 
-# Install git.
-# Git is required for fetching the dependencies.
-RUN apk update && apk add --no-cache git
+# Install git and other necessary tools
+RUN apk update && apk add --no-cache git bash
+
+# Install swaggo CLI tool to generate Swagger documentation
+RUN go install github.com/swaggo/swag/cmd/swag@latest
 
 # Set the Current Working Directory inside the container
 WORKDIR /src
@@ -13,6 +15,9 @@ COPY . .
 
 # Fetch dependencies using go mod if your project uses Go modules
 RUN go mod download
+
+# Generate Swagger docs
+RUN swag init -g main.go -o ./docs
 
 # Version and Git Commit build arguments
 ARG VERSION
@@ -39,6 +44,7 @@ WORKDIR /root/
 
 # Copy our static executable.
 COPY --from=builder /bin/opsdata /bin/opsdata
+COPY --from=builder /src/docs /root/docs
 
 # Run the opsdata binary.
 ENTRYPOINT ["/bin/opsdata"]

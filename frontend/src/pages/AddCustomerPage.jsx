@@ -21,7 +21,7 @@ const AddCustomerPage = ({ token }) => {
         e.preventDefault();
         const jwtToken = token || getToken(); // Retrieve the JWT token using the utility function
         try {
-            const response = await fetch(`/api/customers`, {
+            const response = await fetch(`/v1/customers`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

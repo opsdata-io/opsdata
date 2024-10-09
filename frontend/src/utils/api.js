@@ -3,7 +3,7 @@ import { getToken } from './jwt';  // Ensure this path is correct based on your 
 
 // Setup axios instance
 const api = axios.create({
-    baseURL: '/api'
+    baseURL: '/v1'
 });
 
 // Request interceptor to add the auth token for every request

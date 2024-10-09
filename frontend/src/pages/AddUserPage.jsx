@@ -20,7 +20,7 @@ const AddUserPage = ({ token }) => {
         e.preventDefault();
         const jwtToken = token || getToken(); // Retrieve the JWT token using the utility function
         try {
-            const response = await fetch(`/api/users`, {
+            const response = await fetch(`/v1/users`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

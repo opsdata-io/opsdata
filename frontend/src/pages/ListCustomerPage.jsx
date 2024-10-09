@@ -14,7 +14,7 @@ const ListCustomerPage = () => {
     const fetchCustomers = async () => {
         setLoading(true);
         try {
-            const response = await fetch(`/api/customers`, {
+            const response = await fetch(`/v1/customers`, {
                 headers: {
                     'Authorization': `Bearer ${token}`, // Use context token
                 },

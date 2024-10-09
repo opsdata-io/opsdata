@@ -9,7 +9,7 @@ const CustomerDetailsPage = ({ token }) => {
     useEffect(() => {
         const fetchCustomer = async () => {
             try {
-                const response = await fetch(`/api/customers/${id}`, {
+                const response = await fetch(`/v1/customers/${id}`, {
                     headers: {
                         'Authorization': `Bearer ${token}` // Add the token to the request headers
                     }

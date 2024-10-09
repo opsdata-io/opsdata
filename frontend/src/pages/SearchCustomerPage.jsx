@@ -12,7 +12,7 @@ const SearchCustomerPage = ({ token }) => {
         setLoading(true);  // Set loading to true to indicate search is in progress
         setError('');  // Clear any existing errors
         try {
-            const response = await fetch(`/api/customers/search?q=${encodeURIComponent(searchQuery)}`, {
+            const response = await fetch(`/v1/customers/search?q=${encodeURIComponent(searchQuery)}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
