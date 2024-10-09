@@ -30,12 +30,14 @@ jobs:
 
       - name: Go static analysis
         run: |
+          cd backend
           golint ./...
           staticcheck ./...
           go vet ./...
 
       - name: Dependency management
         run: |
+          cd backend
           go mod vendor
           go mod verify
           go mod tidy
@@ -44,10 +46,13 @@ jobs:
         run: go-mod-outdated -update
 
       - name: Security scanning
-        run: gosec ./...
+        run: |
+          cd backend
+          gosec ./...
 
       - name: Generate Swagger documentation
         run: |
+          cd backend
           go install github.com/swaggo/swag/cmd/swag@latest
           swag init -g main.go
       
@@ -75,7 +80,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd ui
+          cd frontend
           rm -rf node_modules package-lock.json
           npm install
 
@@ -86,7 +91,7 @@ jobs:
 
       - name: Build
         run: |
-          cd ui
+          cd frontend
           npm run build
 
   Build-backend:
