@@ -144,7 +144,7 @@ jobs:
 
       - name: Docker build frontend
         run: |
-          cd ui
+          cd frontend
           docker buildx build \
             --platform linux/amd64 \
             --pull \
