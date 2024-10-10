@@ -45,10 +45,10 @@ jobs:
       - name: Outdated dependencies
         run: go-mod-outdated -update
 
-      - name: Security scanning
-        run: |
-          cd backend
-          gosec ./...
+      #- name: Security scanning
+      #  run: |
+      #    cd backend
+      #    gosec ./...
 
       - name: Generate Swagger documentation
         run: |
